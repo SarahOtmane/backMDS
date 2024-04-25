@@ -27,7 +27,7 @@ app.use(express.json());
 
 // Configuration de Swagger
 const swaggerUi = require('swagger-ui-express');
-const swaggerSpec = require('./swagger/swagger_config');
+const swaggerSpec = require('./docs/swagger/config.js');
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 
