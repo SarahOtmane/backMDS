@@ -14,5 +14,6 @@ router
     .route('/')
     .get(userController.getAUser)
     .put(userController.putAUser)
+    .delete(userController.deleteAUser)
 
 module.exports = router;
