@@ -13,5 +13,6 @@ router
 router
     .route('/')
     .get(userController.getAUser)
+    .put(userController.putAUser)
 
 module.exports = router;
