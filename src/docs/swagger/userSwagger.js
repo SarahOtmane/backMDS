@@ -56,7 +56,39 @@
  *       201:
  *         description: Utilisateur enregistré avec succès
  *       401:
- *         description: Requête invalide
- *       409:
  *         description: L'utilisateur avec cet email existe déjà
+ *       500:
+ *         description: Erreur interne du serveur
+ */
+
+
+/**
+ * @swagger
+ * /users/login:
+ *   post:
+ *     summary: Connecter un utilisateur existant
+ *     tags: [User]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *             required:
+ *               - email
+ *               - password
+ *     responses:
+ *       200:
+ *         description: Utilisateur connecté avec succès
+ *       401:
+ *         description: Email ou Mdp incorrect
+ *       404:
+ *         description: Utilisateur non trouvé
+ *       500:
+ *         description: Erreur interne du serveur
  */
