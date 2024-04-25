@@ -131,4 +131,16 @@
  *         description: Utilisateur non trouvé
  *       500:
  *         description: Erreur interne du serveur
+ *   delete:
+ *     summary: Supprimer le compte de l'utilisateur connecté
+ *     tags: [User]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       201:
+ *         description: Compte utilisateur supprimé avec succès
+ *       404:
+ *         description: Utilisateur non trouvé
+ *       500:
+ *         description: Erreur interne du serveur
  */
