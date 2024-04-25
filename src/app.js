@@ -31,6 +31,11 @@ const swaggerSpec = require('./docs/swagger/config.js');
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 
+// Configuration des routes
+const userRoute = require('./routes/userRoute'); 
+app.use('/users', userRoute);
+
+
 
 // Démarrage du serveur
 app.listen(port, () => {
