@@ -25,6 +25,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); 
 
 
+// Configuration de Swagger
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./swagger/swagger_config');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+
+
 // Démarrage du serveur
 app.listen(port, () => {
     console.log(`L'application écoute sur le port ${port}`);
