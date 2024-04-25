@@ -82,7 +82,7 @@ exports.loginAUser = async (req, res) => {
             MÉTHODE POUR LISTER UN UTILISATEUR
 **********************************************************/
 /*
-    Fonction qui permet à une personne de se connecter à son compte user
+    Fonction qui permet de lister les informations d'un utilisateur
 
     Les vérifications : 
         - Vérifier que l'utilisateur existe
@@ -108,7 +108,7 @@ exports.getAUser = async (req, res) => {
             MÉTHODE POUR MODIFIER UN UTILISATEUR
 **********************************************************/
 /*
-    Fonction qui permet à une personne de se connecter à son compte user
+    Fonction qui permet de modifier les info d'un utilisateur
 
     Les vérifications : 
         - Vérifier que l'utilisateur existe
@@ -134,6 +134,34 @@ exports.putAUser = async (req, res) => {
 
         
         res.status(201).json({ message: 'Utilisateur mis à jour avec succès.' });
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
+
+
+/**********************************************************
+            MÉTHODE POUR SUPPRIMER UN UTILISATEUR
+**********************************************************/
+/*
+    Fonction qui permet de supprimer un compte utilisateur
+
+    Les vérifications : 
+        - Vérifier que l'utilisateur existe
+
+*/
+exports.deleteAUser = async (req, res) => {
+    try {
+        const deletedUser = await User.destroy({
+            where: { id_user: req.user.id_user }
+        });
+        
+        if (!deletedUser) {
+            return res.status(404).json({ message: 'Utilisateur non trouvé.' });
+        }
+
+        res.status(201).json({ message: 'Utilisateur supprimé avec succès.' });
 
     } catch (error) {
         res.status(500).json({message: "Erreur lors du traitement des données."});
