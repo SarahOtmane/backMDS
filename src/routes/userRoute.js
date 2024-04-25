@@ -10,5 +10,8 @@ router
     .route('/login')
     .post(userController.loginAUser)
 
+router
+    .route('/')
+    .get(userController.getAUser)
 
 module.exports = router;
