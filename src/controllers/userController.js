@@ -123,7 +123,7 @@ exports.putAUser = async (req, res) => {
             return res.status(404).json({ message: 'Utilisateur non trouvé.' });
         }
 
-        req.body.password = await bcrypt.hash(req.body.password, 10);
+        // req.body.password = await bcrypt.hash(req.body.password, 10);
 
         await user.update({ 
             lastname: req.body.lastname,
