@@ -102,3 +102,40 @@ exports.getAUser = async (req, res) => {
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 };
+
+
+/**********************************************************
+            MÉTHODE POUR MODIFIER UN UTILISATEUR
+**********************************************************/
+/*
+    Fonction qui permet à une personne de se connecter à son compte user
+
+    Les vérifications : 
+        - Vérifier que l'utilisateur existe
+
+*/
+exports.putAUser = async (req, res) => {
+    try {
+        let user = await User.findByPk(req.user.id_user);
+
+        if(!user){
+            return res.status(404).json({ message: 'Utilisateur non trouvé.' });
+        }
+
+        req.body.password = await bcrypt.hash(req.body.password, 10);
+
+        await user.update({ 
+            lastname: req.body.lastname,
+            firstname: req.body.firstname,
+            password: req.body.password,
+            id_avatar: req.body.id_avatar,
+            role: req.body.role
+        });
+
+        
+        res.status(201).json({ message: 'Utilisateur mis à jour avec succès.' });
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
