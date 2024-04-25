@@ -10,7 +10,7 @@ const User = require('../models/userModel.js');
 
     Les vérifications : 
         - Vérifier que l'email n'existe pas dans la base de donnée
-        - Varifier que le role != admin
+        - Vérifier que le role != admin
 
 */
 exports.registerAUser = async (req, res) => {
@@ -31,6 +31,48 @@ exports.registerAUser = async (req, res) => {
         });
     } 
     catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
+
+
+/**********************************************************
+            MÉTHODE POUR CONNECTER UN UTILISATEUR
+**********************************************************/
+/*
+    Fonction qui permet à une personne de se connecter à son compte user
+
+    Les vérifications : 
+        - Vérifier que le compte associé à l'email existe
+        - Vérifier que le mot de passe est bon
+
+*/
+exports.loginAUser = async (req, res) => {
+    try {
+        const user = await User.findOne({ where: { email: req.body.email } });
+
+        if (!user) {
+            return res.status(404).json({ message: 'Utilisateur non trouvé.' });
+        }
+
+        // const validPassword = await bcrypt.compare(req.body.password, user.password);
+
+        if (user.password === req.user.password) {
+            const userData = {
+                id_user: user.id_user,
+                email: user.email,
+                role: user.role
+            };
+          
+            const token = jwt.sign(userData, process.env.JWT_KEY, { expiresIn: "30d" });
+
+            res.status(201).json({ token });
+
+        } else {
+            res.status(401).json({ message: 'Email ou mot de passe incorrect.' });
+        }
+
+    } catch (error) {
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 };
