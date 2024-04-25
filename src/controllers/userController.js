@@ -58,7 +58,7 @@ exports.loginAUser = async (req, res) => {
 
         // const validPassword = await bcrypt.compare(req.body.password, user.password);
 
-        if (user.password === req.user.password) {
+        if (user.password === req.body.password) {
             const userData = {
                 id_user: user.id_user,
                 email: user.email,
