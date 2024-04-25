@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
+const jwtMiddleware = require('../middlewares/jwtMiddleware');
 
 router
     .route('/register')
@@ -12,6 +13,7 @@ router
 
 router
     .route('/')
+    .all(jwtMiddleware.verifyToken)
     .get(userController.getAUser)
     .put(userController.putAUser)
     .delete(userController.deleteAUser)
