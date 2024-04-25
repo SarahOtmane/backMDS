@@ -76,3 +76,29 @@ exports.loginAUser = async (req, res) => {
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 };
+
+
+/**********************************************************
+            MÉTHODE POUR LISTER UN UTILISATEUR
+**********************************************************/
+/*
+    Fonction qui permet à une personne de se connecter à son compte user
+
+    Les vérifications : 
+        - Vérifier que l'utilisateur existe
+
+*/
+exports.getAUser = async (req, res) => {
+    try {
+        const user = await User.findByPk(req.user.id_user);
+
+        if (!user) {
+            return res.status(404).json({ message: 'Utilisateur non trouvé.' });
+        }
+
+        res.status(201).json(user);
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
