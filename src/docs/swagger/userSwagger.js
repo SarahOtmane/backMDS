@@ -113,4 +113,22 @@
  *         description: Utilisateur non trouvé
  *       500:
  *         description: Erreur interne du serveur
+ *   put:
+ *     summary: Mettre à jour les informations de l'utilisateur connecté
+ *     tags: [User]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *     responses:
+ *       201:
+ *         description: Informations de l'utilisateur mises à jour avec succès
+ *       404:
+ *         description: Utilisateur non trouvé
+ *       500:
+ *         description: Erreur interne du serveur
  */
