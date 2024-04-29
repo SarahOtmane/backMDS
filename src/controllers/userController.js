@@ -90,7 +90,7 @@ exports.loginAUser = async (req, res) => {
 */
 exports.getAUser = async (req, res) => {
     try {
-        const user = await User.findByPk(req.user.id_user);
+        const user = await User.findOne({ where: { email: req.body.email } });
 
         if (!user) {
             return res.status(404).json({ message: 'Utilisateur non trouvé.' });
@@ -116,7 +116,7 @@ exports.getAUser = async (req, res) => {
 */
 exports.putAUser = async (req, res) => {
     try {
-        let user = await User.findByPk(req.user.id_user);
+        const user = await User.findOne({ where: { email: req.body.email } });
 
         if(!user){
             return res.status(404).json({ message: 'Utilisateur non trouvé.' });
@@ -154,7 +154,7 @@ exports.putAUser = async (req, res) => {
 exports.deleteAUser = async (req, res) => {
     try {
         const deletedUser = await User.destroy({
-            where: { id_user: req.user.id_user }
+            where: { email: req.user.email }
         });
         
         if (!deletedUser) {
