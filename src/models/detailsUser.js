@@ -7,7 +7,7 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
 });
 
 
-const DetailUser = sequelize.define('DetailUserx', {
+const DetailUser = sequelize.define('DetailUser', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -59,12 +59,12 @@ const DetailUser = sequelize.define('DetailUserx', {
 (async () => {
     try {
         //ne pas forcer a supp et recréer la table
-        await User.sync({ force: false });
-        console.log("Modèle User synchronisé avec la base de données.");
+        await DetailUser.sync({ force: false });
+        console.log("Modèle DetailUser synchronisé avec la base de données.");
     } catch (error) {
-        console.error("Erreur lors de la synchronisation du modèle User:", error);
+        console.error("Erreur lors de la synchronisation du modèle DetailUser:", error);
     }
 })();
 
 
-module.exports = User;
+module.exports = DetailUser;
