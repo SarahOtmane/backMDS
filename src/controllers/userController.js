@@ -28,7 +28,7 @@ exports.registerAUser = async (req, res) => {
         let newUser = await User.create(req.body);
 
         res.status(201).json({ 
-            message: `Utilisateur n°${newUser.id_user} créé avec succès. L'email : ${newUser.email}` 
+            message: `Utilisateur créé avec succès. L'email : ${newUser.email}` 
         });
     } 
     catch (error) {
