@@ -10,7 +10,6 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
 const User = sequelize.define('User', {
     email: {
         type: DataTypes.STRING,
-        allowNull: false,
         unique: true,
         primaryKey: true,
     },
