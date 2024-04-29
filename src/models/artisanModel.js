@@ -7,10 +7,11 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
 
 
 const Artisan = sequelize.define('Artisan', {
-    id_artisan: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        primaryKey: true,
     },
     firstname: {
         type: DataTypes.STRING,
@@ -20,11 +21,6 @@ const Artisan = sequelize.define('Artisan', {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-    },
     password: {
         type: DataTypes.STRING,
         allowNull: false
@@ -32,6 +28,18 @@ const Artisan = sequelize.define('Artisan', {
     mobile: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    acceptNewOrder: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+        validate: {
+            isIn: [[false, true]]
+        }
+    },
+    id_place: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
     }
 }, {
     tableName: 'users',
