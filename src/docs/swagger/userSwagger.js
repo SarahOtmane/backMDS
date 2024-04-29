@@ -13,15 +13,14 @@
  *     User:
  *       type: object
  *       required:
- *         - firstname
- *         - lastname
  *         - email
  *         - password
  *         - role
+ *         - id_detail
  *       properties:
- *         id_user:
+ *         id_detail:
  *           type: integer
- *           description: ID de l'utilisateur
+ *           description: Clé étrangère vers la table detail_user
  *         firstname:
  *           type: string
  *           description: Prénom de l'utilisateur
