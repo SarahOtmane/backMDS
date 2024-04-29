@@ -47,3 +47,25 @@
  *          type: integer
  *          description: Clé étrangère vers la table jobs
  */
+
+
+/**
+ * @swagger
+ * /artisans/register:
+ *   post:
+ *     summary: Enregistrer un nouvel artisan
+ *     tags: [artisan]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *     responses:
+ *       201:
+ *         description: Artisan enregistré avec succès
+ *       401:
+ *         description: L'artisan avec cet email existe déjà
+ *       500:
+ *         description: Erreur interne du serveur
+ */
