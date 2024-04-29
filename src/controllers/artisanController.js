@@ -37,3 +37,47 @@ exports.registerAnArtisan = async (req, res) => {
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 };
+
+
+
+
+
+/**********************************************************
+            MÉTHODE POUR CONNECTER UN ARTISAN
+**********************************************************/
+/*
+    Fonction qui permet à une personne de se connecter à son compte artisan
+
+    Les vérifications : 
+        - Vérifier que le compte associé à l'email existe
+        - Vérifier que le mot de passe est bon
+
+*/
+exports.loginAnArtisan = async (req, res) => {
+    try {
+        const artisan = await Artisan.findOne({ where: { email: req.body.email } });
+
+        if (!artisan) {
+            return res.status(404).json({ message: 'Artisan non trouvé.' });
+        }
+
+        // const validPassword = await bcrypt.compare(req.body.password, user.password);
+
+        if (artisan.password === req.body.password) {
+            const artisanData = {
+                email: artisan.email,
+                role: artisan.role
+            };
+          
+            const token = jwt.sign(artisanData, process.env.JWT_KEY, { expiresIn: "30d" });
+
+            res.status(201).json({ token });
+
+        } else {
+            res.status(401).json({ message: 'Email ou mot de passe incorrect.' });
+        }
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
