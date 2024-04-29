@@ -21,12 +21,6 @@
  *         id_detail:
  *           type: integer
  *           description: Clé étrangère vers la table detail_user
- *         firstname:
- *           type: string
- *           description: Prénom de l'utilisateur
- *         lastname:
- *           type: string
- *           description: Nom de l'utilisateur
  *         email:
  *           type: string
  *           description: Adresse email de l'utilisateur
