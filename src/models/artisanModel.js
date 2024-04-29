@@ -36,6 +36,10 @@ const Artisan = sequelize.define('Artisan', {
             isIn: [[false, true]]
         }
     },
+    id_job: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
     id_place: {
         type: DataTypes.INTEGER,
         allowNull: false,
