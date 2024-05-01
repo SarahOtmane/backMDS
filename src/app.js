@@ -35,6 +35,9 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 const userRoute = require('./routes/userRoute'); 
 app.use('/users', userRoute);
 
+const artisanRoute = require('./routes/artisanRoute'); 
+app.use('/artisans', artisanRoute);
+
 
 
 // Démarrage du serveur
