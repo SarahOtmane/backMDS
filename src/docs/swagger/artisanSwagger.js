@@ -60,12 +60,96 @@
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             $ref: '#/components/schemas/Artisan'
  *     responses:
  *       201:
  *         description: Artisan enregistré avec succès
  *       401:
  *         description: L'artisan avec cet email existe déjà
+ *       500:
+ *         description: Erreur interne du serveur
+ */
+
+
+/**
+ * @swagger
+ * /artisans/login:
+ *   post:
+ *     summary: Connecter un artisan existant
+ *     tags: [Artisan]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *             required:
+ *               - email
+ *               - password
+ *     responses:
+ *       200:
+ *         description: artisan connecté avec succès
+ *       401:
+ *         description: Email ou Mdp incorrect
+ *       404:
+ *         description: artisan non trouvé
+ *       500:
+ *         description: Erreur interne du serveur
+ */
+
+
+/**
+ * @swagger
+ * /artisans:
+ *   get:
+ *     summary: Récupérer les informations de l'artisan connecté
+ *     tags: [Artisan]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       201:
+ *         description: Informations de l'artisan récupérées avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Artisan'
+ *       404:
+ *         description: artisan non trouvé
+ *       500:
+ *         description: Erreur interne du serveur
+ *   put:
+ *     summary: Mettre à jour les informations de l'artisan connecté
+ *     tags: [Artisan]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Artisan'
+ *     responses:
+ *       201:
+ *         description: Informations de l'artisan mises à jour avec succès
+ *       404:
+ *         description: artisan non trouvé
+ *       500:
+ *         description: Erreur interne du serveur
+ *   delete:
+ *     summary: Supprimer le compte de l'artisan connecté
+ *     tags: [Artisan]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       201:
+ *         description: Compte artisan supprimé avec succès
+ *       404:
+ *         description: artisan non trouvé
  *       500:
  *         description: Erreur interne du serveur
  */
