@@ -81,3 +81,99 @@ exports.loginAnArtisan = async (req, res) => {
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 };
+
+
+
+
+
+/**********************************************************
+            MÉTHODE POUR LISTER UN ARTISAN
+**********************************************************/
+/*
+    Fonction qui permet de lister les informations d'un artisan
+
+    Les vérifications : 
+        - Vérifier que l'artisan existe
+
+*/
+exports.getAnArtisan = async (req, res) => {
+    try {
+        const artisan = await Artisan.findOne({ where: { email: req.body.email } });
+
+        if (!artisan) {
+            return res.status(404).json({ message: 'Utilisateur non trouvé.' });
+        }
+
+        res.status(201).json(artisan);
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
+
+
+/**********************************************************
+            MÉTHODE POUR MODIFIER UN ARTISAN
+**********************************************************/
+/*
+    Fonction qui permet de modifier les info d'un artisan
+
+    Les vérifications : 
+        - Vérifier que l'artisan existe
+
+*/
+exports.putAnArtisan = async (req, res) => {
+    try {
+        const artisan = await Artisan.findOne({ where: { email: req.body.email } });
+
+        if(!artisan){
+            return res.status(404).json({ message: 'Artisan non trouvé.' });
+        }
+
+        // req.body.password = await bcrypt.hash(req.body.password, 10);
+
+        await artisan.update({ 
+            lastname: req.body.lastname,
+            firstname: req.body.firstname,
+            password: req.body.password,
+            mobile: req.body.mobile,
+            id_job: req.body.id_job,
+            acceptNewOrder: req.body.acceptNewOrder,
+            id_place: req.body.id_place,
+        });
+
+        
+        res.status(201).json({ message: 'Artisan mis à jour avec succès.' });
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
+
+
+/**********************************************************
+            MÉTHODE POUR SUPPRIMER UN ARTISAN
+**********************************************************/
+/*
+    Fonction qui permet de supprimer un compte artisan
+
+    Les vérifications : 
+        - Vérifier que l'artisan existe
+
+*/
+exports.deleteAnArtisan = async (req, res) => {
+    try {
+        const deletedArtisan = await Artisan.destroy({
+            where: { email: req.user.email }
+        });
+        
+        if (!deletedArtisan) {
+            return res.status(404).json({ message: 'Artisan non trouvé.' });
+        }
+
+        res.status(201).json({ message: 'Artisan supprimé avec succès.' });
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
