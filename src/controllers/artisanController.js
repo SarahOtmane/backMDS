@@ -1,9 +1,7 @@
 const Artisan = require('../models/artisanModel.js');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-import { verifyNumberPhone } from '../middlewares/functionsMiddleware.js';
-
-
+const functionsMiddleware = require('../middlewares/functionsMiddleware.js')
 
 /**********************************************************
             MÉTHODE POUR ENREGISTRER UN ARTISAN
@@ -23,7 +21,7 @@ exports.registerAnArtisan = async (req, res) => {
             return res.status(401).json({ message: 'Cet email existe déjà.' });
         }
 
-        if (!verifyNumberPhone(req.body.mobile)) {
+        if (!functionsMiddleware.verifyNumberPhone(req.body.mobile)) {
             return res.status(401).json({ message: 'Le numéro de téléphone est éronner'});
         }
 
