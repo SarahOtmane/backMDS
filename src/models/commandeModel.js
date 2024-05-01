@@ -42,7 +42,7 @@ const Commande = sequelize.define('Commande', {
         allowNull: false,
     }
 }, {
-    tableName: 'users',
+    tableName: 'commandes',
     timestamps: true,
     underscored: true
 });
