@@ -32,6 +32,14 @@ const Commande = sequelize.define('Commande', {
     id_reparation: {
         type: DataTypes.INTEGER,
         allowNull: false,
+    },
+    email_user: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    email_artisan: {
+        type: DataTypes.STRING,
+        allowNull: false,
     }
 }, {
     tableName: 'users',
