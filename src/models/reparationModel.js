@@ -47,4 +47,4 @@ const Reparation = sequelize.define('Reparation', {
 })();
 
 
-module.exports = User;
+module.exports = Reparation;

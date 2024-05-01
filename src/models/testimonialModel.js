@@ -43,4 +43,4 @@ const Testimonial = sequelize.define('Testimonial', {
 })();
 
 
-module.exports = User;
+module.exports = Testimonial;

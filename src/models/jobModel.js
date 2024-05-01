@@ -35,4 +35,4 @@ const Job = sequelize.define('Job', {
 })();
 
 
-module.exports = User;
+module.exports = Job;

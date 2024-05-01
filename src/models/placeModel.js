@@ -46,4 +46,4 @@ const Place = sequelize.define('Place', {
 })();
 
 
-module.exports = User;
+module.exports = Place;
