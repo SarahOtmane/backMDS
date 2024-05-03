@@ -11,6 +11,7 @@ router
     .post(infoController.createAnInfo)
     .get(infoController.getAnInfo)
     .put(infoController.putAnInfo)
+    .delete(infoController.deleteAnInfo);
 
 
 
