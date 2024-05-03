@@ -1,6 +1,4 @@
 const Artisan = require('../models/artisanModel.js');
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
 const functionsMiddleware = require('../middlewares/functionsMiddleware.js')
 
 /**********************************************************
