@@ -9,6 +9,7 @@ router
     .route('/')
     .all(jwtMiddleware.verifyToken)
     .post(infoController.createAnInfo)
+    .get(infoController.getAnInfo)
 
 
 
