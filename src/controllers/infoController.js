@@ -82,7 +82,7 @@ exports.getAnInfo = async (req, res) => {
 */
 exports.putAnInfo = async (req, res) => {
     try {
-        const info = await Info.findOne({ where: { email: req.body.email } });
+        const info = await Info.findOne({ where: { name: req.body.name } });
 
         if(!info){
             return res.status(404).json({ message: 'Information non trouvé.' });
@@ -99,6 +99,41 @@ exports.putAnInfo = async (req, res) => {
 
         
         res.status(201).json({ message: 'Information mise à jour avec succès.' });
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
+
+
+
+
+/**********************************************************
+            MÉTHODE POUR SUPPRIMER UNE INFO
+**********************************************************/
+/*
+    Fonction qui permet de supprimer une info
+
+    Les vérifications : 
+        - Vérifier que l'info existe
+        - role === admin
+
+*/
+exports.deleteAnInfo = async (req, res) => {
+    try {
+        const deletedInfo = await Info.destroy({
+            where: { name: req.body.name }
+        });
+        
+        if (!deletedInfo) {
+            return res.status(404).json({ message: 'Information non trouvé.' });
+        }
+
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ message: 'Vous n êtes pas admin, vous n avez pas l autorisation.'});
+        }
+
+        res.status(201).json({ message: 'Information supprimée avec succès.' });
 
     } catch (error) {
         res.status(500).json({message: "Erreur lors du traitement des données."});
