@@ -33,3 +33,33 @@ exports.createAnInfo = async (req, res) => {
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 };
+
+
+
+
+
+
+/**********************************************************
+            MÉTHODE POUR LISTER UNE INFO
+**********************************************************/
+/*
+    Fonction qui permet de lister une info
+
+    Les vérifications : 
+        - Vérifier que l'info existe
+
+*/
+exports.getAnInfo = async (req, res) => {
+    try {
+        const info = await Info.findOne({ where: { name: req.body.name } });
+
+        if (!info) {
+            return res.status(404).json({ message: 'Info non trouvé.' });
+        }
+
+        res.status(201).json(info);
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
