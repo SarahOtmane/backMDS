@@ -8,10 +8,18 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
 
 
 const User = sequelize.define('User', {
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+    },
     email: {
         type: DataTypes.STRING,
         unique: true,
-        primaryKey: true,
+    },
+    password: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
     role:{
         type: DataTypes.STRING,
@@ -21,13 +29,41 @@ const User = sequelize.define('User', {
             isIn: [['user', 'admin']]
         }
     },
-    password: {
+    firstname: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true,
     },
-    id_detail: {
+    lastname: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+    mobile: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    subscribeNewsletter: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+        validate: {
+            isIn: [[false, true]]
+        }
+    },
+    streetAdress: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    city: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    country: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    postalCode: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true
     },
 }, {
     tableName: 'users',
@@ -35,17 +71,6 @@ const User = sequelize.define('User', {
     underscored: true
 });
 
-// Hash avant de sauvegarder en base de données
-// User.addHook('beforeSave', async (user) => {
-//     try {
-//       // Valeur par défaut de l'algorithme de hashage : 10
-//         const algo = await bcrypt.genSalt(10);
-//         const hashPw = await bcrypt.hash(user.password, algo);
-//         user.password = hashPw;
-//     } catch (error) {
-//         throw new Error(error);
-//     }
-// });
 
 // Synchronisation du modèle avec la base de données
 (async () => {
