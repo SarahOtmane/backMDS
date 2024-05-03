@@ -63,3 +63,44 @@ exports.getAnInfo = async (req, res) => {
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 };
+
+
+
+
+
+
+/**********************************************************
+            MÉTHODE POUR MODIFIER UNE INFO
+**********************************************************/
+/*
+    Fonction qui permet de modifier une info
+
+    Les vérifications : 
+        - Vérifier que l'info existe
+        - role === admin
+
+*/
+exports.putAnInfo = async (req, res) => {
+    try {
+        const info = await Info.findOne({ where: { email: req.body.email } });
+
+        if(!info){
+            return res.status(404).json({ message: 'Information non trouvé.' });
+        }
+
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ message: 'Vous n êtes pas admin, vous n avez pas l autorisation.'});
+        }
+
+        await info.update({ 
+            name: req.body.name,
+            content: req.body.content,
+        });
+
+        
+        res.status(201).json({ message: 'Information mise à jour avec succès.' });
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
