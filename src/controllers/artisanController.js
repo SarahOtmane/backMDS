@@ -63,6 +63,7 @@ exports.loginAnArtisan = async (req, res) => {
 
         if (artisan.password === req.body.password) {
             const artisanData = {
+                id_artisan: artisan.id,
                 email: artisan.email,
                 role: artisan.role
             };
@@ -137,7 +138,10 @@ exports.putAnArtisan = async (req, res) => {
             mobile: req.body.mobile,
             id_job: req.body.id_job,
             acceptNewOrder: req.body.acceptNewOrder,
-            id_place: req.body.id_place,
+            streetAdress: req.body.streetAdress,
+            city: req.body.city,
+            country: req.body.country,
+            postalCode: req.body.postalCode
         });
 
         
