@@ -60,6 +60,7 @@ exports.loginAUser = async (req, res) => {
 
         if (user.password === req.body.password) {
             const userData = {
+                id_user: user.id,
                 email: user.email,
                 role: user.role
             };
@@ -128,8 +129,12 @@ exports.putAUser = async (req, res) => {
             lastname: req.body.lastname,
             firstname: req.body.firstname,
             password: req.body.password,
-            id_avatar: req.body.id_avatar,
-            role: req.body.role
+            mobile: req.body.mobile,
+            subscribeNewsletter: req.body.subscribeNewsletter,
+            streetAdress: req.body.streetAdress,
+            city: req.body.city,
+            country: req.body.country,
+            postalCode: req.body.postalCode
         });
 
         
