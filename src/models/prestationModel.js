@@ -25,7 +25,7 @@ const Prestation = sequelize.define('Prestation', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    price: {
+    priceSuggested: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
