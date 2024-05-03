@@ -10,6 +10,7 @@ router
     .all(jwtMiddleware.verifyToken)
     .post(infoController.createAnInfo)
     .get(infoController.getAnInfo)
+    .put(infoController.putAnInfo)
 
 
 
