@@ -21,28 +21,24 @@ const Commande = sequelize.define('Commande', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    finished: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-        validate: {
-            isIn: [[false, true]]
-        }
+    dateFinished: {
+        type: DataTypes.timestamps,
+        allowNull: true,
     },
-    id_reparation: {
+    id_prestation: {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
-    email_user: {
-        type: DataTypes.STRING,
+    id_user: {
+        type: DataTypes.INTEGER,
         allowNull: false,
     },
-    email_artisan: {
-        type: DataTypes.STRING,
+    id_artisan: {
+        type: DataTypes.INTEGER,
         allowNull: false,
     }
 }, {
-    tableName: 'commandes',
+    tableName: 'commands',
     timestamps: true,
     underscored: true
 });
