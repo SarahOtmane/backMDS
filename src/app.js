@@ -38,7 +38,8 @@ app.use('/users', userRoute);
 const artisanRoute = require('./routes/artisanRoute'); 
 app.use('/artisans', artisanRoute);
 
-
+const infoRoute = require('./routes/infoRoute.js'); 
+app.use('/infos', infoRoute);
 
 // Démarrage du serveur
 app.listen(port, () => {
