@@ -30,7 +30,7 @@ exports.verifyTokenUser = async(req, res, next) =>{
 
 
 
-//fonction pour vérifier les token d'un utilisateur
+//fonction pour vérifier les token d'un artisan
 exports.verifyTokenArtisan = async(req, res, next) =>{
     try {
         let token = req.headers['authorization'];
