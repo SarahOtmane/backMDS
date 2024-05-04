@@ -66,7 +66,7 @@ exports.getATestimonial = async (req, res) => {
 
     Les vérifications : 
         - Vérifier que le temoignage existe
-        - role === admin
+        - le user qui essaie de modif un temoignage  c celui qui la pub
 
 */
 exports.putATestimonial = async (req, res) => {
@@ -77,8 +77,8 @@ exports.putATestimonial = async (req, res) => {
             return res.status(404).json({ message: 'Temoignage non trouvé.' });
         }
 
-        if (req.user.role !== 'admin') {
-            return res.status(403).json({ message: 'Vous n êtes pas admin, vous n avez pas l autorisation.'});
+        if ( req.user.role === 'user' && req.user.id != testimonial.id_user) {
+            return res.status(403).json({ message: 'Vous n avez pas l autorisation de modifier ce témoignage.'});
         }
 
         await testimonial.update({ 
@@ -87,6 +87,39 @@ exports.putATestimonial = async (req, res) => {
 
         
         res.status(201).json({ message: 'Temoignage mis à jour avec succès.' });
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
+
+
+/**********************************************************
+            MÉTHODE POUR SUPPRIMER UN TEMOIGNAGE
+**********************************************************/
+/*
+    Fonction qui permet de supprimer un commentaire
+
+    Les vérifications : 
+        - Vérifier que le job existe
+        - le user qui essaie de supp un temoignage c celui qui la pub
+
+*/
+exports.deleteATestimonial = async (req, res) => {
+    try {
+        if ( req.user.role === 'user' && req.user.id != testimonial.id_user) {
+            return res.status(403).json({ message: 'Vous n avez pas l autorisation de supprimer ce témoignage.'});
+        }
+
+        const deleteATestimonial = await Testimonial.destroy({
+            where: { name: req.body.name }
+        });
+        
+        if (!deleteATestimonial) {
+            return res.status(404).json({ message: 'Testimonial non trouvé.' });
+        }
+
+        res.status(201).json({ message: 'Testimonial supprimé avec succès.' });
 
     } catch (error) {
         res.status(500).json({message: "Erreur lors du traitement des données."});
