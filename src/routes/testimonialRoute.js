@@ -11,7 +11,7 @@ router
     .post(testimonialController.createATestimonial)
     .get(testimonialController.getATestimonial)
     .put(testimonialController.putATestimonial)
-    // .delete(testimonialController.deleteAJob);
+    .delete(testimonialController.deleteATestimonial);
 
 
 
