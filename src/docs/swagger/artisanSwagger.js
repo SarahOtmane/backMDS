@@ -168,6 +168,8 @@
  *     responses:
  *       201:
  *         description: Compte artisan supprimé avec succès
+ *       403:
+ *         description: token manquant ou invalide
  *       404:
  *         description: artisan non trouvé
  *       500:
