@@ -119,19 +119,17 @@ exports.deleteATestimonial = async (req, res) => {
     try {
         const testimonial = await Testimonial.findByPk(req.params.id_testimonial);
 
-        if ( req.user.role === 'user' && req.user.id != testimonial.id_user) {
-            return res.status(403).json({ message: 'Vous n\'avez pas l\'autorisation de supprimer ce témoignage.'});
+        if((req.user.role === 'user' && req.user.id === testimonial.id_user) || req.user.role === 'admin'){
+            const deleteATestimonial = await Testimonial.destroy({where: { id: req.params.id_testimonial }});
+            
+            if (!deleteATestimonial) {
+                return res.status(404).json({ message: 'Testimonial non trouvé.' });
+            }
+    
+            res.status(201).json({ message: 'Testimonial supprimé avec succès.' });
         }
 
-        const deleteATestimonial = await Testimonial.destroy({
-            where: { id: req.params.id_testimonial }
-        });
-        
-        if (!deleteATestimonial) {
-            return res.status(404).json({ message: 'Testimonial non trouvé.' });
-        }
-
-        res.status(201).json({ message: 'Testimonial supprimé avec succès.' });
+        return res.status(403).json({ message: 'Vous n\'avez pas l\'autorisation de supprimer ce témoignage.'});
 
     } catch (error) {
         res.status(500).json({message: "Erreur lors du traitement des données."});
