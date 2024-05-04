@@ -133,6 +133,8 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/User'
+ *       403:
+ *         description: Token manquant ou invalide
  *       404:
  *         description: Utilisateur non trouvé
  *       500:
