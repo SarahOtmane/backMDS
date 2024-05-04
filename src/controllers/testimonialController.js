@@ -27,3 +27,30 @@ exports.createATestimonial = async (req, res) => {
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 };
+
+
+
+/**********************************************************
+            MÉTHODE POUR LISTER UN TEMOIGNAGE
+**********************************************************/
+/*
+    Fonction qui permet de lister un temoignage
+
+    Les vérifications : 
+        - Vérifier que le temoignage existe
+
+*/
+exports.getATestimonial = async (req, res) => {
+    try {
+        const Testimonial = await Testimonial.findOne({ where: { name: req.body.name } });
+
+        if (!Testimonial) {
+            return res.status(404).json({ message: 'Temoignage non trouvé.' });
+        }
+
+        res.status(201).json(Testimonial);
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
