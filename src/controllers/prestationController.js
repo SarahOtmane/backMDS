@@ -1,2 +1,28 @@
 const Prestation = require('../models/prestationModel');
 
+
+/**********************************************************
+            MÉTHODE POUR CREER UNE PRESTATION (ADMIN)
+**********************************************************/
+/*
+    Fonction qui permet à l'admin de créer une presta
+
+    Les vérifications : 
+        - la prestation en question existe pas en bdd
+
+*/
+const createAPrestation = async(req, res) =>{
+    try {
+        let presta = await Prestation.findOne({
+            where: {
+                categorie: req.body.categorie,
+                clothType: req.body.clothType,
+                reparationType: req.body.reparationType,
+                priceSuggested: req.body.priceSuggested
+            }
+        })
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+}
