@@ -191,7 +191,7 @@ exports.deleteAnArtisan = async (req, res) => {
 
 
 /************************************************************************
-            MÉTHODE POUR LISTER LES ARTISANS
+            MÉTHODE POUR LISTER TOUS LES ARTISANS EN BDD
 ************************************************************************/
 /*
     Fonction qui permet de lister tous les artisans
