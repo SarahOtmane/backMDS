@@ -1,4 +1,5 @@
 const Testimonial = require('../models/testimonialModel');
+const Artisan = require('../models/artisanModel');
 
 
 /**********************************************************
@@ -8,16 +9,25 @@ const Testimonial = require('../models/testimonialModel');
     Fonction qui permet à un user de créer un témoignage
 
     Les vérifications : 
-        - role !== admin
+        - l artisan en question existe en bdd
 
 */
 exports.createATestimonial = async (req, res) => {
     try {
-        if (req.user.role === 'admin') {
-            return res.status(401).json({ message: 'Vous ne pouvez pas créer un témoignage avec le rôle admin.'});
+
+        let artisan = await Artisan.findByPk(req.params.id_artisan);
+
+        if(!artisan){
+            return res.status(404).json({ message: 'Artisan non trouvé.' });
         }
 
-        let newTestimonial = await Testimonial.create(req.body);
+        let newTestimonial = await Testimonial.create({
+            name: req.body.name,
+            picture: req.body.picture,
+            stars: req.body.picture,
+            id_user: req.user.id,
+            id_artisan: req.params.id_artisan
+        });
 
         res.status(201).json({ 
             message: `Témoignage créé avec succès.` 
