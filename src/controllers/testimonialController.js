@@ -52,7 +52,7 @@ exports.createATestimonial = async (req, res) => {
 */
 exports.getATestimonial = async (req, res) => {
     try {
-        const Testimonial = await Testimonial.findOne({ where: { name: req.body.name } });
+        const Testimonial = await Testimonial.findOne({ where: { id: req.params.id_testimonial } });
 
         if (!Testimonial) {
             return res.status(404).json({ message: 'Temoignage non trouvé.' });
