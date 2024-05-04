@@ -10,7 +10,7 @@ router
     .all(jwtMiddleware.verifyToken)
     .post(testimonialController.createATestimonial)
     .get(testimonialController.getATestimonial)
-    // .put(testimonialController.putAJob)
+    .put(testimonialController.putATestimonial)
     // .delete(testimonialController.deleteAJob);
 
 
