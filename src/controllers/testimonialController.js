@@ -54,3 +54,41 @@ exports.getATestimonial = async (req, res) => {
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 };
+
+
+
+
+/**********************************************************
+            MÉTHODE POUR MODIFIER UN TEMOIGNAGE
+**********************************************************/
+/*
+    Fonction qui permet de modifier un temoignage
+
+    Les vérifications : 
+        - Vérifier que le temoignage existe
+        - role === admin
+
+*/
+exports.putATestimonial = async (req, res) => {
+    try {
+        const testimonial = await Testimonial.findOne({ where: { name: req.body.name } });
+
+        if(!testimonial){
+            return res.status(404).json({ message: 'Temoignage non trouvé.' });
+        }
+
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ message: 'Vous n êtes pas admin, vous n avez pas l autorisation.'});
+        }
+
+        await testimonial.update({ 
+            name: req.body.name,
+        });
+
+        
+        res.status(201).json({ message: 'Temoignage mis à jour avec succès.' });
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
