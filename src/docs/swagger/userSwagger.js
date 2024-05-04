@@ -90,7 +90,7 @@
  * @swagger
  * /users/login:
  *   post:
- *     summary: Connecter un utilisateur existant
+ *     summary: Se connecter un compte utilisateur 
  *     tags: [User]
  *     requestBody:
  *       required: true
