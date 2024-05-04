@@ -48,7 +48,7 @@ exports.createAJob = async (req, res) => {
 */
 exports.getAJob = async (req, res) => {
     try {
-        const job = await Job.findOne({ where: { name: req.body.name } });
+        const job = await Job.findOne({ where: { id: req.params.id } });
 
         if (!job) {
             return res.status(404).json({ message: 'Job non trouvé.' });
@@ -77,14 +77,14 @@ exports.getAJob = async (req, res) => {
 */
 exports.putAJob = async (req, res) => {
     try {
-        const job = await Job.findOne({ where: { name: req.body.name } });
+        const job = await Job.findOne({ where: { name: req.params.id } });
 
         if(!job){
             return res.status(404).json({ message: 'Job non trouvé.' });
         }
 
         if (req.user.role !== 'admin') {
-            return res.status(403).json({ message: 'Vous n êtes pas admin, vous n avez pas l autorisation.'});
+            return res.status(403).json({ message: 'Vous n\'êtes pas admin, vous n\'avez pas l\'autorisation.'});
         }
 
         await job.update({ 
@@ -115,11 +115,11 @@ exports.putAJob = async (req, res) => {
 exports.deleteAJob = async (req, res) => {
     try {
         if (req.user.role !== 'admin') {
-            return res.status(403).json({ message: 'Vous n êtes pas admin, vous n avez pas l autorisation.'});
+            return res.status(403).json({ message: 'Vous n\'êtes pas admin, vous n\'avez pas l\'autorisation.'});
         }
 
         const deleteJob = await Job.destroy({
-            where: { name: req.body.name }
+            where: { id: req.params.id }
         });
         
         if (!deleteJob) {
