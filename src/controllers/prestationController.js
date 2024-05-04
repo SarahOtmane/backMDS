@@ -26,3 +26,31 @@ exports.createAPrestation = async(req, res) =>{
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 }
+
+
+
+
+/**********************************************************
+            MÉTHODE POUR LISTER UNE PRESTATION
+**********************************************************/
+/*
+    Fonction qui permet de lister une prestation
+
+    Les vérifications : 
+        - Vérifier que la prestation existe
+
+*/
+exports.getAPrestation = async (req, res) => {
+    try {
+        const presta = await Prestation.findOne({ where: { id: req.params.id } });
+
+        if (!presta) {
+            return res.status(404).json({ message: 'Info non trouvé.' });
+        }
+
+        res.status(201).json(presta);
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
