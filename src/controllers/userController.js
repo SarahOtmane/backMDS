@@ -60,7 +60,7 @@ exports.loginAUser = async (req, res) => {
 
         if (user.password === req.body.password) {
             const userData = {
-                id_user: user.id,
+                id: user.id,
                 email: user.email,
                 role: user.role
             };
