@@ -121,16 +121,16 @@ exports.putAnInfo = async (req, res) => {
 */
 exports.deleteAnInfo = async (req, res) => {
     try {
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ message: 'Vous n êtes pas admin, vous n avez pas l autorisation.'});
+        }
+        
         const deletedInfo = await Info.destroy({
             where: { name: req.body.name }
         });
         
         if (!deletedInfo) {
             return res.status(404).json({ message: 'Information non trouvé.' });
-        }
-
-        if (req.user.role !== 'admin') {
-            return res.status(403).json({ message: 'Vous n êtes pas admin, vous n avez pas l autorisation.'});
         }
 
         res.status(201).json({ message: 'Information supprimée avec succès.' });
