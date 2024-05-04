@@ -6,19 +6,28 @@ const prestationController = require('../controllers/prestationController.js');
 
 router
     .route('/')
-    .all(jwtMiddleware.isAdmin)
-    .post(prestationController.createAPrestation)
     .get(prestationController.getAllPresta)
 
 router
     .route('/:id')
     .get(prestationController.getAPrestation)
 
+
+    
+/**********************************************************
+            ROUTES UNIQUEMENT POUR LES ADMINS
+**********************************************************/
+router
+    .route('/')
+    .all(jwtMiddleware.isAdmin)
+    .post(prestationController.createAPrestation)
+
 router
     .route('/:id')
     .all(jwtMiddleware.isAdmin)
     .put(prestationController.putAPresta)
     .delete(prestationController.deleteAPresta)
+
 
 
 module.exports = router;
