@@ -111,18 +111,20 @@ exports.putATestimonial = async (req, res) => {
     Fonction qui permet de supprimer un commentaire
 
     Les vérifications : 
-        - Vérifier que le job existe
-        - le user qui essaie de supp un temoignage c celui qui la pub
+        - Vérifier que le temoignage existe
+        - le user qui essaie de supp un temoignage c celui qui la pub ou admin
 
 */
 exports.deleteATestimonial = async (req, res) => {
     try {
+        const testimonial = await Testimonial.findByPk(req.params.id_testimonial);
+
         if ( req.user.role === 'user' && req.user.id != testimonial.id_user) {
-            return res.status(403).json({ message: 'Vous n avez pas l autorisation de supprimer ce témoignage.'});
+            return res.status(403).json({ message: 'Vous n\'avez pas l\'autorisation de supprimer ce témoignage.'});
         }
 
         const deleteATestimonial = await Testimonial.destroy({
-            where: { name: req.body.name }
+            where: { id: req.params.id_testimonial }
         });
         
         if (!deleteATestimonial) {
