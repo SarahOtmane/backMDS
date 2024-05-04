@@ -26,7 +26,7 @@ exports.createAJob = async (req, res) => {
         let newJob = await Job.create(req.body);
 
         res.status(201).json({ 
-            message: `Utilisateur créé avec succès. L'email : ${newJob.name}` 
+            message: `Job créé avec succès. Le nom : ${newInfo.name}` 
         });
     } 
     catch (error) {
@@ -37,7 +37,7 @@ exports.createAJob = async (req, res) => {
 
 
 /**********************************************************
-            MÉTHODE POUR LISTER UN JOB
+            MÉTHODE POUR RÉCUP LE NAME D'UN JOB
 **********************************************************/
 /*
     Fonction qui permet de lister un job
