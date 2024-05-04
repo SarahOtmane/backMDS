@@ -3,9 +3,9 @@ const functionsMiddleware = require('../middlewares/functionsMiddleware.js')
 
 
 
-/**********************************************************
+/************************************************************************
             MÉTHODE POUR CRER UN COMPTE ARTISAN
-**********************************************************/
+************************************************************************/
 /*
     Fonction qui permet à une personne de créer un compte artisan
 
@@ -46,9 +46,9 @@ exports.registerAnArtisan = async (req, res) => {
 
 
 
-/**********************************************************
-            MÉTHODE POUR CONNECTER UN ARTISAN
-**********************************************************/
+/************************************************************************
+            MÉTHODE POUR SE CONNECTER A UN COMPTE ARTISAN
+************************************************************************/
 /*
     Fonction qui permet à une personne de se connecter à son compte artisan
 
@@ -65,13 +65,10 @@ exports.loginAnArtisan = async (req, res) => {
             return res.status(404).json({ message: 'Artisan non trouvé.' });
         }
 
-        // const validPassword = await bcrypt.compare(req.body.password, user.password);
-
         if (artisan.password === req.body.password) {
             const artisanData = {
                 id_artisan: artisan.id,
-                email: artisan.email,
-                role: artisan.role
+                email: artisan.email
             };
           
             const token = jwt.sign(artisanData, process.env.JWT_KEY, { expiresIn: "30d" });
@@ -91,9 +88,9 @@ exports.loginAnArtisan = async (req, res) => {
 
 
 
-/**********************************************************
+/************************************************************************
             MÉTHODE POUR LISTER UN ARTISAN
-**********************************************************/
+************************************************************************/
 /*
     Fonction qui permet de lister les informations d'un artisan
 
@@ -120,9 +117,9 @@ exports.getAnArtisan = async (req, res) => {
 
 
 
-/**********************************************************
+/************************************************************************
             MÉTHODE POUR MODIFIER UN ARTISAN
-**********************************************************/
+************************************************************************/
 /*
     Fonction qui permet de modifier les info d'un artisan
 
@@ -165,9 +162,9 @@ exports.putAnArtisan = async (req, res) => {
 
 
 
-/**********************************************************
+/************************************************************************
             MÉTHODE POUR SUPPRIMER UN ARTISAN
-**********************************************************/
+************************************************************************/
 /*
     Fonction qui permet de supprimer un compte artisan
 
@@ -195,9 +192,9 @@ exports.deleteAnArtisan = async (req, res) => {
 
 
 
-/**********************************************************
+/************************************************************************
             MÉTHODE POUR LISTER LES ARTISANS
-**********************************************************/
+************************************************************************/
 /*
     Fonction qui permet de lister tous les artisans
 
