@@ -19,4 +19,14 @@ router
 
 
 
+
+/**********************************************************
+            ROUTES UNIQUEMENT POUR LES ADMINS
+**********************************************************/ 
+
+router
+    .route('/:id_testimonial')
+    .all(jwtMiddleware.isAdmin)
+    .delete(testimonialController.deleteATestimonial);
+
 module.exports = router;
