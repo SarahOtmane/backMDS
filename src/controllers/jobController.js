@@ -98,3 +98,37 @@ exports.putAJob = async (req, res) => {
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 };
+
+
+
+/**********************************************************
+            MÉTHODE POUR SUPPRIMER UN JOB
+**********************************************************/
+/*
+    Fonction qui permet de supprimer un job
+
+    Les vérifications : 
+        - Vérifier que le job existe
+        - role === admin
+
+*/
+exports.deleteAJob = async (req, res) => {
+    try {
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ message: 'Vous n êtes pas admin, vous n avez pas l autorisation.'});
+        }
+
+        const deleteJob = await Job.destroy({
+            where: { name: req.body.name }
+        });
+        
+        if (!deleteJob) {
+            return res.status(404).json({ message: 'Job non trouvé.' });
+        }
+
+        res.status(201).json({ message: 'Job supprimé avec succès.' });
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
