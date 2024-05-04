@@ -11,7 +11,7 @@ const Prestation = require('../models/prestationModel');
         - la prestation en question existe pas en bdd
 
 */
-const createAPrestation = async(req, res) =>{
+exports.createAPrestation = async(req, res) =>{
     try {
         let presta = await Prestation.findOne({
             where: {
