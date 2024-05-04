@@ -2,7 +2,7 @@ const Info = require('../models/infoModel.js');
 
 
 /**********************************************************
-            MÉTHODE POUR CREER DES INFO
+            MÉTHODE POUR CREER UNE INFO
 **********************************************************/
 /*
     Fonction qui permet à l'admin de créer une info
@@ -134,6 +134,39 @@ exports.deleteAnInfo = async (req, res) => {
         }
 
         res.status(201).json({ message: 'Information supprimée avec succès.' });
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
+
+
+
+
+/**********************************************************
+            MÉTHODE POUR LISTER TOUTES LES INFO
+**********************************************************/
+/*
+    Fonction qui permet de lister toutes les info
+
+    Les vérifications : 
+        - Vérifier que les info existent
+        - role === admin
+
+*/
+exports.getAllInfo = async (req, res) => {
+    try {
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ message: 'Vous n êtes pas admin, vous n avez pas l autorisation.'});
+        }
+        
+        const infos = await Info.find();
+        
+        if (!infos) {
+            return res.status(404).json({ message: 'Auncune information non trouvé.' });
+        }
+
+        res.status(201).json(infos);
 
     } catch (error) {
         res.status(500).json({message: "Erreur lors du traitement des données."});
