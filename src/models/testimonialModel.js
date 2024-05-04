@@ -29,6 +29,10 @@ const Testimonial = sequelize.define('Testimonial', {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
+    id_artisan: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
 }, {
     tableName: 'testimonials',
     timestamps: true,
