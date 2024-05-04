@@ -158,7 +158,7 @@ exports.getAllInfo = async (req, res) => {
         const infos = await Info.find();
         
         if (!infos) {
-            return res.status(404).json({ message: 'Auncune information non trouvé.' });
+            return res.status(404).json({ message: 'Auncune information trouvée.' });
         }
 
         res.status(201).json(infos);
