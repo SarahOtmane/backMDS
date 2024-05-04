@@ -14,19 +14,13 @@ router
 router
     .route('/:id_testimonial')
     .get(testimonialController.getATestimonial)
-    .put(jwtMiddleware.verifyToken, testimonialController.putATestimonial)
-    .delete(jwtMiddleware.verifyToken, testimonialController.deleteATestimonial);
 
-
-
-
-/**********************************************************
-            ROUTES UNIQUEMENT POUR LES ADMINS
-**********************************************************/ 
 
 router
     .route('/:id_testimonial')
-    .all(jwtMiddleware.isAdmin)
+    .all(jwtMiddleware.verifyToken)
+    .put(testimonialController.putATestimonial)
     .delete(testimonialController.deleteATestimonial);
+
 
 module.exports = router;
