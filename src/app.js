@@ -47,6 +47,9 @@ app.use('/jobs', jobRoute);
 const testimonialRoute = require('./routes/testimonialRoute.js'); 
 app.use('/testimonials', testimonialRoute);
 
+const prestationRoute = require('./routes/prestationRoute.js');
+app.use('/prestations', prestationRoute);
+
 // Démarrage du serveur
 app.listen(port, () => {
     console.log(`L'application écoute sur le port ${port}`);
