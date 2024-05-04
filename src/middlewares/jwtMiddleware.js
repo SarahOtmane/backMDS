@@ -56,3 +56,37 @@ exports.verifyTokenArtisan = async(req, res, next) =>{
         res.status(403).json({message: "Accès interdit: token invalide"});
     }
 }
+
+
+
+
+// Fonction pour vérifier si l'utilsateur est admin
+exports.isAdmin = async (req, res, next) => {
+    try {
+        let token = req.headers['authorization'];
+        if (token != undefined) {
+            const payload = await new Promise((resolve, reject) => {
+                jwt.verify(token, process.env.JWT_KEY, (error, decoded) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(decoded);
+                    }
+                })
+            })
+
+            req.user = payload;
+            // Vérification du rôle admin
+            if (payload && payload.role && payload.role === 'admin') {
+                next(); // Si l'utilisateur est admin, continuer
+            } else {
+                res.status(403).json({ message: "Accès interdit: rôle administrateur requis" });
+            }
+        } else {
+            res.status(403).json({ message: "Accès interdit: token manquant" });
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(403).json({ message: "Accès interdit: token invalide" });
+    }
+}
