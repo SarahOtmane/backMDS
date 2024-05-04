@@ -121,3 +121,31 @@ exports.deleteAPresta = async (req, res) => {
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 };
+
+
+
+
+/**********************************************************
+            MÉTHODE POUR LISTER TOUTES LES PRESTA
+**********************************************************/
+/*
+    Fonction qui permet de lister toutes les presta
+
+    Les vérifications : 
+        - Vérifier que les presta existent
+
+*/
+exports.getAllPresta = async (req, res) => {
+    try {
+        const prestas = await Prestation.find();
+        
+        if (!prestas) {
+            return res.status(404).json({ message: 'Auncune prestation trouvée.' });
+        }
+
+        res.status(201).json(prestas);
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
