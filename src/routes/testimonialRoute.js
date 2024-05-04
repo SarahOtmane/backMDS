@@ -6,9 +6,13 @@ const jwtMiddleware = require('../middlewares/jwtMiddleware');
 
 
 router
-    .route('/')
+    .route('/:id_artisan')
     .all(jwtMiddleware.verifyToken)
     .post(testimonialController.createATestimonial)
+
+
+router
+    .route('/:id_testimonial')
     .get(testimonialController.getATestimonial)
     .put(testimonialController.putATestimonial)
     .delete(testimonialController.deleteATestimonial);
