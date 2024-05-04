@@ -90,3 +90,34 @@ exports.putAPresta = async (req, res) => {
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 };
+
+
+
+
+/**********************************************************
+            MÉTHODE POUR SUPPRIMER UNE PRESTA (ADMIN)
+**********************************************************/
+/*
+    Fonction qui permet de supprimer une presta
+
+    Les vérifications : 
+        - Vérifier que la presta existe
+
+*/
+exports.deleteAPresta = async (req, res) => {
+    try {
+        
+        const deletePresta = await Presta.destroy({
+            where: { id: req.params.id }
+        });
+        
+        if (!deletePresta) {
+            return res.status(404).json({ message: 'Prestation non trouvé.' });
+        }
+
+        res.status(201).json({ message: 'Prestation supprimée avec succès.' });
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
