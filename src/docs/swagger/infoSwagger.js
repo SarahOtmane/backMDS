@@ -58,12 +58,19 @@
 
 /**
  * @swagger
- * /infos/:id:
+ * /infos/{id}:
  *   get:
  *     summary: Récupérer une info
  *     tags: [Info]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID de l'info à récupérer
  *     responses:
  *       201:
  *         description: Information récupérée avec succès
@@ -78,3 +85,6 @@
  *       500:
  *         description: Erreur interne du serveur
  */
+
+
+
