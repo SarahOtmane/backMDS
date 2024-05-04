@@ -14,7 +14,7 @@ router
     
 
 router
-    .route('/:name')
+    .route('/:id')
     .get(infoController.getAnInfo)
     .all(jwtMiddleware.verifyTokenUser)
     .put(infoController.putAnInfo)
