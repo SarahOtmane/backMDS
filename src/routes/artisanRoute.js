@@ -14,7 +14,13 @@ router
 
 router
     .route('/')
-    .all(jwtMiddleware.verifyToken)
+    .all(jwtMiddleware.verifyTokenArtisan)
     .get(artisanController.getAnArtisan)
     .put(artisanController.putAnArtisan)
     .delete(artisanController.deleteAnArtisan)
+
+router
+    .route('/all')
+    .get(artisanController.getAllArtisans)
+
+module.exports = router;
