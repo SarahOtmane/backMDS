@@ -151,15 +151,10 @@ exports.deleteAnInfo = async (req, res) => {
 
     Les vérifications : 
         - Vérifier que les info existent
-        - role === admin
 
 */
 exports.getAllInfo = async (req, res) => {
     try {
-        if (req.user.role !== 'admin') {
-            return res.status(403).json({ message: 'Vous n êtes pas admin, vous n avez pas l autorisation.'});
-        }
-        
         const infos = await Info.find();
         
         if (!infos) {
