@@ -70,7 +70,7 @@
  * /artisans/register:
  *   post:
  *     summary: Enregistrer un nouvel artisan
- *     tags: [artisan]
+ *     tags: [Artisan]
  *     requestBody:
  *       required: true
  *       content:
@@ -81,7 +81,7 @@
  *       201:
  *         description: Artisan enregistré avec succès
  *       401:
- *         description: L'artisan avec cet email existe déjà
+ *         description: L'artisan avec cet email existe déjà / mauvais format de numero ou email
  *       500:
  *         description: Erreur interne du serveur
  */
