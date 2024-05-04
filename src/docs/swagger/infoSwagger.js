@@ -53,3 +53,28 @@
  *       500:
  *         description: Erreur interne du serveur
  */
+
+
+
+/**
+ * @swagger
+ * /infos/:id:
+ *   get:
+ *     summary: Récupérer une info
+ *     tags: [Info]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       201:
+ *         description: Information récupérée avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Info'
+ *       403:
+ *         description: token manquant ou invalide
+ *       404:
+ *         description: Aucune info trouvée
+ *       500:
+ *         description: Erreur interne du serveur
+ */
