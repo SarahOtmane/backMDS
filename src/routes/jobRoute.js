@@ -11,9 +11,9 @@ router
     .post(jobController.createAJob)
 
 
-    
+
 router
-    .route('/:name')
+    .route('/:id')
     .get(jobController.getAJob)
     .all(jwtMiddleware.verifyToken)
     .put(jobController.putAJob)
