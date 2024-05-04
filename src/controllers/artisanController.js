@@ -118,10 +118,10 @@ exports.getAnArtisan = async (req, res) => {
 
 
 /************************************************************************
-            MÉTHODE POUR MODIFIER UN ARTISAN
+            MÉTHODE POUR MODIFIER LES INFO DE SON COMPTE ARTISAN
 ************************************************************************/
 /*
-    Fonction qui permet de modifier les info d'un artisan
+    Fonction qui permet de modifier les info de son compte artisan
 
     Les vérifications : 
         - Vérifier que l'artisan existe
@@ -129,13 +129,11 @@ exports.getAnArtisan = async (req, res) => {
 */
 exports.putAnArtisan = async (req, res) => {
     try {
-        const artisan = await Artisan.findOne({ where: { email: req.body.email } });
+        const artisan = await Artisan.findOne({ where: { id: req.artisan.id} });
 
         if(!artisan){
             return res.status(404).json({ message: 'Artisan non trouvé.' });
         }
-
-        // req.body.password = await bcrypt.hash(req.body.password, 10);
 
         await artisan.update({ 
             lastname: req.body.lastname,
