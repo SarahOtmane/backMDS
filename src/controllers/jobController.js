@@ -60,3 +60,41 @@ exports.getAJob = async (req, res) => {
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 };
+
+
+
+
+/**********************************************************
+            MÉTHODE POUR MODIFIER UN JOB
+**********************************************************/
+/*
+    Fonction qui permet de modifier un job
+
+    Les vérifications : 
+        - Vérifier que le job existe
+        - role === admin
+
+*/
+exports.putAJob = async (req, res) => {
+    try {
+        const job = await Job.findOne({ where: { name: req.body.name } });
+
+        if(!job){
+            return res.status(404).json({ message: 'Job non trouvé.' });
+        }
+
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ message: 'Vous n êtes pas admin, vous n avez pas l autorisation.'});
+        }
+
+        await job.update({ 
+            name: req.body.name,
+        });
+
+        
+        res.status(201).json({ message: 'Job mis à jour avec succès.' });
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
