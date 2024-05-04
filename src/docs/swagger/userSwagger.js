@@ -153,6 +153,8 @@
  *     responses:
  *       201:
  *         description: Informations de l'utilisateur mises à jour avec succès
+ *       403:
+ *         description: Token manquant ou invalide
  *       404:
  *         description: Utilisateur non trouvé
  *       500:
