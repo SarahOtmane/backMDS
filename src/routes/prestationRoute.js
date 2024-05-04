@@ -8,6 +8,7 @@ router
     .route('/')
     .all(jwtMiddleware.isAdmin)
     .post(prestationController.createAPrestation)
+    .get(prestationController.getAllPresta)
 
 router
     .route('/:id')
