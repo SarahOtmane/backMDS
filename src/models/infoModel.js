@@ -17,7 +17,7 @@ const Info = sequelize.define('Info', {
         allowNull: false,
         unique: true
     },
-    name: {
+    content: {
         type: DataTypes.STRING,
         allowNull: false,
     },
