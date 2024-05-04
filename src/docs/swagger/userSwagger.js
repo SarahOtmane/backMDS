@@ -167,6 +167,8 @@
  *     responses:
  *       201:
  *         description: Compte utilisateur supprimé avec succès
+ *       403:
+ *         description: Token manquant ou invalide
  *       404:
  *         description: Utilisateur non trouvé
  *       500:
