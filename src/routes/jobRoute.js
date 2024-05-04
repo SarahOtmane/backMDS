@@ -8,16 +8,28 @@ const jwtMiddleware = require('../middlewares/jwtMiddleware');
 router
     .route('/')
     .get(jobController.getAllJobs)
-    .post(jwtMiddleware.verifyToken, jobController.createAJob)
 
 
 
 router
     .route('/:id')
     .get(jobController.getAJob)
-    .put(jwtMiddleware.verifyToken, jobController.putAJob)
-    .delete(jwtMiddleware.verifyToken, jobController.deleteAJob);
 
 
+/**********************************************************
+            ROUTES UNIQUEMENT POUR LES ADMINS
+**********************************************************/  
+
+router
+    .route('/')
+    .post(jwtMiddleware.isAdmin, jobController.createAJob)
+
+
+
+router
+    .route('/:id')
+    .all(jwtMiddleware.isAdmin)
+    .put(jobController.putAJob)
+    .delete(jobController.deleteAJob);
 
 module.exports = router;
