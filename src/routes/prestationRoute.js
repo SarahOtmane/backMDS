@@ -13,5 +13,10 @@ router
     .route('/:id')
     .get(prestationController.getAPrestation)
 
+router
+    .route('/:id')
+    .all(jwtMiddleware.isAdmin)
+    .put(prestationController.putAPresta)
+
 
 module.exports = router;
