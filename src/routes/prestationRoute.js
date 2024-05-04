@@ -5,8 +5,13 @@ const prestationController = require('../controllers/prestationController.js');
 
 
 router
+    .route('/')
     .all(jwtMiddleware.isAdmin)
     .post(prestationController.createAPrestation)
+
+router
+    .route('/:id')
+    .get(prestationController.getAPrestation)
 
 
 module.exports = router;
