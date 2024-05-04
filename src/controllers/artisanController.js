@@ -11,7 +11,8 @@ const functionsMiddleware = require('../middlewares/functionsMiddleware.js')
 
     Les vérifications : 
         - Vérifier que l'email n'existe pas dans la base de donnée
-        - Vérifier que le role != admin
+        - Vérifier que l'email est au bon format
+        - Verifier que le num est au bon format
 
 */
 exports.registerAnArtisan = async (req, res) => {
