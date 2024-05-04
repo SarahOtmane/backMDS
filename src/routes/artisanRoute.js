@@ -23,8 +23,5 @@ router
     .route('/allArtisan')
     .get(artisanController.getAllArtisans)
 
-// router
-//     .route('/allArtisan')
-//     .get(artisanController.getAllArtisans)
 
 module.exports = router;
