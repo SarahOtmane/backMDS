@@ -26,7 +26,7 @@ exports.createAnInfo = async (req, res) => {
         let newInfo = await Info.create(req.body);
 
         res.status(201).json({ 
-            message: `Utilisateur créé avec succès. L'email : ${newInfo.name}` 
+            message: `Info créé avec succès. Le nom : ${newInfo.name}` 
         });
     } 
     catch (error) {
