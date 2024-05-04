@@ -1,8 +1,10 @@
 const Artisan = require('../models/artisanModel.js');
 const functionsMiddleware = require('../middlewares/functionsMiddleware.js')
 
+
+
 /**********************************************************
-            MÉTHODE POUR ENREGISTRER UN ARTISAN
+            MÉTHODE POUR CRER UN COMPTE ARTISAN
 **********************************************************/
 /*
     Fonction qui permet à une personne de créer un compte artisan
@@ -15,8 +17,13 @@ const functionsMiddleware = require('../middlewares/functionsMiddleware.js')
 exports.registerAnArtisan = async (req, res) => {
     try {
         const existingEmail = await Artisan.findOne({ where: { email: req.body.email } });
+
         if (existingEmail) {
             return res.status(401).json({ message: 'Cet email existe déjà.' });
+        }
+
+        if (!functionsMiddleware.verifyEmail(req.body.email)) {
+            return res.status(401).json({ message: 'L\'email n\'est pas au bon format'});
         }
 
         if (!functionsMiddleware.verifyNumberPhone(req.body.mobile)) {
@@ -95,7 +102,7 @@ exports.loginAnArtisan = async (req, res) => {
 */
 exports.getAnArtisan = async (req, res) => {
     try {
-        const artisan = await Artisan.findOne({ where: { email: req.body.email } });
+        const artisan = await Artisan.findOne({ where: { id: req.body.email } });
 
         if (!artisan) {
             return res.status(404).json({ message: 'Utilisateur non trouvé.' });
