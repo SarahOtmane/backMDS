@@ -88,3 +88,35 @@
 
 
 
+/**
+ * @swagger
+ * /infos:
+ *   post:
+ *     summary: Enregistrer un info en BDD
+ *     tags: [Artisan]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               content:
+ *                 type: string
+ *             required:
+ *               - name
+ *               - content
+ *     responses:
+ *       200:
+ *         description: info crée avec succès
+ *       401:
+ *         description: Info existe déja en BDD
+ *       403:
+ *         description: Token manquant ou invalide / Vous n'etes pas un admin
+ *       500:
+ *         description: Erreur interne du serveur
+ */
