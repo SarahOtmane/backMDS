@@ -91,7 +91,7 @@
  * @swagger
  * /artisans/login:
  *   post:
- *     summary: Connecter un artisan existant
+ *     summary: Se connecter à un compte artisan
  *     tags: [Artisan]
  *     requestBody:
  *       required: true
