@@ -87,8 +87,8 @@ exports.putATestimonial = async (req, res) => {
             return res.status(404).json({ message: 'Temoignage non trouvé.' });
         }
 
-        if ( req.user.role === 'user' && req.user.id != testimonial.id_user) {
-            return res.status(403).json({ message: 'Vous n avez pas l autorisation de modifier ce témoignage.'});
+        if (req.user.id != testimonial.id_user) {
+            return res.status(403).json({ message: 'Vous n\'avez pas l\'autorisation de modifier ce témoignage.'});
         }
 
         await testimonial.update({ 
