@@ -9,7 +9,13 @@ router
     .route('/')
     .all(jwtMiddleware.verifyToken)
     .post(jobController.createAJob)
+
+
+    
+router
+    .route('/:name')
     .get(jobController.getAJob)
+    .all(jwtMiddleware.verifyToken)
     .put(jobController.putAJob)
     .delete(jobController.deleteAJob);
 
