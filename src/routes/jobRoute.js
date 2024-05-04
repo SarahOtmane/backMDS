@@ -7,17 +7,16 @@ const jwtMiddleware = require('../middlewares/jwtMiddleware');
 
 router
     .route('/')
-    .all(jwtMiddleware.verifyToken)
-    .post(jobController.createAJob)
+    .get(jobController.getAllJobs)
+    .post(jwtMiddleware.verifyToken, jobController.createAJob)
 
 
 
 router
     .route('/:id')
     .get(jobController.getAJob)
-    .all(jwtMiddleware.verifyToken)
-    .put(jobController.putAJob)
-    .delete(jobController.deleteAJob);
+    .put(jwtMiddleware.verifyToken, jobController.putAJob)
+    .delete(jwtMiddleware.verifyToken, jobController.deleteAJob);
 
 
 
