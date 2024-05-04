@@ -17,6 +17,7 @@ router
     .route('/:id')
     .all(jwtMiddleware.isAdmin)
     .put(prestationController.putAPresta)
+    .delete(prestationController.deleteAPresta)
 
 
 module.exports = router;
