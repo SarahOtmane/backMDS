@@ -81,7 +81,7 @@ exports.getATestimonial = async (req, res) => {
 */
 exports.putATestimonial = async (req, res) => {
     try {
-        const testimonial = await Testimonial.findOne({ where: { name: req.body.name } });
+        const testimonial = await Testimonial.findOne({ where: { id: req.params.id } });
 
         if(!testimonial){
             return res.status(404).json({ message: 'Temoignage non trouvé.' });
