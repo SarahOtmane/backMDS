@@ -2,14 +2,13 @@ const Info = require('../models/infoModel.js');
 
 
 /**********************************************************
-            MÉTHODE POUR CREER UNE INFO
+            MÉTHODE POUR CREER UNE INFO (ADMIN)
 **********************************************************/
 /*
     Fonction qui permet à l'admin de créer une info
 
     Les vérifications : 
         - l existance de l info
-        - role === admin
 
 */
 exports.createAnInfo = async (req, res) => {
@@ -17,10 +16,6 @@ exports.createAnInfo = async (req, res) => {
         const existingInfo = await Info.findOne({ where: { name: req.body.name } });
         if (existingInfo) {
             return res.status(401).json({ message: 'Cette info existe déjà.' });
-        }
-
-        if (req.user.role !== 'admin') {
-            return res.status(403).json({ message: 'Vous n êtes pas admin, vous n avez pas l autorisation.'});
         }
 
         let newInfo = await Info.create(req.body);
@@ -70,14 +65,13 @@ exports.getAnInfo = async (req, res) => {
 
 
 /**********************************************************
-            MÉTHODE POUR MODIFIER UNE INFO
+            MÉTHODE POUR MODIFIER UNE INFO (ADMIN)
 **********************************************************/
 /*
     Fonction qui permet de modifier une info
 
     Les vérifications : 
         - Vérifier que l'info existe
-        - role === admin
 
 */
 exports.putAnInfo = async (req, res) => {
@@ -86,10 +80,6 @@ exports.putAnInfo = async (req, res) => {
 
         if(!info){
             return res.status(404).json({ message: 'Information non trouvé.' });
-        }
-
-        if (req.user.role !== 'admin') {
-            return res.status(403).json({ message: 'Vous n êtes pas admin, vous n avez pas l autorisation.'});
         }
 
         await info.update({ 
@@ -109,21 +99,17 @@ exports.putAnInfo = async (req, res) => {
 
 
 /**********************************************************
-            MÉTHODE POUR SUPPRIMER UNE INFO
+            MÉTHODE POUR SUPPRIMER UNE INFO (ADMIN)
 **********************************************************/
 /*
     Fonction qui permet de supprimer une info
 
     Les vérifications : 
         - Vérifier que l'info existe
-        - role === admin
 
 */
 exports.deleteAnInfo = async (req, res) => {
     try {
-        if (req.user.role !== 'admin') {
-            return res.status(403).json({ message: 'Vous n êtes pas admin, vous n avez pas l autorisation.'});
-        }
         
         const deletedInfo = await Info.destroy({
             where: { id: req.params.id }
