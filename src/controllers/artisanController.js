@@ -109,6 +109,9 @@ exports.getAnArtisan = async (req, res) => {
 };
 
 
+
+
+
 /**********************************************************
             MÉTHODE POUR MODIFIER UN ARTISAN
 **********************************************************/
@@ -151,6 +154,9 @@ exports.putAnArtisan = async (req, res) => {
 };
 
 
+
+
+
 /**********************************************************
             MÉTHODE POUR SUPPRIMER UN ARTISAN
 **********************************************************/
@@ -172,6 +178,34 @@ exports.deleteAnArtisan = async (req, res) => {
         }
 
         res.status(201).json({ message: 'Artisan supprimé avec succès.' });
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
+
+
+
+
+/**********************************************************
+            MÉTHODE POUR LISTER LES ARTISANS
+**********************************************************/
+/*
+    Fonction qui permet de lister tous les artisans
+
+    Les vérifications : 
+        - Vérifier que les artisans existent
+
+*/
+exports.getAllArtisans = async (req, res) => {
+    try {
+        const artisans = await Artisan.findAll();
+        
+        if (!artisans) {
+            return res.status(404).json({ message: 'Aucun artisans trouvé.' });
+        }
+
+        res.status(201).json(artisans);
 
     } catch (error) {
         res.status(500).json({message: "Erreur lors du traitement des données."});
