@@ -7,18 +7,16 @@ const jwtMiddleware = require('../middlewares/jwtMiddleware');
 
 router
     .route('/')
-    .all(jwtMiddleware.verifyTokenUser)
     .get(infoController.getAllInfo)
-    .post(infoController.createAnInfo)
+    .post(jwtMiddleware.verifyTokenUser, infoController.createAnInfo)
     
     
 
 router
     .route('/:id')
     .get(infoController.getAnInfo)
-    .all(jwtMiddleware.verifyTokenUser)
-    .put(infoController.putAnInfo)
-    .delete(infoController.deleteAnInfo);
+    .put(jwtMiddleware.verifyTokenUser, infoController.putAnInfo)
+    .delete(jwtMiddleware.verifyTokenUser, infoController.deleteAnInfo);
 
 
 module.exports = router;
