@@ -11,7 +11,7 @@ router
     .post(jobController.createAJob)
     .get(jobController.getAJob)
     .put(jobController.putAJob)
-    // .delete(infoController.deleteAnInfo);
+    .delete(jobController.deleteAJob);
 
 
 
