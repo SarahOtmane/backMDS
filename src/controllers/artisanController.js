@@ -161,10 +161,10 @@ exports.putAnArtisan = async (req, res) => {
 
 
 /************************************************************************
-            MÉTHODE POUR SUPPRIMER UN ARTISAN
+            MÉTHODE POUR SUPPRIMER SON COMPTE ARTISAN
 ************************************************************************/
 /*
-    Fonction qui permet de supprimer un compte artisan
+    Fonction qui permet de supprimer son compte artisan
 
     Les vérifications : 
         - Vérifier que l'artisan existe
@@ -173,7 +173,7 @@ exports.putAnArtisan = async (req, res) => {
 exports.deleteAnArtisan = async (req, res) => {
     try {
         const deletedArtisan = await Artisan.destroy({
-            where: { email: req.user.email }
+            where: { id: req.artisan.id }
         });
         
         if (!deletedArtisan) {
