@@ -13,18 +13,22 @@
  *     Artisan:
  *       type: object
  *       required:
+ *         - id
  *         - firstname
  *         - lastname
  *         - email
  *         - password
  *         - mobile
  *         - acceptNewOrder
- *         - id_place
+ *         - streetAdress
+ *         - city
+ *         - country
+ *         - postalCode
  *         - id_job
  *       properties:
- *         id_place:
+ *         id:
  *           type: integer
- *           description: Clé étrangère vers la table places(lieux de travail de l'artisan)
+ *           description: ID de l'artisan
  *         firstname:
  *           type: string
  *           description: Prénom de l'artisan
@@ -43,6 +47,18 @@
  *         acceptNewOrder:
  *          type: boolean
  *          description: Est ce que l'artisan accepte de nouvelles réparations
+ *         streetAdress:
+ *           type: string
+ *           description: Numéro de la rue de l'artisan
+ *         city:
+ *           type: string
+ *           description: Nom de la ville
+ *         country:
+ *          type: string
+ *          description: Pays de l'artisan
+ *         postalCode:
+ *          type: integer
+ *          description: Code postal
  *         id_job
  *          type: integer
  *          description: Clé étrangère vers la table jobs
