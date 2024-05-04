@@ -67,7 +67,7 @@ exports.loginAnArtisan = async (req, res) => {
 
         if (artisan.password === req.body.password) {
             const artisanData = {
-                id_artisan: artisan.id,
+                id: artisan.id,
                 email: artisan.email
             };
           
@@ -89,10 +89,10 @@ exports.loginAnArtisan = async (req, res) => {
 
 
 /************************************************************************
-            MÉTHODE POUR LISTER UN ARTISAN
+            MÉTHODE POUR LISTER LES INFO DU COMPTE ARTISAN CONNECTE
 ************************************************************************/
 /*
-    Fonction qui permet de lister les informations d'un artisan
+    Fonction qui permet de lister les informations du compte connecté
 
     Les vérifications : 
         - Vérifier que l'artisan existe
@@ -100,7 +100,7 @@ exports.loginAnArtisan = async (req, res) => {
 */
 exports.getAnArtisan = async (req, res) => {
     try {
-        const artisan = await Artisan.findOne({ where: { id: req.body.email } });
+        const artisan = await Artisan.findOne({ where: { id: req.artisan.id} });
 
         if (!artisan) {
             return res.status(404).json({ message: 'Utilisateur non trouvé.' });
