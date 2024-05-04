@@ -132,3 +132,33 @@ exports.deleteAJob = async (req, res) => {
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 };
+
+
+
+
+
+/**********************************************************
+            MÉTHODE POUR LISTER TOUS LES JOBS
+**********************************************************/
+/*
+    Fonction qui permet de lister tous les jobs
+
+    Les vérifications : 
+        - Vérifier que les jobs existent
+
+*/
+exports.getAllJobs = async (req, res) => {
+    try {
+        
+        const jobs = await Job.find();
+        
+        if (!jobs) {
+            return res.status(404).json({ message: 'Auncun job trouvé.' });
+        }
+
+        res.status(201).json(jobs);
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
