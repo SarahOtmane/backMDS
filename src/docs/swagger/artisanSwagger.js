@@ -154,6 +154,8 @@
  *     responses:
  *       201:
  *         description: Informations de l'artisan mises à jour avec succès
+ *       403:
+ *         description: token manquant ou invalide
  *       404:
  *         description: artisan non trouvé
  *       500:
