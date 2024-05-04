@@ -2,14 +2,13 @@ const Job = require('../models/jobModel');
 
 
 /**********************************************************
-            MÉTHODE POUR CREER UN JOB
+            MÉTHODE POUR CREER UN JOB (ADMIN)
 **********************************************************/
 /*
     Fonction qui permet à l'admin de créer un job
 
     Les vérifications : 
         - l existance du job
-        - role === admin
 
 */
 exports.createAJob = async (req, res) => {
@@ -17,10 +16,6 @@ exports.createAJob = async (req, res) => {
         const existingJob = await Job.findOne({ where: { name: req.body.name } });
         if (existingJob) {
             return res.status(401).json({ message: 'Ce job existe déjà.' });
-        }
-
-        if (req.user.role !== 'admin') {
-            return res.status(403).json({ message: 'Vous n êtes pas admin, vous n avez pas l autorisation.'});
         }
 
         let newJob = await Job.create(req.body);
@@ -65,14 +60,13 @@ exports.getAJob = async (req, res) => {
 
 
 /**********************************************************
-            MÉTHODE POUR MODIFIER UN JOB
+            MÉTHODE POUR MODIFIER UN JOB (ADMIN)
 **********************************************************/
 /*
     Fonction qui permet de modifier un job
 
     Les vérifications : 
         - Vérifier que le job existe
-        - role === admin
 
 */
 exports.putAJob = async (req, res) => {
@@ -81,10 +75,6 @@ exports.putAJob = async (req, res) => {
 
         if(!job){
             return res.status(404).json({ message: 'Job non trouvé.' });
-        }
-
-        if (req.user.role !== 'admin') {
-            return res.status(403).json({ message: 'Vous n\'êtes pas admin, vous n\'avez pas l\'autorisation.'});
         }
 
         await job.update({ 
@@ -102,21 +92,17 @@ exports.putAJob = async (req, res) => {
 
 
 /**********************************************************
-            MÉTHODE POUR SUPPRIMER UN JOB
+            MÉTHODE POUR SUPPRIMER UN JOB (ADMIN)
 **********************************************************/
 /*
     Fonction qui permet de supprimer un job
 
     Les vérifications : 
         - Vérifier que le job existe
-        - role === admin
 
 */
 exports.deleteAJob = async (req, res) => {
     try {
-        if (req.user.role !== 'admin') {
-            return res.status(403).json({ message: 'Vous n\'êtes pas admin, vous n\'avez pas l\'autorisation.'});
-        }
 
         const deleteJob = await Job.destroy({
             where: { id: req.params.id }
