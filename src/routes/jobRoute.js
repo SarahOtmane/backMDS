@@ -10,7 +10,7 @@ router
     .all(jwtMiddleware.verifyToken)
     .post(jobController.createAJob)
     .get(jobController.getAJob)
-    // .put(infoController.putAnInfo)
+    .put(jobController.putAJob)
     // .delete(infoController.deleteAnInfo);
 
 
