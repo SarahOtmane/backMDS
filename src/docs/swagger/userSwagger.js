@@ -16,20 +16,51 @@
  *         - email
  *         - password
  *         - role
- *         - id_detail
+ *         - firstname
+ *         - lastname
+ *         - mobile
+ *         - subscribeNewsletter
+ *         - streetAdress
+ *         - city
+ *         - country
+ *         - postalCode
  *       properties:
- *         id_detail:
+ *         id:
  *           type: integer
- *           description: Clé étrangère vers la table detail_user
+ *           description: ID de l'utilisateur
  *         email:
  *           type: string
  *           description: Adresse email de l'utilisateur
- *         role:
- *           type: string
- *           description: Rôle de l'utilisateur (user, admin)
  *         password:
  *           type: string
  *           description: Password de l'utilisateur
+ *         role:
+ *           type: string
+ *           description: Role de l'utilisateur
+ *         firstname:
+ *           type: string
+ *           description: Prénom de l'utilisateur
+ *         lastname:
+ *           type: string
+ *           description: Nom de l'utilisateur
+ *         mobile:
+ *           type: string
+ *           description: Numéro de téléphone de l'utilisateur
+ *         subscribeNewsletter:
+ *          type: boolean
+ *          description: Est ce que l'utilisateur accepte de nouvelles réparations
+ *         streetAdress:
+ *           type: string
+ *           description: Numéro de la rue de l'utilisateur
+ *         city:
+ *           type: string
+ *           description: Nom de la ville
+ *         country:
+ *          type: string
+ *          description: Pays de l'artisan
+ *         postalCode:
+ *          type: integer
+ *          description: Code postal
  */
 
 
