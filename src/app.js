@@ -41,6 +41,9 @@ app.use('/artisans', artisanRoute);
 const infoRoute = require('./routes/infoRoute.js'); 
 app.use('/infos', infoRoute);
 
+const jobRoute = require('./routes/jobRoute.js'); 
+app.use('/jobs', jobRoute);
+
 // Démarrage du serveur
 app.listen(port, () => {
     console.log(`L'application écoute sur le port ${port}`);
