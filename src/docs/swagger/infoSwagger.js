@@ -37,8 +37,6 @@
  *   get:
  *     summary: Récupérer toutes les infos en BDD
  *     tags: [Info]
- *     security:
- *       - bearerAuth: []
  *     responses:
  *       201:
  *         description: Informations récupérées avec succès
@@ -62,8 +60,6 @@
  *   get:
  *     summary: Récupérer une info
  *     tags: [Info]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -120,3 +116,7 @@
  *       500:
  *         description: Erreur interne du serveur
  */
+
+
+
+
