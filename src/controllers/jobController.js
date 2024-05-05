@@ -71,7 +71,7 @@ exports.getAJob = async (req, res) => {
 */
 exports.putAJob = async (req, res) => {
     try {
-        const job = await Job.findOne({ where: { name: req.params.id } });
+        const job = await Job.findOne({ where: { id: req.params.id } });
 
         if(!job){
             return res.status(404).json({ message: 'Job non trouvé.' });
