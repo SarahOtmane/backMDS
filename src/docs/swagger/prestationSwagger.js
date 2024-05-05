@@ -24,13 +24,13 @@
  *           description: ID de la prestation
  *         categorie:
  *           type: string
- *           description: Categorie de vêtements (ex : haut)
+ *           description: Categorie de vêtements (ex:haut)
  *         clotheType:
  *           type: string
- *           description: Type de vêtements (ex: doudoune)
+ *           description: Type de vêtements (ex:doudoune)
  *         reparationType:
  *           type: string
- *           description: Type de la réparation (ex: zip)
+ *           description: Type de la réparation (ex:zip)
  *         priceSuggested:
  *           type: integer
  *           description: Prix conseillé par l'admin
