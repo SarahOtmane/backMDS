@@ -109,3 +109,66 @@
  *       500:
  *         description: Erreur interne du serveur
  */
+
+
+
+
+
+
+/**
+ * @swagger
+ * /jobs/{id}:
+ *   put:
+ *     summary: Modifier un job par l'admin
+ *     tags: [Job]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID du job à récupérer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *             required:
+ *               - name
+ *     responses:
+ *       201:
+ *         description: Job mis à jour avec succès
+ *       403:
+ *         description: token manquant ou invalide
+ *       404:
+ *         description: Aucun job trouvée
+ *       500:
+ *         description: Erreur interne du serveur
+ *   delete:
+ *     summary: Supprimer un job par l'admin
+ *     tags: [Job]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID du job à récupérer
+ *     responses:
+ *       201:
+ *         description: Job supprimé avec succès
+ *       403:
+ *         description: token manquant ou invalide
+ *       404:
+ *         description: Aucun job trouvée
+ *       500:
+ *         description: Erreur interne du serveur
+ */
