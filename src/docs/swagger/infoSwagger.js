@@ -120,3 +120,63 @@
 
 
 
+/**
+ * @swagger
+ * /infos/{id}:
+ *   put:
+ *     summary: Modifier une info par l'admin
+ *     tags: [Info]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID de l'info à récupérer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               content:
+ *                 type: string
+ *             required:
+ *               - name
+ *               - content
+ *     responses:
+ *       201:
+ *         description: Information mise à jour avec succès
+ *       403:
+ *         description: token manquant ou invalide
+ *       404:
+ *         description: Aucune info trouvée
+ *       500:
+ *         description: Erreur interne du serveur
+ *   delete:
+ *     summary: Supprimer une info par l'admin
+ *     tags: [Info]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID de l'info à récupérer
+ *     responses:
+ *       201:
+ *         description: Information supprimée avec succès
+ *       403:
+ *         description: token manquant ou invalide
+ *       404:
+ *         description: Aucune info trouvée
+ *       500:
+ *         description: Erreur interne du serveur
+ */
