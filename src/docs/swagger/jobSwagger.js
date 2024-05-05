@@ -23,3 +23,26 @@
  *           type: string
  *           description: Titre / Nom de la catégorie d'artisans
  */
+
+
+
+/**
+ * @swagger
+ * /jobs:
+ *   get:
+ *     summary: Récupérer tous les jobs en BDD
+ *     tags: [Job]
+ *     responses:
+ *       201:
+ *         description: Jobs récupérés avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Job'
+ *       403:
+ *         description: token manquant ou invalide
+ *       404:
+ *         description: Aucun job trouvée
+ *       500:
+ *         description: Erreur interne du serveur
+ */
