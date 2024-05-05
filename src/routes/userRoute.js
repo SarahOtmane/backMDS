@@ -13,7 +13,7 @@ router
 
 router
     .route('/')
-    .all(jwtMiddleware.verifyToken)
+    .all(jwtMiddleware.verifyTokenUser)
     .get(userController.getAUser)
     .put(userController.putAUser)
     .delete(userController.deleteAUser)
