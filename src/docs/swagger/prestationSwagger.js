@@ -88,3 +88,45 @@
  *       500:
  *         description: Erreur interne du serveur
  */
+
+
+
+
+/**
+ * @swagger
+ * /prestations:
+ *   post:
+ *     summary: Enregistrer une prestation en BDD
+ *     tags: [Prestation]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               categorie:
+ *                 type: string
+ *               clothType:
+ *                 type: string
+ *               reparationType:
+ *                 type: string
+ *               priceSuggested:
+ *                 type: string
+ *             required:
+ *               - categorie
+ *               - clothType
+ *               - reparationType
+ *               - priceSuggested
+ *     responses:
+ *       200:
+ *         description: prestation créée avec succès
+ *       401:
+ *         description: Prestation existe déja en BDD
+ *       403:
+ *         description: Token manquant ou invalide / Vous n'etes pas un admin
+ *       500:
+ *         description: Erreur interne du serveur
+ */
