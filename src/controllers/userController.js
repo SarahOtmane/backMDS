@@ -91,7 +91,7 @@ exports.loginAUser = async (req, res) => {
 */
 exports.getAUser = async (req, res) => {
     try {
-        const user = await User.findOne({ where: { email: req.body.email } });
+        const user = await User.findOne({ where: { id: req.user.id } });
 
         if (!user) {
             return res.status(404).json({ message: 'Utilisateur non trouvé.' });
@@ -117,7 +117,7 @@ exports.getAUser = async (req, res) => {
 */
 exports.putAUser = async (req, res) => {
     try {
-        const user = await User.findOne({ where: { email: req.body.email } });
+        const user = await User.findOne({ where: { id: req.user.id } });
 
         if(!user){
             return res.status(404).json({ message: 'Utilisateur non trouvé.' });
@@ -159,7 +159,7 @@ exports.putAUser = async (req, res) => {
 exports.deleteAUser = async (req, res) => {
     try {
         const deletedUser = await User.destroy({
-            where: { email: req.user.email }
+            where: { id: req.user.id }
         });
         
         if (!deletedUser) {
