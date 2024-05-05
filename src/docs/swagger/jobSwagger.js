@@ -76,3 +76,36 @@
  *       500:
  *         description: Erreur interne du serveur
  */
+
+
+
+
+/**
+ * @swagger
+ * /jobs:
+ *   post:
+ *     summary: Enregistrer un job en BDD
+ *     tags: [Job]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *             required:
+ *               - name
+ *     responses:
+ *       200:
+ *         description: job créé avec succès
+ *       401:
+ *         description: Job existe déja en BDD
+ *       403:
+ *         description: Token manquant ou invalide / Vous n'etes pas un admin
+ *       500:
+ *         description: Erreur interne du serveur
+ */
