@@ -27,9 +27,9 @@ exports.registerAnArtisan = async (req, res) => {
             return res.status(401).json({ message: 'L\'email n\'est pas au bon format'});
         }
 
-        if (!functionsMiddleware.verifyNumberPhone(req.body.mobile)) {
-            return res.status(401).json({ message: 'Le numéro de téléphone est éronner'});
-        }
+        // if (!functionsMiddleware.verifyNumberPhone(req.body.mobile)) {
+        //     return res.status(401).json({ message: 'Le numéro de téléphone est éronner'});
+        // }
 
         let newArtisan = await Artisan.create(req.body);
 
