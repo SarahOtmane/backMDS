@@ -59,7 +59,7 @@
  *         postalCode:
  *          type: integer
  *          description: Code postal
- *         id_job
+ *         id_job:
  *          type: integer
  *          description: Clé étrangère vers la table jobs
  */
