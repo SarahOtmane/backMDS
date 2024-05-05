@@ -35,3 +35,26 @@
  *           type: integer
  *           description: Prix conseillé par l'admin
  */
+
+
+
+/**
+ * @swagger
+ * /prestations:
+ *   get:
+ *     summary: Récupérer toutes les prestations en BDD
+ *     tags: [Prestation]
+ *     responses:
+ *       201:
+ *         description: Prestations récupérées avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Prestation'
+ *       403:
+ *         description: token manquant ou invalide
+ *       404:
+ *         description: Aucune prestation trouvée
+ *       500:
+ *         description: Erreur interne du serveur
+ */
