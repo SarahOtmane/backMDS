@@ -10,7 +10,7 @@
  * @swagger
  * components:
  *   schemas:
- *     Info:
+ *     Job:
  *       type: object
  *       required:
  *         - id
