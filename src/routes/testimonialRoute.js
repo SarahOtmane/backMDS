@@ -7,7 +7,7 @@ const jwtMiddleware = require('../middlewares/jwtMiddleware');
 
 router
     .route('/:id_artisan')
-    .all(jwtMiddleware.verifyToken)
+    .all(jwtMiddleware.verifyTokenUser)
     .post(testimonialController.createATestimonial)
 
 
