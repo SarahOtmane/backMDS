@@ -18,7 +18,7 @@ router
 
 router
     .route('/:id_testimonial')
-    .all(jwtMiddleware.verifyToken)
+    .all(jwtMiddleware.verifyTokenUser)
     .put(testimonialController.putATestimonial)
     .delete(testimonialController.deleteATestimonial);
 
