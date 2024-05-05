@@ -88,8 +88,8 @@
  * @swagger
  * /infos:
  *   post:
- *     summary: Enregistrer un info en BDD
- *     tags: [Artisan]
+ *     summary: Enregistrer une info en BDD
+ *     tags: [Info]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
