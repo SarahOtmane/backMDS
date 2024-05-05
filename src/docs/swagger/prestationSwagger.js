@@ -58,3 +58,33 @@
  *       500:
  *         description: Erreur interne du serveur
  */
+
+
+
+/**
+ * @swagger
+ * /prestations/{id}:
+ *   get:
+ *     summary: Récupérer une prestation
+ *     tags: [Prestation]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID de la prestation à récupérer
+ *     responses:
+ *       201:
+ *         description: Prestations récupérée avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Prestation'
+ *       403:
+ *         description: token manquant ou invalide
+ *       404:
+ *         description: Aucune prestation trouvée
+ *       500:
+ *         description: Erreur interne du serveur
+ */
