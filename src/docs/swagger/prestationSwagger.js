@@ -134,7 +134,7 @@
 
 /**
  * @swagger
- * /prestations/{id}:
+ * /prestations/{id_prestation}:
  *   put:
  *     summary: Modifier une prestation par l'admin
  *     tags: [Prestation]
@@ -142,11 +142,11 @@
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: id_prestation
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID de la prestation à récupérer
+ *         description: ID de la prestation à modifier
  *     requestBody:
  *       required: true
  *       content:
@@ -183,11 +183,11 @@
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: id_prestation
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID de la prestation à récupérer
+ *         description: ID de la prestation à supprimer
  *     responses:
  *       201:
  *         description: Prestation supprimée avec succès
