@@ -76,3 +76,26 @@
  *       500:
  *         description: Erreur interne du serveur
  */
+
+
+
+/**
+ * @swagger
+ * /infos/artisans:
+ *   get:
+ *     summary: Récupérer toutes les commandes concernant un artisan
+ *     tags: [Command]
+ *     responses:
+ *       201:
+ *         description: Commandes récupérées avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Command'
+ *       403:
+ *         description: token manquant ou invalide
+ *       404:
+ *         description: Aucune commande trouvée
+ *       500:
+ *         description: Erreur interne du serveur
+ */
