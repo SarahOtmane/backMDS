@@ -43,17 +43,10 @@ const Commande = sequelize.define('Commande', {
     underscored: true
 });
 
-// Hash avant de sauvegarder en base de données
-// User.addHook('beforeSave', async (user) => {
-//     try {
-//       // Valeur par défaut de l'algorithme de hashage : 10
-//         const algo = await bcrypt.genSalt(10);
-//         const hashPw = await bcrypt.hash(user.password, algo);
-//         user.password = hashPw;
-//     } catch (error) {
-//         throw new Error(error);
-//     }
-// });
+// Définition des relations
+const Prestation = require('./prestationModel');
+Commande.belongsTo(Prestation, { foreignKey: 'id_prestation'});
+
 
 // Synchronisation du modèle avec la base de données
 (async () => {
