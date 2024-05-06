@@ -113,7 +113,7 @@
 
 /**
  * @swagger
- * /jobs/{id}:
+ * /jobs/{id_job}:
  *   put:
  *     summary: Modifier un job par l'admin
  *     tags: [Job]
@@ -121,11 +121,11 @@
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: id_job
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID du job à récupérer
+ *         description: ID du job à modifier
  *     requestBody:
  *       required: true
  *       content:
@@ -153,11 +153,11 @@
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: id_job
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID du job à récupérer
+ *         description: ID du job à supprimer
  *     responses:
  *       201:
  *         description: Job supprimé avec succès
