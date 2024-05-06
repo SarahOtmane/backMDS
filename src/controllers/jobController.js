@@ -43,7 +43,7 @@ exports.createAJob = async (req, res) => {
 */
 exports.getAJob = async (req, res) => {
     try {
-        const job = await Job.findOne({ where: { id: req.params.id } });
+        const job = await Job.findOne({ where: { id: req.params.id_job } });
 
         if (!job) {
             return res.status(404).json({ message: 'Job non trouvé.' });
@@ -71,7 +71,7 @@ exports.getAJob = async (req, res) => {
 */
 exports.putAJob = async (req, res) => {
     try {
-        const job = await Job.findOne({ where: { id: req.params.id } });
+        const job = await Job.findOne({ where: { id: req.params.id_job } });
 
         if(!job){
             return res.status(404).json({ message: 'Job non trouvé.' });
@@ -105,7 +105,7 @@ exports.deleteAJob = async (req, res) => {
     try {
 
         const deleteJob = await Job.destroy({
-            where: { id: req.params.id }
+            where: { id: req.params.id_job }
         });
         
         if (!deleteJob) {
