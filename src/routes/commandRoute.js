@@ -15,14 +15,17 @@ router
 
 /**********************************************************
             ROUTES UNIQUEMENT POUR LES ADMINS
-**********************************************************/    
+**********************************************************/  
+router
+    .route('/')
+    .all(jwtMiddleware.isAdmin)
+    .get(commandController.getAllCommand)
+
+
 router
     .route('/:id_command')
     .all(jwtMiddleware.isAdmin)
     .put(commandController.putACommand)
-
-
-    
 
 
 
