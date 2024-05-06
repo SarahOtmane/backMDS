@@ -22,7 +22,7 @@ const Commande = sequelize.define('Commande', {
         allowNull: false
     },
     dateFinished: {
-        type: DataTypes.timestamps,
+        type: DataTypes.DATE,
         allowNull: true,
     },
     id_prestation: {
