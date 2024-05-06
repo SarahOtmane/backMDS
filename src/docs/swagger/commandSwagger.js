@@ -146,3 +146,35 @@
  *       500:
  *         description: Erreur interne du serveur
  */
+
+
+
+/**
+ * @swagger
+ * /commands/{id_command}:
+ *   put:
+ *     summary: Modifier une commande par l admin
+ *     tags: [Command]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID de la commande
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *               $ref: '#/components/schemas/Command'
+ *     responses:
+ *       201:
+ *         description: Commande modifiée avec succès
+ *       403:
+ *         description: token manquant ou invalide
+ *       404:
+ *         description: Commande non trouvée / prestation non trouvée
+ *       500:
+ *         description: Erreur interne du serveur
+ */
