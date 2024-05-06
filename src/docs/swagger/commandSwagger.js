@@ -57,7 +57,7 @@
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: id_artisan
  *         required: true
  *         schema:
  *           type: integer
