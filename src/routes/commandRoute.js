@@ -9,8 +9,9 @@ router
     .all(jwtMiddleware.verifyTokenUser)
     .post(commandController.createACommand)
 
-
-
+router
+    .all(jwtMiddleware.verifyTokenArtisan)
+    .get(commandController.getCommandOfArtisan)
 
 
 /**********************************************************
