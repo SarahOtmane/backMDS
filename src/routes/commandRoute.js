@@ -9,3 +9,8 @@ router
     .all(jwtMiddleware.verifyTokenUser)
     .post(commandController.createACommand)
 
+
+router
+    .route('/:id_command')
+    .all(jwtMiddleware.verifyTokenUser)
+    .put(commandController.putACommand)
