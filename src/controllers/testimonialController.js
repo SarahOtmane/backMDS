@@ -162,3 +162,38 @@ exports.getAllTestimonial = async (req, res) => {
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 };
+
+
+
+
+/*************************************************************************
+            MÉTHODE POUR LISTER TOUS LES TESTIMONIALS D'UN ARTISAN
+*************************************************************************/
+/*
+    Fonction qui permet de lister tous les testimonials d'un artisan
+
+    Les vérifications : 
+        - Vérifier l'existance de l'artisan
+        - Vérifier que les testimonials existent
+
+*/
+exports.getAllTestimonialForArtisan = async (req, res) => {
+    try {
+        let artisan = await Artisan.findByPk(req.params.id_artisan);
+
+        if(!artisan){
+            return res.status(404).json({ message: 'Aucun artisan trouvé.' });
+        }
+
+        const testimonials = await Testimonial.findAll({where: {id_artisan: req.params.id_artisan}});
+        
+        if (!testimonials) {
+            return res.status(404).json({ message: 'Auncun testimonial trouvé.' });
+        }
+
+        res.status(201).json(testimonials);
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
