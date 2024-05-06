@@ -57,8 +57,6 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Testimonial'
- *       403:
- *         description: token manquant ou invalide
  *       404:
  *         description: Aucun témoignage trouvé
  *       500:
@@ -68,3 +66,21 @@
 
 
 
+/**
+ * @swagger
+ * /testimonials/{id_artisan}:
+ *   get:
+ *     summary: Récupérer tous les témoignages liés à un utilisateur
+ *     tags: [Testimonial]
+ *     responses:
+ *       201:
+ *         description: Témoignages récupérés avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Testimonial'
+ *       404:
+ *         description: Aucun témoignage trouvé
+ *       500:
+ *         description: Erreur interne du serveur
+ */
