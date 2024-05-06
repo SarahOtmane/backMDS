@@ -22,6 +22,10 @@ exports.createAPrestation = async(req, res) =>{
             }
         })
 
+        if(presta)  return res.status(401).json({ message: 'Cette prestation existe déjà.' });
+
+        let newPresta = await Prestation.create(req.body);
+
         res.status(201).json({message: "Réparation créée avec succés."});
 
     } catch (error) {
