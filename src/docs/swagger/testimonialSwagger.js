@@ -179,16 +179,16 @@
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: id_testimonial
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID du témoignage à récupérer
+ *         description: ID du témoignage à supprimer
  *     responses:
  *       201:
  *         description: témoignage supprimé avec succès
  *       403:
- *         description: token manquant ou invalide / Vous n'avez pas l'autorisation pour modifier
+ *         description: token manquant ou invalide / Vous n'avez pas l'autorisation pour supprimer
  *       404:
  *         description: Aucun témoignage trouvé
  *       500:
