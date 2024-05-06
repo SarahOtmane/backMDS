@@ -19,6 +19,10 @@ router
     .delete(userController.deleteAUser)
 
 
+
+/**********************************************************
+            ROUTES UNIQUEMENT POUR LES ADMINS
+**********************************************************/ 
 router
     .route('/admin')
     .get(jwtMiddleware.isAdmin, userController.getAllUsers)
