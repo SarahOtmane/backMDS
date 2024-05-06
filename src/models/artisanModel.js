@@ -67,6 +67,10 @@ const Artisan = sequelize.define('Artisan', {
 });
 
 
+// Définition des relations
+const Job = require('./jobModel');
+Artisan.belongsTo(Job, { foreignKey: 'id_job'});
+
 // Synchronisation du modèle avec la base de données
 (async () => {
     try {
