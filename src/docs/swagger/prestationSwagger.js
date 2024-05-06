@@ -61,13 +61,13 @@
 
 /**
  * @swagger
- * /prestations/{id}:
+ * /prestations/{id_prestation}:
  *   get:
  *     summary: Récupérer une prestation
  *     tags: [Prestation]
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: id_prestation
  *         required: true
  *         schema:
  *           type: integer
@@ -79,8 +79,6 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Prestation'
- *       403:
- *         description: token manquant ou invalide
  *       404:
  *         description: Aucune prestation trouvée
  *       500:
