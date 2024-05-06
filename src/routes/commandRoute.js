@@ -10,10 +10,12 @@ router
     .post(commandController.createACommand)
 
 router
+    .route('/artisans')
     .all(jwtMiddleware.verifyTokenArtisan)
     .get(commandController.getCommandOfArtisan)
 
 router
+    .route('/users')
     .all(jwtMiddleware.verifyTokenUser)
     .get(commandController.getCommandOfUser)
 
