@@ -49,13 +49,13 @@
 
 /**
  * @swagger
- * /jobs/{id}:
+ * /jobs/{id_job}:
  *   get:
  *     summary: Récupérer un job
  *     tags: [Job]
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: id_job
  *         required: true
  *         schema:
  *           type: integer
@@ -67,8 +67,6 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Job'
- *       403:
- *         description: token manquant ou invalide
  *       404:
  *         description: Aucun job trouvée
  *       500:
