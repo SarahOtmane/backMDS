@@ -172,3 +172,30 @@ exports.deleteAUser = async (req, res) => {
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 };
+
+
+
+/**********************************************************
+            MÉTHODE POUR LISTER TOUS LES USERS (ADMIN)
+**********************************************************/
+/*
+    Fonction qui permet de lister tous les users
+
+    Les vérifications : 
+        - Vérifier que les users existent
+
+*/
+exports.getAllUsers = async (req, res) => {
+    try {
+        const users = await User.findAll();
+        
+        if (!users) {
+            return res.status(404).json({ message: 'Auncun utilisateur trouvé.' });
+        }
+
+        res.status(201).json(users);
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
