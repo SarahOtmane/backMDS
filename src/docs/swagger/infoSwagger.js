@@ -44,8 +44,6 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Info'
- *       403:
- *         description: token manquant ou invalide
  *       404:
  *         description: Aucune info trouvée
  *       500:
