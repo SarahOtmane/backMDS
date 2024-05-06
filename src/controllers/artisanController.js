@@ -103,7 +103,7 @@ exports.getAnArtisan = async (req, res) => {
         const artisan = await Artisan.findOne({ where: { id: req.artisan.id} });
 
         if (!artisan) {
-            return res.status(404).json({ message: 'Utilisateur non trouvé.' });
+            return res.status(404).json({ message: 'Artisan non trouvé.' });
         }
 
         res.status(201).json(artisan);
