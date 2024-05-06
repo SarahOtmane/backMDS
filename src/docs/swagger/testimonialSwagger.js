@@ -40,3 +40,31 @@
  *          type: integer
  *          description: Clé étrangère, correspond à l'artisan à qui on a laissé le témoignage
  */
+
+
+
+
+/**
+ * @swagger
+ * /testimonials:
+ *   get:
+ *     summary: Récupérer tous les témoignages en BDD
+ *     tags: [Testimonial]
+ *     responses:
+ *       201:
+ *         description: Témoignages récupérés avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Testimonial'
+ *       403:
+ *         description: token manquant ou invalide
+ *       404:
+ *         description: Aucun témoignage trouvé
+ *       500:
+ *         description: Erreur interne du serveur
+ */
+
+
+
+
