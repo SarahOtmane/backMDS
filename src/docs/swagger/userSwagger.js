@@ -174,3 +174,31 @@
  *       500:
  *         description: Erreur interne du serveur
  */
+
+
+
+
+
+
+/**
+ * @swagger
+ * /users/admin:
+ *   get:
+ *     summary: Récupérer tous les utilisateurs
+ *     tags: [User]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       201:
+ *         description: Comptes utilisateurs récup avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       403:
+ *         description: Token manquant ou invalide
+ *       404:
+ *         description: Utilisateur non trouvé
+ *       500:
+ *         description: Erreur interne du serveur
+ */
