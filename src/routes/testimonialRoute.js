@@ -4,6 +4,9 @@ const testimonialController = require('../controllers/testimonialController');
 const jwtMiddleware = require('../middlewares/jwtMiddleware');
 
 
+router
+    .route('/')
+    .get(testimonialController.getAllTestimonial)
 
 router
     .route('/:id_artisan')
