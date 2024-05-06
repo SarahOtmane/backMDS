@@ -182,11 +182,9 @@
 /**
  * @swagger
  * /artisans/allArtisan:
- *   post:
+ *   get:
  *     summary: Lister tous les artisans
  *     tags: [Artisan]
- *     security:
- *       - bearerAuth: []
  *     responses:
  *       201:
  *         description: Artisans récupérés avec succès
@@ -194,8 +192,6 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Artisan'
- *       401:
- *         description: Email ou Mdp incorrect
  *       404:
  *         description: artisan non trouvé
  *       500:
