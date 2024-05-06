@@ -22,6 +22,8 @@ exports.createAPrestation = async(req, res) =>{
             }
         })
 
+        res.status(201).json({message: "Réparation créée avec succés."});
+
     } catch (error) {
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
