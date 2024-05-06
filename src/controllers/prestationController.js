@@ -76,7 +76,7 @@ exports.getAPrestation = async (req, res) => {
 */
 exports.putAPresta = async (req, res) => {
     try {
-        const presta = await Prestation.findOne({ where: { id: req.params.id } });
+        const presta = await Prestation.findOne({ where: { id: req.params.id_prestation } });
 
         if(!presta){
             return res.status(404).json({ message: 'Prestation non trouvé.' });
@@ -114,7 +114,7 @@ exports.deleteAPresta = async (req, res) => {
     try {
         
         const deletePresta = await Presta.destroy({
-            where: { id: req.params.id }
+            where: { id: req.params.id_prestation }
         });
         
         if (!deletePresta) {
