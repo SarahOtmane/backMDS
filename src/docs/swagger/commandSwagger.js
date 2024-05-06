@@ -53,6 +53,8 @@
  *   post:
  *     summary: Créer une commande
  *     tags: [Command]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -85,6 +87,8 @@
  *   get:
  *     summary: Récupérer toutes les commandes concernant un artisan
  *     tags: [Command]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       201:
  *         description: Commandes récupérées avec succès
@@ -109,6 +113,8 @@
  *   get:
  *     summary: Récupérer toutes les commandes concernant un utilisateur
  *     tags: [Command]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       201:
  *         description: Commandes récupérées avec succès
@@ -132,6 +138,8 @@
  *   get:
  *     summary: Récupérer toutes les commandes en BDD
  *     tags: [Command]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       201:
  *         description: Commandes récupérées avec succès
@@ -155,6 +163,8 @@
  *   put:
  *     summary: Modifier une commande par l admin
  *     tags: [Command]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
