@@ -34,7 +34,7 @@ exports.createACommand = async (req, res) => {
         let NewCommand = await Command.create({
             name: req.body.name,
             picture: req.body.picture,
-            dateFinished: false,
+            dateFinished: null,
             id_artisan: req.params.id_artisan,
             id_user: req.user.id,
             id_prestation: existingPresta.id,
@@ -48,3 +48,8 @@ exports.createACommand = async (req, res) => {
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 };
+
+
+
+
+
