@@ -87,7 +87,7 @@
  *             schema:
  *               $ref: '#/components/schemas/Testimonial'
  *       404:
- *         description: Aucun témoignage trouvé
+ *         description: Aucun témoignage trouvé / Artisan non trouvé
  *       500:
  *         description: Erreur interne du serveur
  *   post:
