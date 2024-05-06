@@ -18,4 +18,9 @@ router
     .put(userController.putAUser)
     .delete(userController.deleteAUser)
 
+
+router
+    .route('/admin')
+    .get(jwtMiddleware.isAdmin, userController.getAllUsers)
+
 module.exports = router;
