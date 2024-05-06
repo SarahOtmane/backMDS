@@ -141,7 +141,7 @@ exports.deleteAnInfo = async (req, res) => {
 */
 exports.getAllInfo = async (req, res) => {
     try {
-        const infos = await Info.find();
+        const infos = await Info.findAll();
         
         if (!infos) {
             return res.status(404).json({ message: 'Auncune information trouvée.' });
