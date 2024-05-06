@@ -39,8 +39,6 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Job'
- *       403:
- *         description: token manquant ou invalide
  *       404:
  *         description: Aucun job trouvée
  *       500:
