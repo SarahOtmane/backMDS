@@ -10,7 +10,21 @@ router
     .post(commandController.createACommand)
 
 
+
+
+
+/**********************************************************
+            ROUTES UNIQUEMENT POUR LES ADMINS
+**********************************************************/    
 router
     .route('/:id_command')
-    .all(jwtMiddleware.verifyTokenUser)
+    .all(jwtMiddleware.isAdmin)
     .put(commandController.putACommand)
+
+
+    
+
+
+
+
+module.exports = router;
