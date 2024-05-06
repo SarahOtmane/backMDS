@@ -14,7 +14,6 @@ const Artisan = require('../models/artisanModel');
 */
 exports.createATestimonial = async (req, res) => {
     try {
-
         let artisan = await Artisan.findByPk(req.params.id_artisan);
 
         if(!artisan){
@@ -22,9 +21,9 @@ exports.createATestimonial = async (req, res) => {
         }
 
         let newTestimonial = await Testimonial.create({
-            name: req.body.name,
+            content: req.body.content,
             picture: req.body.picture,
-            stars: req.body.picture,
+            stars: req.body.stars,
             id_user: req.user.id,
             id_artisan: req.params.id_artisan
         });
