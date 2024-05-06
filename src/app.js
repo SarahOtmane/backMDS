@@ -50,6 +50,9 @@ app.use('/testimonials', testimonialRoute);
 const prestationRoute = require('./routes/prestationRoute.js');
 app.use('/prestations', prestationRoute);
 
+const commandRoute = require('./routes/commandRoute.js');
+app.use('/commands', commandRoute);
+
 // Démarrage du serveur
 app.listen(port, () => {
     console.log(`L'application écoute sur le port ${port}`);
