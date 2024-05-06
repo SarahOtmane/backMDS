@@ -12,7 +12,7 @@ router
 
 
 router
-    .route('/:id')
+    .route('/:id_job')
     .get(jobController.getAJob)
 
 
@@ -27,7 +27,7 @@ router
 
 
 router
-    .route('/:id')
+    .route('/:id_job')
     .all(jwtMiddleware.isAdmin)
     .put(jobController.putAJob)
     .delete(jobController.deleteAJob);
