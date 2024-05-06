@@ -118,7 +118,7 @@
 
 /**
  * @swagger
- * /infos/{id}:
+ * /infos/{id_info}:
  *   put:
  *     summary: Modifier une info par l'admin
  *     tags: [Info]
@@ -126,11 +126,11 @@
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: id_info
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID de l'info à récupérer
+ *         description: ID de l'info à modifier
  *     requestBody:
  *       required: true
  *       content:
@@ -161,11 +161,11 @@
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: id_info
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID de l'info à récupérer
+ *         description: ID de l'info à supprimer
  *     responses:
  *       201:
  *         description: Information supprimée avec succès
