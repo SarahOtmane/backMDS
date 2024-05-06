@@ -137,7 +137,7 @@ exports.deleteAPresta = async (req, res) => {
 */
 exports.getAllPresta = async (req, res) => {
     try {
-        const prestas = await Prestation.find();
+        const prestas = await Prestation.findAll();
         
         if (!prestas) {
             return res.status(404).json({ message: 'Auncune prestation trouvée.' });
