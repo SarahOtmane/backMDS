@@ -9,7 +9,7 @@ router
     .get(prestationController.getAllPresta)
 
 router
-    .route('/:id')
+    .route('/:id_prestation')
     .get(prestationController.getAPrestation)
 
 

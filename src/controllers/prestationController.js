@@ -42,7 +42,7 @@ exports.createAPrestation = async(req, res) =>{
 */
 exports.getAPrestation = async (req, res) => {
     try {
-        const presta = await Prestation.findOne({ where: { id: req.params.id } });
+        const presta = await Prestation.findOne({ where: { id: req.params.id_prestation } });
 
         if (!presta) {
             return res.status(404).json({ message: 'Info non trouvé.' });
