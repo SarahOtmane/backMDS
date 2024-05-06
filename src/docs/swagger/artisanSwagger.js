@@ -108,7 +108,7 @@
  *               - email
  *               - password
  *     responses:
- *       200:
+ *       201:
  *         description: artisan connecté avec succès
  *       401:
  *         description: Email ou Mdp incorrect
