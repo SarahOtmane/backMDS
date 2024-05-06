@@ -23,7 +23,7 @@ router
     .post(prestationController.createAPrestation)
 
 router
-    .route('/:id')
+    .route('/:id_prestation')
     .all(jwtMiddleware.isAdmin)
     .put(prestationController.putAPresta)
     .delete(prestationController.deleteAPresta)
