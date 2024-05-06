@@ -51,8 +51,6 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Prestation'
- *       403:
- *         description: token manquant ou invalide
  *       404:
  *         description: Aucune prestation trouvée
  *       500:
