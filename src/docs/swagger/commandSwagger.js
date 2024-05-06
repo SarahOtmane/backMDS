@@ -49,7 +49,7 @@
 
 /**
  * @swagger
- * /commands/{id}:
+ * /commands/{id_artisan}:
  *   post:
  *     summary: Créer une commande
  *     tags: [Command]
