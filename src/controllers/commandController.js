@@ -20,7 +20,7 @@ exports.createACommand = async (req, res) => {
     try {
         const existingArtisan = await Artisan.findOne({ where: { id: req.params.id_artisan } });
         if (!existingArtisan) {
-            return res.status(401).json({ message: 'L\'artisan n\'existe plus en base de données.' });
+            return res.status(404).json({ message: 'L\'artisan n\'existe plus en base de données.' });
         }
 
         const existingPresta = await Prestation.findOne({where: {
@@ -29,7 +29,7 @@ exports.createACommand = async (req, res) => {
             reparationType: req.body.reparationType
         }})
 
-        if(!existingPresta) return res.status(401).json({message: 'La prestation n\'existe plys en base de donnés'})
+        if(!existingPresta) return res.status(404).json({message: 'La prestation n\'existe plys en base de donnés'})
 
         let NewCommand = await Command.create({
             name: req.body.name,
@@ -41,7 +41,7 @@ exports.createACommand = async (req, res) => {
         });
 
         res.status(201).json({ 
-            message: `Info créé avec succès. Le nom : ${NewCommand.name}` 
+            message: `Commande créée avec succès.` 
         });
     } 
     catch (error) {
