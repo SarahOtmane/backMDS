@@ -83,4 +83,24 @@
  *         description: Aucun témoignage trouvé
  *       500:
  *         description: Erreur interne du serveur
+ *   post:
+ *     summary: Créer un témoignage par rapport à un artisan
+ *     tags: [Testimonial]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Testimonial'
+ *     responses:
+ *       201:
+ *         description: Témoignage crée avec succès
+ *       404:
+ *         description: Artisan non trouvé en BDD
+ *       403:
+ *         description: Token manquant ou invalide 
+ *       500:
+ *         description: Erreur interne du serveur
  */
