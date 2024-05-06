@@ -13,6 +13,10 @@ router
     .all(jwtMiddleware.verifyTokenArtisan)
     .get(commandController.getCommandOfArtisan)
 
+router
+    .all(jwtMiddleware.verifyTokenUser)
+    .get(commandController.getCommandOfUser)
+
 
 /**********************************************************
             ROUTES UNIQUEMENT POUR LES ADMINS
