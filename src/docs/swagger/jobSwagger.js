@@ -101,7 +101,7 @@
  *       401:
  *         description: Job existe déja en BDD
  *       403:
- *         description: Token manquant ou invalide / Vous n'etes pas un admin
+ *         description: Token manquant ou invalide
  *       500:
  *         description: Erreur interne du serveur
  */
