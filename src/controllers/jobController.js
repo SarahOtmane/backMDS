@@ -136,7 +136,7 @@ exports.deleteAJob = async (req, res) => {
 exports.getAllJobs = async (req, res) => {
     try {
         
-        const jobs = await Job.find();
+        const jobs = await Job.findAll();
         
         if (!jobs) {
             return res.status(404).json({ message: 'Auncun job trouvé.' });
