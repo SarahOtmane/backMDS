@@ -47,6 +47,9 @@ const Commande = sequelize.define('Commande', {
 const Prestation = require('./prestationModel');
 Commande.belongsTo(Prestation, { foreignKey: 'id_prestation'});
 
+const User = require('./userModel');
+Commande.belongsTo(User, { foreignKey: 'id_user'});
+
 
 // Synchronisation du modèle avec la base de données
 (async () => {
