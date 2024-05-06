@@ -167,7 +167,7 @@
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: id_command
  *         required: true
  *         schema:
  *           type: integer
