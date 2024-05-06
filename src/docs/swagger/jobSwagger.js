@@ -40,7 +40,7 @@
  *             schema:
  *               $ref: '#/components/schemas/Job'
  *       404:
- *         description: Aucun job trouvée
+ *         description: Aucun job trouvé
  *       500:
  *         description: Erreur interne du serveur
  */
