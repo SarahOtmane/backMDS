@@ -135,3 +135,30 @@ exports.deleteATestimonial = async (req, res) => {
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 };
+
+
+
+/**********************************************************
+            MÉTHODE POUR LISTER TOUS LES TESTIMONIALS
+**********************************************************/
+/*
+    Fonction qui permet de lister tous les testimonials
+
+    Les vérifications : 
+        - Vérifier que les testimonials existent
+
+*/
+exports.getAllTestimonial = async (req, res) => {
+    try {
+        const testimonials = await Testimonial.findAll();
+        
+        if (!testimonials) {
+            return res.status(404).json({ message: 'Auncun testimonial trouvé.' });
+        }
+
+        res.status(201).json(testimonials);
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
