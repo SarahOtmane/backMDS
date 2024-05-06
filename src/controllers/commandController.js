@@ -1,5 +1,6 @@
 const Command = require('../models/commandModel');
 const Artisan = require('../models/artisanModel');
+const Prestation = require('../models/prestationModel');
 
 
 
@@ -12,14 +13,23 @@ const Artisan = require('../models/artisanModel');
 
     Les vérifications : 
         - l existance de l artisan
+        - l existance de la prestation
 
 */
-exports.createAnInfo = async (req, res) => {
+exports.createACommand = async (req, res) => {
     try {
         const existingArtisan = await Artisan.findOne({ where: { id: req.params.id_artisan } });
         if (!existingArtisan) {
             return res.status(401).json({ message: 'L\'artisan n\'existe plus en base de données.' });
         }
+
+        const existingPresta = await Prestation.findOne({where: {
+            categorie: req.body.categorie,
+            clothType: req.body.clothType,
+            reparationType: req.body.reparationType
+        }})
+
+        if(!existingPresta) return res.status(401).json({message: 'La prestation n\'existe plys en base de donnés'})
 
         let NewCommand = await Command.create({
             name: req.body.name,
@@ -27,6 +37,7 @@ exports.createAnInfo = async (req, res) => {
             dateFinished: false,
             id_artisan: req.params.id_artisan,
             id_user: req.user.id,
+            id_prestation: existingPresta.id,
         });
 
         res.status(201).json({ 
