@@ -12,7 +12,7 @@ router
     
 
 router
-    .route('/:id')
+    .route('/:id_info')
     .get(infoController.getAnInfo)
 
 
@@ -26,7 +26,7 @@ router
     .post(jwtMiddleware.isAdmin, infoController.createAnInfo)
 
 router
-    .route('/:id')
+    .route('/:id_info')
     .all(jwtMiddleware.isAdmin)
     .put(infoController.putAnInfo)
     .delete(infoController.deleteAnInfo);
