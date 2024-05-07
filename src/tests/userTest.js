@@ -49,7 +49,7 @@ describe('User Controller', () => {
 
         it('should return 401 if the role is admin', async() =>{
             const res = await request(app)
-                .post('users/register')
+                .post('/users/register')
                 .send({
                     email: 'sarah@user.com',
                     password: 'sarah',
@@ -90,7 +90,7 @@ describe('User Controller', () => {
 
 
 
-    // Test de la méthide loginAUser
+    // Test de la méthode loginAUser
     describe('POST /users/login', () => {
         it('should log in a user ', async()=>{
             const res = await request(app)
@@ -137,5 +137,33 @@ describe('User Controller', () => {
         });
     });
     
+    
+    //Test de la methode getAUser
+    describe('GET /users', () => {
+        it('should get user details', async()=>{
+            const existingUser = await User.findOne({ where: { email: 'sarah@user.com' } });
+
+            const res = await request(app)
+                .get('/users')
+                .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJzYXJhaDFAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3MTUwNjk0MDYsImV4cCI6MTcxNzY2MTQwNn0.dDLv0fsPWdtHxohv_zKy6V0anSHqBs-oVhyOMm00r1M');
+            expect(res.statusCode).toEqual(200);
+            expect(res.body).toEqual({
+                id: existingUser.id,
+                email: existingUser.email,
+                password: existingUser.password,
+                role: existingUser.role,
+                firstname: existingUser.firstname,
+                lastname: existingUser.lastname,
+                mobile: existingUser.mobile,
+                subscribeNewsletter: existingUser.subscribeNewsletter,
+                streetAdress: existingUser.streetAdress,
+                city: existingUser.city,
+                country: existingUser.country,
+                postalCode: existingUser.postalCode,
+                createdAt: existingUser.createdAt,
+                updatedAt: existingUser.updatedAt
+            });
+        })
+    });
     
 });
