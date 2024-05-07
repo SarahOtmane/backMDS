@@ -87,5 +87,22 @@ describe('User Controller', () => {
             expect(res.body).toEqual({message: `Erreur serveur` });
         });
     });
+
+
+
+    // Test de la méthide loginAUser
+    describe('POST /users/login', () => {
+        it('should log in a user ', async()=>{
+            const res = await request(app)
+                .post('/users/login')
+                .send({
+                    email: 'sarah@user.com',
+                    password: 'sarah'
+                });
+            expect(res.statusCode).toEqual(201);
+            expect(res.body).toHaveProperty('token');
+        })
+    });
+    
     
 });
