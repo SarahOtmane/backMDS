@@ -18,7 +18,7 @@ exports.registerAUser = async (req, res) => {
     try {
         const existingEmail = await User.findOne({ where: { email: req.body.email } });
         if (existingEmail) {
-            return res.status(401).json({ message: 'Cet email existe déjà.' });
+            return res.status(409).json({ message: 'Cet email existe déjà.' });
         }
 
         if (req.body.role === 'admin') {
