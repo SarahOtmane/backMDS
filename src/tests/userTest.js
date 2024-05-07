@@ -53,7 +53,7 @@ describe('User Controller', () => {
                 .send({
                     email: 'sarah@user.com',
                     password: 'sarah',
-                    role: 'user',
+                    role: 'admin',
                     firstname: 'sarah',
                     lastname: 'otmane',
                     mobile: '0606060606',
