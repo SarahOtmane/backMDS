@@ -112,7 +112,18 @@ describe('User Controller', () => {
                 });
                 expect(res.statusCode).toEqual(404);
                 expect(res.body).toHaveProperty('Email ou mot de passe incorrect');
-        })
+        });
+        
+        it('should return 404 if password is false', async()=>{
+            const res = await request(app)
+                .post('/users/login')
+                .send({
+                    email: 'sarah@user.com',
+                    password: 'sarah'
+                });
+                expect(res.statusCode).toEqual(404);
+                expect(res.body).toHaveProperty('Email ou mot de passe incorrect');
+        });
     });
     
     
