@@ -80,7 +80,10 @@
  *       201:
  *         description: Utilisateur enregistré avec succès
  *       401:
- *         description: L'utilisateur avec cet email existe déjà / vous ne pouvez pas créer un compte avec le role admin
+ *         description: vous ne pouvez pas créer un compte avec le role admin
+ *       409:
+ *         description: L'utilisateur avec cet email existe déjà 
+ *
  *       500:
  *         description: Erreur interne du serveur
  */
