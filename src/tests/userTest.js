@@ -45,6 +45,26 @@ describe('User Controller', () => {
                 });
             expect(res.statusCode).toEqual(401);
             expect(res.json).toEqual({message: `Cet email existe déjà.` });
+        });
+
+        it('should return 401 if the role is admin', async() =>{
+            const res = await request(app)
+                .post('users/register')
+                .send({
+                    email: 'sarah@user.com',
+                    password: 'sarah',
+                    role: 'user',
+                    firstname: 'sarah',
+                    lastname: 'otmane',
+                    mobile: '0606060606',
+                    subscribeNewsletter: false,
+                    streetAdress: '40 chemin vert',
+                    city: 'Paris',
+                    country: 'France',
+                    postalCode: 75011
+                });
+            expect(res.statusCode).toEqual(401);
+            expect(res.json).toEqual({message: `Vous ne pouvez pas créer un utilisateur avec le rôle admin.` });
         })
     });
 
