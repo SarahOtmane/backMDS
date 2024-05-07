@@ -130,7 +130,7 @@
  *     security:
  *       - bearerAuth: []
  *     responses:
- *       201:
+ *       200:
  *         description: Informations de l'utilisateur récupérées avec succès
  *         content:
  *           application/json:
