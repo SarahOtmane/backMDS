@@ -107,7 +107,7 @@ describe('User Controller', () => {
             const res = await request(app)
                 .post('/users/login')
                 .send({
-                    email: 'sarah@user.com',
+                    email: 'sarah@us.com',
                     password: 'sarah'
                 });
                 expect(res.statusCode).toEqual(404);
@@ -119,10 +119,21 @@ describe('User Controller', () => {
                 .post('/users/login')
                 .send({
                     email: 'sarah@user.com',
-                    password: 'sarah'
+                    password: 'test'
                 });
                 expect(res.statusCode).toEqual(404);
                 expect(res.body).toHaveProperty('Email ou mot de passe incorrect');
+        });
+
+        it('should return 500 if error in server', async() =>{
+            const res = await request(app)
+                .post('/users/login')
+                .send({
+                    email: 'sarah@user.com',
+                    password: 'sarah',
+                });
+            expect(res.statusCode).toEqual(500);
+            expect(res.body).toEqual({message: `Erreur serveur` });
         });
     });
     
