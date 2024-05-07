@@ -97,7 +97,7 @@ exports.getAUser = async (req, res) => {
             return res.status(404).json({ message: 'Utilisateur non trouvé.' });
         }
 
-        res.status(201).json(user);
+        res.status(200).json(user);
 
     } catch (error) {
         res.status(500).json({message: "Erreur lors du traitement des données."});
