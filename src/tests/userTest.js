@@ -180,6 +180,14 @@ describe('User Controller', () => {
             expect(res.statusCode).toEqual(403)
             expect(res.body).toEqual({message: `Accès interdit: token manquant` })
         });
+
+        if('should return 404 if the user doesn\'t exist', async() =>{
+            const res = await request(app)
+                .get('/users')
+                .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJzYXJhaDFAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3MTUwNjk0MDYsImV4cCI6MTcxNzY2MTQwNn0.dDLv0fsPWdtHxohv_zKy6V0anSHqBs-oVhyOMm00r1M');
+            expect(res.statusCode).toEqual(404)
+            expect(res.body).toEqual({message: `Utilisateur non trouvé` })
+        });
     });
     
 });
