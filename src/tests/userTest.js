@@ -89,7 +89,6 @@ describe('User Controller', () => {
     });
 
 
-
     // Test de la méthode loginAUser
     describe('POST /users/login', () => {
         it('should log in a user ', async()=>{
@@ -136,7 +135,7 @@ describe('User Controller', () => {
             expect(res.body).toEqual({message: `Erreur serveur` });
         });
     });
-    
+
     
     //Test de la methode getAUser
     describe('GET /users', () => {
@@ -197,5 +196,34 @@ describe('User Controller', () => {
             expect(res.body).toEqual({message: `Erreur serveur` });
         });
     });
+
+
+    //Test de la methode putAUser
+    describe('PUT /users', () => {
+        
+
+        it('should return 404 if user dosn\'t exist', async () => {
+        sinon.stub(User, 'findOne').resolves(null);
+
+        const response = await request(app)
+            .put('/users')
+            .set('Authorization', 'Bearer votre_token')
+            .send({
+                lastname: 'Doe',
+                firstname: 'John',
+                password: 'newpassword',
+                mobile: '123456789',
+                subscribeNewsletter: true,
+                streetAdress: '123 Main St',
+                city: 'City',
+                country: 'Country',
+                postalCode: '12345'
+            });
+
+        expect(response.status).to.equal(404);
+        expect(response.body).to.eql({ message: 'Utilisateur non trouvé.' });
+    });
+    });
+    
     
 });
