@@ -44,10 +44,6 @@ const Commande = sequelize.define('Commande', {
 });
 
 
-const User = require('./userModel');
-Commande.belongsTo(User);
-
-
 // Synchronisation du modèle avec la base de données
 (async () => {
     try {
