@@ -43,9 +43,6 @@ const Commande = sequelize.define('Commande', {
     underscored: true
 });
 
-// Définition des relations
-const Prestation = require('./prestationModel');
-Commande.belongsTo(Prestation);
 
 const User = require('./userModel');
 Commande.belongsTo(User);

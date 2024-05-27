@@ -39,6 +39,7 @@ const Commande = require('./commandModel');
 Prestation.hasMany(Commande, {
     foreignKey: "id_prestation",
 });
+Commande.belongsTo(Prestation);
 
 // Synchronisation du modèle avec la base de données
 (async () => {
