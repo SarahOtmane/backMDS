@@ -76,10 +76,12 @@ Artisan.hasMany(Testimonial, {
     foreignKey: 'id_artisan',
 });
 
+
 const Commande = require('./commandModel');
 Artisan.hasMany(Commande, {
     foreignKey: 'id_artisan',
 });
+Commande.belongsTo(Artisan);
 
 // Synchronisation du modèle avec la base de données
 (async () => {

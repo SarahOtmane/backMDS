@@ -50,9 +50,6 @@ Commande.belongsTo(Prestation);
 const User = require('./userModel');
 Commande.belongsTo(User);
 
-const Artisan = require('./artisanModel');
-Commande.belongsTo(Artisan);
-
 
 // Synchronisation du modèle avec la base de données
 (async () => {
