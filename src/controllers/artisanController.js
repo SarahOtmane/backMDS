@@ -148,9 +148,13 @@ exports.getAnArtisan = async (req, res) => {
 exports.putAnArtisan = async (req, res) => {
     try {
         const artisan = await Artisan.findOne({ where: { id: req.artisan.id} });
-
         if(!artisan){
             return res.status(404).json({ message: 'Artisan non trouvé.' });
+        }
+
+        const existingJob = await Job.findOne({where: {name: req.body.job}});
+        if (!existingJob) {
+            return res.status(401).json({ message: 'Ce métier n\'existe pas'})
         }
 
         let password = await bcrypt.hash(req.body.password, 10);
@@ -165,10 +169,10 @@ exports.putAnArtisan = async (req, res) => {
             streetAdress: req.body.streetAdress,
             city: req.body.city,
             country: req.body.country,
-            postalCode: req.body.postalCode
+            postalCode: req.body.postalCode,
+            id_job: existingJob.id,
         });
 
-        
         res.status(201).json({ message: 'Artisan mis à jour avec succès.' });
 
     } catch (error) {
