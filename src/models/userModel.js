@@ -76,6 +76,11 @@ User.hasMany(Testimonial, {
     foreignKey: 'id_user',
 });
 
+const Commande = require('./commandModel');
+User.hasMany(Commande, {
+    foreignKey: 'id_user',
+})
+
 
 // Synchronisation du modèle avec la base de données
 (async () => {

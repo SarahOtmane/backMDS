@@ -48,7 +48,7 @@ const Prestation = require('./prestationModel');
 Commande.belongsTo(Prestation, { foreignKey: 'id_prestation'});
 
 const User = require('./userModel');
-Commande.belongsTo(User, { foreignKey: 'id_user'});
+Commande.belongsTo(User);
 
 const Artisan = require('./artisanModel');
 Commande.belongsTo(Artisan);
