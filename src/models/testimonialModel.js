@@ -43,9 +43,6 @@ const Testimonial = sequelize.define('Testimonial', {
 const User = require('./userModel');
 Testimonial.belongsTo(User);
 
-const Artisan = require('./artisanModel');
-Testimonial.belongsTo(Artisan);
-
 // Synchronisation du modèle avec la base de données
 (async () => {
     try {

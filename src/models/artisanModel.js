@@ -72,6 +72,7 @@ const Testimonial = require('./testimonialModel');
 Artisan.hasMany(Testimonial, {
     foreignKey: 'id_artisan',
 });
+Testimonial.belongsTo(Artisan);
 
 
 const Commande = require('./commandModel');
