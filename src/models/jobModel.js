@@ -23,6 +23,11 @@ const Job = sequelize.define('Job', {
     underscored: true
 });
 
+const Artisan = require('./artisanModel');
+Job.hasMany(Artisan, {
+    foreignKey: 'id_job',
+});
+
 // Synchronisation du modèle avec la base de données
 (async () => {
     try {
