@@ -1,5 +1,4 @@
 const { Sequelize, DataTypes } = require('sequelize');
-// const bcrypt = require('bcrypt');
 
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
     host: "db",
@@ -70,17 +69,6 @@ const User = sequelize.define('User', {
     timestamps: true,
     underscored: true
 });
-
-User.addHook('beforeSave', async (user) => {
-    try {
-      // Valeur par défaut de l'algorithme de hashage : 10
-      const algo = await bcrypt.genSalt(10);
-      const hashPw = await bcrypt.hash(user.password, algo);
-      user.password = hashPw;
-    } catch (error) {
-      throw new Error(error);
-    }
-  });
 
 // Synchronisation du modèle avec la base de données
 (async () => {
