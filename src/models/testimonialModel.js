@@ -41,7 +41,7 @@ const Testimonial = sequelize.define('Testimonial', {
 
 // Définition des relations
 const User = require('./userModel');
-Testimonial.belongsTo(User, { foreignKey: 'id_user'});
+Testimonial.belongsTo(User);
 
 const Artisan = require('./artisanModel');
 Testimonial.belongsTo(Artisan, { foreignKey: 'id_artisan'});

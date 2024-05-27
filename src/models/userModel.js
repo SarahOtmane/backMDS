@@ -71,6 +71,11 @@ const User = sequelize.define('User', {
     underscored: true
 });
 
+const Testimonial = require('./testimonialModel');
+User.hasMany(Testimonial, {
+    foreignKey: 'id_user',
+});
+
 
 // Synchronisation du modèle avec la base de données
 (async () => {
