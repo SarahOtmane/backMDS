@@ -71,6 +71,11 @@ const Artisan = sequelize.define('Artisan', {
 const Job = require('./jobModel');
 Artisan.belongsTo(Job);
 
+const Testimonial = require('./testimonialModel');
+Artisan.hasMany(Testimonial, {
+    foreignKey: 'id_artisan',
+});
+
 // Synchronisation du modèle avec la base de données
 (async () => {
     try {
