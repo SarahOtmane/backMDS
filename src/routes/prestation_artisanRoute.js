@@ -9,6 +9,7 @@ router
     .route('/')
     .all(jwtMiddleware.verifyTokenArtisan)
     .post(prestation_artisanController.createAPrestaArtisan)
+    .put(prestation_artisanController.updateAPrestaArtisan)
 
 
 
