@@ -1,5 +1,6 @@
 const User = require('../models/userModel.js');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 require('dotenv').config();
 
 
@@ -25,14 +26,29 @@ exports.registerAUser = async (req, res) => {
             return res.status(401).json({ message: 'Vous ne pouvez pas créer un utilisateur avec le rôle admin.'});
         }
 
-        let newUser = await User.create(req.body);
+        let password = await bcrypt.hash(req.body.password, 10);
+
+        let newUser = await User.create({
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            email: req.body.email,
+            password: password,
+            role: req.body.role,
+            mobile: req.body.mobile,
+            streetAdress: req.body.streetAdress,
+            city: req.body.city,
+            postalCode: req.body.postalCode,
+            country: req.body.country,
+            subscribeNewsletter: false,
+        });
 
         res.status(201).json({ 
             message: `Utilisateur créé avec succès. L'email : ${newUser.email}` 
         });
     } 
     catch (error) {
-        res.status(500).json({message: "Erreur lors du traitement des données."});
+            console.error('Erreur lors de la création de l\'utilisateur:', error); // Ajout de cette ligne pour plus de détails
+            res.status(500).json({error: error.message}); // Modification pour inclure le message d'erreur
     }
 };
 
