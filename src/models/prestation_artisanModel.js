@@ -6,7 +6,7 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
 });
 
 
-const prestation_artisan = sequelize.define('prestation_artisan', {
+const Prestation_artisan = sequelize.define('prestation_artisan', {
     id_artisan: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -29,8 +29,17 @@ const prestation_artisan = sequelize.define('prestation_artisan', {
 //definition des relations
 const Prestation = require('./prestationModel');
 const Artisan = require('./artisanModel');
-Prestation.belongsToMany(Artisan, { through:  prestation_artisan});
-Artisan.belongsToMany(Prestation, { through:  prestation_artisan});
+
+Prestation.hasMany(Prestation_artisan, {
+    foreignKey: "id_prestation",
+});
+Prestation_artisan.belongsTo(Prestation);
+
+Artisan.hasMany(Prestation_artisan, {
+    foreignKey: "id_artisan",
+});
+Prestation_artisan.belongsTo(Artisan);
+
 
 // Synchronisation du modèle avec la base de données
 (async () => {
@@ -44,4 +53,4 @@ Artisan.belongsToMany(Prestation, { through:  prestation_artisan});
 })();
 
 
-module.exports = prestation_artisan;
+module.exports = Prestation_artisan;
