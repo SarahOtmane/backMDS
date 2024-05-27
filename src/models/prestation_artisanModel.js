@@ -25,6 +25,13 @@ const prestation_artisan = sequelize.define('prestation_artisan', {
     underscored: true
 });
 
+
+//definition des relations
+const Prestation = require('./prestationModel');
+const Artisan = require('./artisanModel');
+Prestation.belongsToMany(Artisan, { through:  prestation_artisan});
+Artisan.belongsToMany(Prestation, { through:  prestation_artisan});
+
 // Synchronisation du modèle avec la base de données
 (async () => {
     try {
