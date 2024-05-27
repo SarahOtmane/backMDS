@@ -1,5 +1,6 @@
 const Artisan = require('../models/artisanModel.js');
-const functionsMiddleware = require('../middlewares/functionsMiddleware.js')
+const functionsMiddleware = require('../middlewares/functionsMiddleware.js');
+const bcrypt = require('bcrypt');
 
 
 
@@ -27,11 +28,20 @@ exports.registerAnArtisan = async (req, res) => {
             return res.status(401).json({ message: 'L\'email n\'est pas au bon format'});
         }
 
-        // if (!functionsMiddleware.verifyNumberPhone(req.body.mobile)) {
-        //     return res.status(401).json({ message: 'Le numéro de téléphone est éronner'});
-        // }
+        let password = await bcrypt.hash(req.body.password, 10);
 
-        let newArtisan = await Artisan.create(req.body);
+        let newArtisan = await Artisan.create({
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            email: req.body.email,
+            password: password,
+            mobile: req.body.mobile,
+            streetAdress: req.body.streetAdress,
+            city: req.body.city,
+            postalCode: req.body.postalCode,
+            country: req.body.country,
+            acceptNewOrder: req.body.acceptNewOrder,
+        });
 
         res.status(201).json({ 
             message: `Artisan créé avec succès. L'email : ${newArtisan.email}` 
