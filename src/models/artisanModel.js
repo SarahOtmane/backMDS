@@ -1,4 +1,5 @@
 const { Sequelize, DataTypes } = require('sequelize');
+const bcrypt = require('bcrypt');
 
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
     host: "db",
@@ -73,6 +74,17 @@ Job.hasMany(Artisan, {
     foreignKey: 'id_job',
 });
 Artisan.belongsTo(Job);
+
+// Hash avant de sauvegarder en base de données
+Artisan.addHook('beforeSave', async (artisan) => {
+    try {
+        const algo = await bcrypt.genSalt(10);
+        const hashPw = await bcrypt.hash(artisan.password, algo);
+        artisan.password = hashPw;
+    } catch (error) {
+        throw new Error(error);
+    }
+  });
 
 // Synchronisation du modèle avec la base de données
 (async () => {
