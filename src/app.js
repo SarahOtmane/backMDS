@@ -53,6 +53,9 @@ app.use('/prestations', prestationRoute);
 const commandRoute = require('./routes/commandRoute.js');
 app.use('/commands', commandRoute);
 
+const prestation_artisanRoute = require('./routes/prestation_artisanRoute.js');
+app.use('/prestaArtisan', prestation_artisanRoute);
+
 // Démarrage du serveur
 app.listen(port, () => {
     console.log(`L'application écoute sur le port ${port}`);
