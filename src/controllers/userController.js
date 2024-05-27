@@ -56,9 +56,9 @@ exports.loginAUser = async (req, res) => {
             return res.status(404).json({ message: 'Utilisateur non trouvé.' });
         }
 
-        // const validPassword = await bcrypt.compare(req.body.password, user.password);
+        const validPassword = await bcrypt.compare(req.body.password, user.password);
 
-        if (user.password === req.body.password) {
+        if (validPassword) {
             const userData = {
                 id: user.id,
                 email: user.email,
@@ -123,12 +123,12 @@ exports.putAUser = async (req, res) => {
             return res.status(404).json({ message: 'Utilisateur non trouvé.' });
         }
 
-        // req.body.password = await bcrypt.hash(req.body.password, 10);
+        password = await bcrypt.hash(req.body.password, 10);
 
         await user.update({ 
             lastname: req.body.lastname,
             firstname: req.body.firstname,
-            password: req.body.password,
+            password: password,
             mobile: req.body.mobile,
             subscribeNewsletter: req.body.subscribeNewsletter,
             streetAdress: req.body.streetAdress,
