@@ -2,7 +2,7 @@ const Artisan = require('../models/artisanModel.js');
 const Job = require('../models/jobModel.js');
 const functionsMiddleware = require('../middlewares/functionsMiddleware.js');
 const bcrypt = require('bcrypt');
-
+const jwt = require('jsonwebtoken');
 
 
 /************************************************************************
@@ -176,7 +176,7 @@ exports.putAnArtisan = async (req, res) => {
         res.status(201).json({ message: 'Artisan mis à jour avec succès.' });
 
     } catch (error) {
-        res.status(500).json({message: "Erreur lors du traitement des données."});
+        res.status(500).json({message: "Erreur lors du traitement des données." });
     }
 };
 
