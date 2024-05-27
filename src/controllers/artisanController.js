@@ -65,7 +65,9 @@ exports.loginAnArtisan = async (req, res) => {
             return res.status(404).json({ message: 'Artisan non trouvé.' });
         }
 
-        if (artisan.password === req.body.password) {
+        const validPassword = await bcrypt.compare(req.body.password, artisan.password);
+
+        if (validPassword) {
             const artisanData = {
                 id: artisan.id,
                 email: artisan.email
@@ -135,10 +137,12 @@ exports.putAnArtisan = async (req, res) => {
             return res.status(404).json({ message: 'Artisan non trouvé.' });
         }
 
+        let password = await bcrypt.hash(req.body.password, 10);
+
         await artisan.update({ 
             lastname: req.body.lastname,
             firstname: req.body.firstname,
-            password: req.body.password,
+            password: password,
             mobile: req.body.mobile,
             id_job: req.body.id_job,
             acceptNewOrder: req.body.acceptNewOrder,
