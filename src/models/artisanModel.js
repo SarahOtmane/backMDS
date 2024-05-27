@@ -68,9 +68,6 @@ const Artisan = sequelize.define('Artisan', {
 
 
 // Définition des relations
-const Job = require('./jobModel');
-Artisan.belongsTo(Job);
-
 const Testimonial = require('./testimonialModel');
 Artisan.hasMany(Testimonial, {
     foreignKey: 'id_artisan',
