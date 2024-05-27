@@ -1,4 +1,5 @@
 const Artisan = require('../models/artisanModel.js');
+const Job = require('../models/jobModel.js');
 const functionsMiddleware = require('../middlewares/functionsMiddleware.js');
 const bcrypt = require('bcrypt');
 
@@ -19,9 +20,13 @@ const bcrypt = require('bcrypt');
 exports.registerAnArtisan = async (req, res) => {
     try {
         const existingEmail = await Artisan.findOne({ where: { email: req.body.email } });
-
         if (existingEmail) {
             return res.status(401).json({ message: 'Cet email existe déjà.' });
+        }
+
+        const existingJob = await Job.findOne({where: {name: req.body.job}});
+        if (!existingJob) {
+            return res.status(401).json({ message: 'Ce métier n\'existe pas'})
         }
 
         if (!functionsMiddleware.verifyEmail(req.body.email)) {
@@ -41,6 +46,7 @@ exports.registerAnArtisan = async (req, res) => {
             postalCode: req.body.postalCode,
             country: req.body.country,
             acceptNewOrder: req.body.acceptNewOrder,
+            id_job: existingJob.id,
         });
 
         res.status(201).json({ 
