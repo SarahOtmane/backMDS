@@ -25,18 +25,6 @@ const Commande = sequelize.define('Commande', {
         type: DataTypes.DATE,
         allowNull: true,
     },
-    id_prestation: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-    },
-    id_user: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-    },
-    id_artisan: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-    }
 }, {
     tableName: 'commands',
     timestamps: true,

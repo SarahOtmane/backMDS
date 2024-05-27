@@ -57,10 +57,6 @@ const Artisan = sequelize.define('Artisan', {
         type: DataTypes.INTEGER,
         allowNull: true
     },
-    id_job: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-    },
 }, {
     tableName: 'artisans',
     timestamps: true,
