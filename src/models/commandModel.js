@@ -51,7 +51,7 @@ const User = require('./userModel');
 Commande.belongsTo(User, { foreignKey: 'id_user'});
 
 const Artisan = require('./artisanModel');
-Commande.belongsTo(Artisan, { foreignKey: 'id_artisan'});
+Commande.belongsTo(Artisan);
 
 
 // Synchronisation du modèle avec la base de données
