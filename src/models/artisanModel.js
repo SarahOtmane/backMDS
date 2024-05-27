@@ -68,18 +68,11 @@ const Artisan = sequelize.define('Artisan', {
 
 
 // Définition des relations
-const Testimonial = require('./testimonialModel');
-Artisan.hasMany(Testimonial, {
-    foreignKey: 'id_artisan',
+const Job = require('./jobModel');
+Job.hasMany(Artisan, {
+    foreignKey: 'id_job',
 });
-Testimonial.belongsTo(Artisan);
-
-
-const Commande = require('./commandModel');
-Artisan.hasMany(Commande, {
-    foreignKey: 'id_artisan',
-});
-Commande.belongsTo(Artisan);
+Artisan.belongsTo(Job);
 
 // Synchronisation du modèle avec la base de données
 (async () => {

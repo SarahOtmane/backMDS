@@ -43,6 +43,24 @@ const Commande = sequelize.define('Commande', {
     underscored: true
 });
 
+const Prestation = require('./prestationModel');
+const User = require('./userModel');
+const Artisan = require('./artisanModel');
+
+User.hasMany(Commande, {
+    foreignKey: 'id_user',
+});
+Commande.belongsTo(User);
+
+Artisan.hasMany(Commande, {
+    foreignKey: 'id_artisan',
+});
+Commande.belongsTo(Artisan);
+
+Prestation.hasMany(Commande, {
+    foreignKey: 'id_prestation',
+});
+Commande.belongsTo(Prestation);
 
 // Synchronisation du modèle avec la base de données
 (async () => {

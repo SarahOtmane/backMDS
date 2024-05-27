@@ -71,18 +71,6 @@ const User = sequelize.define('User', {
     underscored: true
 });
 
-const Testimonial = require('./testimonialModel');
-User.hasMany(Testimonial, {
-    foreignKey: 'id_user',
-});
-Testimonial.belongsTo(User);
-
-const Commande = require('./commandModel');
-User.hasMany(Commande, {
-    foreignKey: 'id_user',
-});
-Commande.belongsTo(User);
-
 
 // Synchronisation du modèle avec la base de données
 (async () => {
