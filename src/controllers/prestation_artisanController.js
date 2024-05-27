@@ -9,7 +9,7 @@ const Prestation = require('../models/prestationModel');
             MÉTHODE POUR CREER UNE PRESTA_ARTISAN
 **********************************************************/
 /*
-    Fonction qui permet de creer la table intermediaire
+    Fonction qui permet de creer une presta d un artisan
 
     Les vérifications : 
         - l existance de l artisan
@@ -52,7 +52,7 @@ exports.createAPrestaArtisan = async (req, res) => {
             MÉTHODE POUR MODIFIER UNE PRESTA_ARTISAN
 **********************************************************/
 /*
-    Fonction qui permet d'update la table intermediaire
+    Fonction qui permet d'update le price d une presta dun artisan
 
     Les vérifications : 
         - l existance de l artisan
@@ -97,7 +97,7 @@ exports.updateAPrestaArtisan = async (req, res) => {
             MÉTHODE POUR SUPRIMER UNE PRESTA_ARTISAN
 **********************************************************/
 /*
-    Fonction qui permet d'update la table intermediaire
+    Fonction qui permet de supprimer une presta d un artisan
 
     Les vérifications : 
         - l existance de l artisan
@@ -129,6 +129,57 @@ exports.deleteAPrestaArtisan = async (req, res) => {
         }
 
         res.status(201).json({ message: 'PrestaArtisan supprimée avec succès.' });
+    } 
+    catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
+
+/**********************************************************
+            MÉTHODE POUR LISTER TOUTES LES PRESTA_ARTISAN
+**********************************************************/
+/*
+    Fonction qui permet de lister les presta d un artisan
+
+    Les vérifications : 
+        - l existance de l artisan
+        - l existance de la prestation
+
+*/
+
+exports.getAllPrestaArtisan = async (req, res) => {
+    try {
+        const artisan = await Artisan.findOne({ where: { id: req.artisan.id} });
+        if(!artisan){
+            return res.status(404).json({ message: 'Artisan non trouvé.' });
+        }
+
+        const existingPrestaArtisan = await Prestation_Artisan.findAll({where:{
+            id_artisan: artisan.id
+        }});
+        if(!existingPrestaArtisan){
+            return res.status(404).json({ message: 'PrestaArtisan non trouvé.'})
+        }
+
+        let prestaTab = [];
+
+        for (let index = 0; index < existingPrestaArtisan.length; index++) {
+            const presta = await Prestation.findOne({where: {
+                id: existingPrestaArtisan[index].id_prestation
+            }});
+
+            if(!presta){
+                return res.status(404).json({ message: 'Presta non trouvé.'});
+            }
+
+            if(presta.price != existingPrestaArtisan[index].price){
+                presta.price = existingPrestaArtisan[index].price;
+            }
+
+            prestaTab.push(presta);
+        }
+
+        res.status(201).json(prestaTab);
     } 
     catch (error) {
         res.status(500).json({message: "Erreur lors du traitement des données."});
