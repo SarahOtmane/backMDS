@@ -45,7 +45,7 @@ const Commande = sequelize.define('Commande', {
 
 // Définition des relations
 const Prestation = require('./prestationModel');
-Commande.belongsTo(Prestation, { foreignKey: 'id_prestation'});
+Commande.belongsTo(Prestation);
 
 const User = require('./userModel');
 Commande.belongsTo(User);

@@ -35,6 +35,11 @@ const Prestation = sequelize.define('Prestation', {
     underscored: true
 });
 
+const Commande = require('./commandModel');
+Prestation.hasMany(Commande, {
+    foreignKey: "id_prestation",
+});
+
 // Synchronisation du modèle avec la base de données
 (async () => {
     try {
