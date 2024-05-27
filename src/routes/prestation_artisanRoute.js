@@ -11,6 +11,7 @@ router
     .post(prestation_artisanController.createAPrestaArtisan)
     .put(prestation_artisanController.updateAPrestaArtisan)
     .delete(prestation_artisanController.deleteAPrestaArtisan)
+    .get(prestation_artisanController.getAllPrestaArtisan)
 
 
 
