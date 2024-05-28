@@ -1,4 +1,4 @@
-const Prestation_Artisan = require('../models/prestation_artisanModel');
+const Prestation_Artisan = require('../models/prestationArtisanModel');
 const Artisan = require('../models/artisanModel');
 const Prestation = require('../models/prestationModel');
 
