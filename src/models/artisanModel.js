@@ -68,7 +68,9 @@ const Job = require('./jobModel');
 Job.hasMany(Artisan, {
     foreignKey: 'id_job',
 });
-Artisan.belongsTo(Job);
+Artisan.belongsTo(Job, {
+    foreignKey: 'id_job',
+});
 
 
 // Synchronisation du modèle avec la base de données
