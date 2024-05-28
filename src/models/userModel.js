@@ -61,7 +61,7 @@ const User = sequelize.define('User', {
         allowNull: true
     },
     postalCode: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: true
     },
 }, {
