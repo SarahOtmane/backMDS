@@ -5,7 +5,6 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
     dialect: "mysql"
 });
 
-
 const Artisan = sequelize.define('Artisan', {
     id: {
         type: DataTypes.INTEGER,
@@ -62,7 +61,6 @@ const Artisan = sequelize.define('Artisan', {
     underscored: true
 });
 
-
 // Définition des relations
 const Job = require('./jobModel');
 Job.hasMany(Artisan, {
@@ -72,17 +70,14 @@ Artisan.belongsTo(Job, {
     foreignKey: 'id_job',
 });
 
-
 // Synchronisation du modèle avec la base de données
 (async () => {
     try {
-        //ne pas forcer a supp et recréer la table
         await Artisan.sync({ force: false });
         console.log("Modèle Artisan synchronisé avec la base de données.");
     } catch (error) {
         console.error("Erreur lors de la synchronisation du modèle Artisan:", error);
     }
 })();
-
 
 module.exports = Artisan;

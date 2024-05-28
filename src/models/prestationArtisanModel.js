@@ -5,14 +5,13 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
     dialect: "mysql"
 });
 
-
 const Prestationartisan = sequelize.define('Prestationartisan', {
     id_artisan: {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
     id_prestation: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,  
         allowNull: false,
     },
     price: {
@@ -25,8 +24,7 @@ const Prestationartisan = sequelize.define('Prestationartisan', {
     underscored: true
 });
 
-
-//definition des relations
+// Définition des relations
 const Prestation = require('./prestationModel');
 const Artisan = require('./artisanModel');
 
@@ -44,17 +42,14 @@ Prestationartisan.belongsTo(Artisan, {
     foreignKey: "id_artisan",
 });
 
-
 // Synchronisation du modèle avec la base de données
 (async () => {
     try {
-        //ne pas forcer a supp et recréer la table
         await Prestationartisan.sync({ force: false });
-        console.log("Modèle prestationartisan synchronisé avec la base de données.");
+        console.log("Modèle Prestationartisan synchronisé avec la base de données.");
     } catch (error) {
-        console.error("Erreur lors de la synchronisation du modèle prestation_artisan:", error);
+        console.error("Erreur lors de la synchronisation du modèle Prestationartisan:", error);
     }
 })();
-
 
 module.exports = Prestationartisan;
