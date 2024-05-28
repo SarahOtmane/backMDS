@@ -1,4 +1,4 @@
-const Prestation_Artisan = require('../models/prestationArtisanModel');
+const PrestationArtisan = require('../models/prestationArtisanModel');
 const Artisan = require('../models/artisanModel');
 const Prestation = require('../models/prestationModel');
 
@@ -30,14 +30,14 @@ exports.createAPrestaArtisan = async (req, res) => {
         }})
         if(!existingPresta) return res.status(404).json({message: 'La prestation n\'existe plys en base de donnés'})
 
-        let newPrestaArtisan = await Prestation_Artisan.create({
+        let newPrestaArtisan = await PrestationArtisan.create({
             price: req.body.price,
             id_artisan: artisan.id,
             id_prestation: existingPresta.id,
         });
 
         res.status(201).json({ 
-            message: `Prestation_Artisan créée avec succès.` 
+            message: `PrestationArtisan créée avec succès.` 
         });
     } 
     catch (error) {
@@ -73,7 +73,7 @@ exports.updateAPrestaArtisan = async (req, res) => {
         }})
         if(!existingPresta) return res.status(404).json({message: 'La prestation n\'existe plys en base de donnés'});
 
-        const existingPrestaArtisan = await Prestation_Artisan.findOne({where:{
+        const existingPrestaArtisan = await PrestationArtisan.findOne({where:{
             id_artisan: artisan.id,
             id_prestation: existingPresta.id
         }});
@@ -83,7 +83,7 @@ exports.updateAPrestaArtisan = async (req, res) => {
         });
 
         res.status(201).json({ 
-            message: `Prestation_Artisan update avec succès.` 
+            message: `PrestationArtisan update avec succès.` 
         });
     } 
     catch (error) {
@@ -119,7 +119,7 @@ exports.deleteAPrestaArtisan = async (req, res) => {
         if(!existingPresta) return res.status(404).json({message: 'La prestation n\'existe plys en base de donnés'});
 
 
-        const deletePresta = await Prestation_Artisan.destroy({where: { 
+        const deletePresta = await PrestationArtisan.destroy({where: { 
             id_artisan: artisan.id,
             id_prestation: existingPresta.id
         }});
@@ -154,7 +154,7 @@ exports.getAllPrestaArtisan = async (req, res) => {
             return res.status(404).json({ message: 'Artisan non trouvé.' });
         }
 
-        const existingPrestaArtisan = await Prestation_Artisan.findAll({where:{
+        const existingPrestaArtisan = await PrestationArtisan.findAll({where:{
             id_artisan: artisan.id
         }});
         if(!existingPrestaArtisan){
