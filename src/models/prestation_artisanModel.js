@@ -33,12 +33,16 @@ const Artisan = require('./artisanModel');
 Prestation.hasMany(Prestation_artisan, {
     foreignKey: "id_prestation",
 });
-Prestation_artisan.belongsTo(Prestation);
+Prestation_artisan.belongsTo(Prestation, {
+    foreignKey: "id_prestation",
+});
 
 Artisan.hasMany(Prestation_artisan, {
     foreignKey: "id_artisan",
 });
-Prestation_artisan.belongsTo(Artisan);
+Prestation_artisan.belongsTo(Artisan, {
+    foreignKey: "id_artisan",
+});
 
 
 // Synchronisation du modèle avec la base de données
