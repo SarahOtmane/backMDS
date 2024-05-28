@@ -37,12 +37,16 @@ const Artisan = require('./artisanModel');
 User.hasMany(Testimonial, {
     foreignKey: 'id_user',
 });
-Testimonial.belongsTo(User);
+Testimonial.belongsTo(User, {
+    foreignKey: 'id_user',
+});
 
 Artisan.hasMany(Testimonial, {
     foreignKey: 'id_artisan',
 });
-Testimonial.belongsTo(Artisan);
+Testimonial.belongsTo(Artisan, {
+    foreignKey: 'id_artisan',
+});
 
 
 // Synchronisation du modèle avec la base de données
