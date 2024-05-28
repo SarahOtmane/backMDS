@@ -53,8 +53,8 @@ app.use('/prestations', prestationRoute);
 const commandRoute = require('./routes/commandRoute.js');
 app.use('/commands', commandRoute);
 
-const prestation_artisanRoute = require('./routes/prestation_artisanRoute.js');
-app.use('/prestaArtisan', prestation_artisanRoute);
+const prestationArtisanRoute = require('./routes/prestationArtisanRoute.js');
+app.use('/prestaArtisan', prestationArtisanRoute);
 
 // Démarrage du serveur
 app.listen(port, () => {
