@@ -1,6 +1,6 @@
 const express = require('express');
 const sequelize = require("sequelize");
-
+const cors = require('cors');
 const app = express();
 const port = 3003;
 
@@ -20,6 +20,11 @@ db.authenticate()
         console.error("Impossible de se connecter à la base de données:", err);
 });
 
+app.use(cors({
+    origin: 'http://localhost:3000',
+    methods: 'GET,PUT,POST,DELETE',
+    credentials: true,
+}));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); 
