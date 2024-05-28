@@ -20,7 +20,7 @@ const PrestationArtisan = sequelize.define('PrestationArtisan', {
         allowNull: false,
     },
 }, {
-    tableName: 'prestation_artisans',
+    tableName: 'prestationArtisans',
     timestamps: true,
     underscored: true
 });
