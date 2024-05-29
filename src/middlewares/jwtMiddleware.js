@@ -6,7 +6,7 @@ exports.verifyTokenUser = async(req, res, next) =>{
     try {
         let token = req.headers['authorization'];
         if(token != undefined){
-            
+            token = token.replace(/^Bearer\s+/, '');
             const payload = await new Promise((resolve, reject) =>{
                 jwt.verify(token, process.env.JWT_KEY, (error, decoded) =>{
                     if(error){
@@ -35,7 +35,7 @@ exports.verifyTokenArtisan = async(req, res, next) =>{
     try {
         let token = req.headers['authorization'];
         if(token != undefined){
-            
+            token = token.replace(/^Bearer\s+/, '');
             const payload = await new Promise((resolve, reject) =>{
                 jwt.verify(token, process.env.JWT_KEY, (error, decoded) =>{
                     if(error){
@@ -65,6 +65,7 @@ exports.isAdmin = async (req, res, next) => {
     try {
         let token = req.headers['authorization'];
         if (token != undefined) {
+            token = token.replace(/^Bearer\s+/, '');
             const payload = await new Promise((resolve, reject) => {
                 jwt.verify(token, process.env.JWT_KEY, (error, decoded) => {
                     if (error) {
