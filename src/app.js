@@ -2,7 +2,7 @@ const express = require('express');
 const sequelize = require("sequelize");
 const cors = require('cors');
 const app = express();
-const port = 3004;
+const port = 3003;
 
 
 // Configuration de la base de données
