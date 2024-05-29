@@ -139,6 +139,11 @@ exports.putAUser = async (req, res) => {
             return res.status(404).json({ message: 'Utilisateur non trouvé.' });
         }
 
+        const validPassword = await bcrypt.compare(req.body.oldPassword, user.password);
+        if(!validPassword){
+            return res.status(400).json({ message: 'Mot de passe incorrect.' });
+        }
+
         password = await bcrypt.hash(req.body.password, 10);
 
         await user.update({ 
