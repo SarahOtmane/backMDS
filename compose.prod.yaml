@@ -1,0 +1,52 @@
+version: '3.9'
+
+services:
+  node:
+    image: node:lts-slim
+    working_dir: /app
+    env_file:
+      - .env
+    command: /bin/sh -c 'npm install && npm start'
+    ports:
+      - '3004:3004'
+    volumes:
+      - ./src:/app
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - routing_routing
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.renowear.rule=Host(`api.renowear.fr`)"
+      - "traefik.http.routers.renowear.entrypoints=websecure"
+      - "traefik.http.routers.renowear.tls.certresolver=myresolver"
+
+  db:
+    image: mariadb:lts
+    restart: always
+    healthcheck:
+      interval: 30s
+      retries: 3
+      test:
+        [
+          "CMD",
+          "healthcheck.sh",
+          "--su-mysql",
+          "--connect",
+          "--innodb_initialized"
+        ]
+      timeout: 30s
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_RANDOM_ROOT_PASSWORD: yes
+    volumes:
+      - ./db:/var/lib/mysql
+      #- ./data:/docker-entrypoint-initdb.d/init.sql 
+    networks:
+      - routing_routing
+networks:
+  routing_routing:
+    external: true
