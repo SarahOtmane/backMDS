@@ -125,7 +125,7 @@ exports.getAUser = async (req, res) => {
             MÉTHODE POUR MODIFIER UN UTILISATEUR
 **********************************************************/
 /*
-    Fonction qui permet de modifier les info d'un utilisateur
+    Fonction qui permet de modifier les info d'un utilisateur(sauf password)
 
     Les vérifications : 
         - Vérifier que l'utilisateur existe
@@ -139,17 +139,9 @@ exports.putAUser = async (req, res) => {
             return res.status(404).json({ message: 'Utilisateur non trouvé.' });
         }
 
-        const validPassword = await bcrypt.compare(req.body.oldPassword, user.password);
-        if(!validPassword){
-            return res.status(400).json({ message: 'Mot de passe incorrect.' });
-        }
-
-        password = await bcrypt.hash(req.body.password, 10);
-
         await user.update({ 
             lastname: req.body.lastname,
             firstname: req.body.firstname,
-            password: password,
             mobile: req.body.mobile,
             subscribeNewsletter: req.body.subscribeNewsletter,
             streetAdress: req.body.streetAdress,
@@ -165,6 +157,35 @@ exports.putAUser = async (req, res) => {
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 };
+
+
+
+exports.updatePassword = async(req,res) =>{
+    try {
+        const user = await User.findOne({ where: { id: req.user.id } });
+
+        if(!user){
+            return res.status(404).json({ message: 'Utilisateur non trouvé.' });
+        }
+
+        const validPassword = await bcrypt.compare(req.body.oldPassword, user.password);
+        if(!validPassword){
+            return res.status(400).json({ message: 'Mot de passe incorrect.' });
+        }
+
+        password = await bcrypt.hash(req.body.password, 10);
+
+        await user.update({ 
+            password: password,
+        });
+
+        
+        res.status(201).json({ message: 'Utilisateur mis à jour avec succès.' });
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+}
 
 
 /**********************************************************
