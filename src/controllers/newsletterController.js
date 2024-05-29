@@ -18,15 +18,15 @@ exports.addInNewsletter = async (req, res) => {
         if(user){
             user.subscribeNewsletter = true;
             await user.save();
-            res.status(201).json({message: "Vous êtes inscrit à la newsletter"});
+            return res.status(201).json({message: "Vous êtes inscrit à la newsletter"});
         }
 
-        user = await Newsletter.findByPk(req.body.email);
-        if(user){
-            res.status(401).json({message: "Cet email est inscrit à la newsletter"});
+        const emailExisting = await Newsletter.findOne({where: {email: req.body.email}});
+        if(emailExisting){
+            return res.status(401).json({message: "Cet email est inscrit à la newsletter"});
         }
 
-        await Newsletter.create(req.body);
+        await Newsletter.create({email: req.body.email});
         res.status(201).json({message: "Vous êtes inscrit à la newsletter"});
 
     } 
@@ -53,7 +53,7 @@ exports.getAllInNewsletter = async (req, res) => {
         const emailsInscrits = await Newsletter.findAll();
 
         if(!userInscrits && !emailsInscrits){
-            res.status(404).json({message: "Aucun email n'est inscrit à la newsletter"});
+            return res.status(404).json({message: "Aucun email n'est inscrit à la newsletter"});
         }
 
         res.status(201).json({userInscrits, emailsInscrits});
