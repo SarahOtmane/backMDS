@@ -12,7 +12,7 @@ const User = require('../models/userModel');
         - Verifier que l email n'a pas déja ete inscrit a la news
 
 */
-exports.createAJob = async (req, res) => {
+exports.addInNewsletter = async (req, res) => {
     try {
         const user = await User.findOne({where: {email: req.body.email}});
         if(user){
@@ -47,7 +47,7 @@ exports.createAJob = async (req, res) => {
         - Verifier que l email n'a pas déja ete inscrit a la news
 
 */
-exports.createAJob = async (req, res) => {
+exports.getAllInNewsletter = async (req, res) => {
     try {
         const userInscrits = await User.findAll({where: {subscribeNewsletter: true}});
         const emailsInscrits = await Newsletter.findAll();
