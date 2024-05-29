@@ -23,7 +23,7 @@ exports.addInNewsletter = async (req, res) => {
 
         user = await Newsletter.findByPk(req.body.email);
         if(user){
-            res.status(404).json({message: "Cet email est inscrit à la newsletter"});
+            res.status(401).json({message: "Cet email est inscrit à la newsletter"});
         }
 
         await Newsletter.create(req.body);
