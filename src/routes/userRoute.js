@@ -18,6 +18,11 @@ router
     .put(userController.putAUser)
     .delete(userController.deleteAUser)
 
+router
+    .route('/updatePassword')
+    .all(jwtMiddleware.verifyTokenUser)
+    .put(userController.updatePassword)
+
 
 
 /**********************************************************
