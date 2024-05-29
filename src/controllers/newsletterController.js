@@ -1,0 +1,1 @@
+const Newsletter = require("../models/newsletterModel");
