@@ -45,7 +45,7 @@ exports.registerAnArtisan = async (req, res) => {
             city: req.body.city,
             postalCode: req.body.postalCode,
             country: req.body.country,
-            acceptNewOrder: req.body.acceptNewOrder,
+            acceptNewOrder: true,
             id_job: existingJob.id,
         });
 
