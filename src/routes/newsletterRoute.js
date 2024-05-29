@@ -7,6 +7,13 @@ const jwtMiddleware = require('../middlewares/jwtMiddleware');
 
 router
     .route('/')
+    .post(newsletterController.addInNewsletter)
+
+
+router
+    .route('/')
+    .all(jwtMiddleware.isAdmin)
+    .get(newsletterController.getAllInNewsletter)
 
 
 module.exports = router;
