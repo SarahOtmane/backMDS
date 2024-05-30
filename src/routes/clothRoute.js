@@ -8,7 +8,11 @@ const clothController = require('../controllers/clothConntroller');
 
 router
     .route('/')
-    .get(jobController.getAllClothes)
+    .get(clothController.getAllClothes)
+
+router  
+    .route('/:id_job')
+    .get(clothController.getACloth)
 
 
 

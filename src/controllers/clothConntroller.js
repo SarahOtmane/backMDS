@@ -120,3 +120,29 @@ exports.getAllClothes = async (req, res) => {
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 };
+
+
+/**********************************************************
+            MÉTHODE POUR RÉCUP LE NAME D'UN CLOTH
+**********************************************************/
+/*
+    Fonction qui permet de lister un cloth
+
+    Les vérifications : 
+        - Vérifier que le cloth existe
+
+*/
+exports.getACloth = async (req, res) => {
+    try {
+        const cloth = await Cloth.findOne({ where: { id: req.params.id_cloth } });
+
+        if (!cloth) {
+            return res.status(404).json({ message: 'Habit non trouvé.' });
+        }
+
+        res.status(201).json(cloth);
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
