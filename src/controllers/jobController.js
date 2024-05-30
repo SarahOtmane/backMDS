@@ -32,7 +32,7 @@ exports.createAJob = async (req, res) => {
 
 
 /**********************************************************
-            MÉTHODE POUR RÉCUP LE NAME D'UN JOB
+            MÉTHODE POUR RÉCUP L ID D UN JOB
 **********************************************************/
 /*
     Fonction qui permet de lister un job
@@ -43,7 +43,7 @@ exports.createAJob = async (req, res) => {
 */
 exports.getAJob = async (req, res) => {
     try {
-        const job = await Job.findOne({ where: { id: req.params.id_job } });
+        const job = await Job.findOne({ where: { name: req.params.name_job } });
 
         if (!job) {
             return res.status(404).json({ message: 'Job non trouvé.' });
