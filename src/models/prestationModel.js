@@ -11,14 +11,6 @@ const Prestation = sequelize.define('Prestation', {
         autoIncrement: true,
         primaryKey: true,
     },
-    categorie: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    clothType: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
     reparationType: {
         type: DataTypes.STRING,
         allowNull: false
