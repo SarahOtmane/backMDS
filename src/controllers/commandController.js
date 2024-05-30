@@ -144,13 +144,20 @@ exports.getAllCommand = async (req, res) => {
 */
 exports.getCommandOfArtisan = async (req, res) => {
     try {
-        const commands = await Command.findAll({where: {id: req.artisan.id}});
-        
-        if (!commands) {
-            return res.status(404).json({ message: 'Auncune commande trouvée.' });
+        const product = await Product.findAll({where: {id: req.artisan.id}});
+        if (!product) {
+            return res.status(404).json({ message: 'Auncune produit pour cet artisan.' });
         }
 
-        res.status(201).json(commands);
+        let comands = [];
+
+        for(let index = 0; index < product.length; index++){
+            const comand = await Command.findAll({where: {id_product: product[index].id}});
+            if(comand) comands.push(comand)
+        }
+
+        if(!comands) return res.status(404).json({ message: 'Auncune commande trouvée.' });
+        res.status(201).json(comands);
 
     } catch (error) {
         res.status(500).json({message: "Erreur lors du traitement des données."});
