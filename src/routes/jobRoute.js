@@ -12,7 +12,7 @@ router
 
 
 router
-    .route('/:id_job')
+    .route('/:name_job')
     .get(jobController.getAJob)
 
 
