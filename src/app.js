@@ -58,8 +58,8 @@ app.use('/prestations', prestationRoute);
 const commandRoute = require('./routes/commandRoute.js');
 app.use('/commands', commandRoute);
 
-const prestationArtisanRoute = require('./routes/prestationArtisanRoute.js');
-app.use('/prestaArtisan', prestationArtisanRoute);
+const productRoute = require('./routes/productRoute.js');
+app.use('/products', productRoute);
 
 const newsletterRoute = require('./routes/newsletterRoute.js');
 app.use('/newsletter', newsletterRoute);
