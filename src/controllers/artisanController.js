@@ -253,7 +253,7 @@ exports.getAllArtisansFiltre = async (req, res) => {
     try {
         if(req.params.id_job === '-1'){
             const artisans = await Artisan.findAll({where: {
-                postalCode: req.params.postalCode
+                postalCode: req.params.postalcode
             }});
 
             if (!artisans) {
@@ -261,7 +261,7 @@ exports.getAllArtisansFiltre = async (req, res) => {
             }
     
             return res.status(201).json(artisans);
-        }else if(req.params.postalCode === '-1'){
+        }else if(req.params.postalcode === '-1'){
             const artisans = await Artisan.findAll({where: {
                 id_job: req.params.id_job
             }});
@@ -275,7 +275,7 @@ exports.getAllArtisansFiltre = async (req, res) => {
 
         const artisans = await Artisan.findAll({where: {
             id_job: req.params.id_job,
-            postalCode: req.params.postalCode
+            postalCode: req.params.postalcode
         }});
 
         if (!artisans) {
