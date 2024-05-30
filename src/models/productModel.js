@@ -5,7 +5,12 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
     dialect: "mysql"
 });
 
-const Prestationartisan = sequelize.define('Prestationartisan', {
+const Product = sequelize.define('Product', {
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+    },
     id_artisan: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -14,12 +19,16 @@ const Prestationartisan = sequelize.define('Prestationartisan', {
         type: DataTypes.INTEGER,  
         allowNull: false,
     },
+    id_cloth: {
+        type: DataTypes.INTEGER,  
+        allowNull: false,
+    },
     price: {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
 }, {
-    tableName: 'Prestationartisans',
+    tableName: 'products',
     timestamps: true,
     underscored: true
 });
@@ -27,29 +36,38 @@ const Prestationartisan = sequelize.define('Prestationartisan', {
 // Définition des relations
 const Prestation = require('./prestationModel');
 const Artisan = require('./artisanModel');
+const Cloth = require('./clothModel');
 
-Prestation.hasMany(Prestationartisan, {
+Prestation.hasMany(Product, {
     foreignKey: "id_prestation",
 });
-Prestationartisan.belongsTo(Prestation, {
+Product.belongsTo(Prestation, {
     foreignKey: "id_prestation",
 });
 
-Artisan.hasMany(Prestationartisan, {
+Artisan.hasMany(Product, {
     foreignKey: "id_artisan",
 });
-Prestationartisan.belongsTo(Artisan, {
+Product.belongsTo(Artisan, {
     foreignKey: "id_artisan",
 });
+
+Cloth.hasMany(Product, {
+    foreignKey: "id_cloth",
+});
+Product.belongsTo(Cloth, {
+    foreignKey: "id_cloth",
+});
+
 
 // Synchronisation du modèle avec la base de données
 (async () => {
     try {
-        await Prestationartisan.sync({ force: false });
-        console.log("Modèle Prestationartisan synchronisé avec la base de données.");
+        await Product.sync({ force: false });
+        console.log("Modèle Product synchronisé avec la base de données.");
     } catch (error) {
-        console.error("Erreur lors de la synchronisation du modèle Prestationartisan:", error);
+        console.error("Erreur lors de la synchronisation du modèle Product:", error);
     }
 })();
 
-module.exports = Prestationartisan;
+module.exports = Product;
