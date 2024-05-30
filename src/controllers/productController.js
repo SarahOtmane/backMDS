@@ -169,3 +169,50 @@ exports.getAllProductsArtisan = async (req, res) => {
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 };
+
+/**********************************************************
+            MÉTHODE POUR LISTER TOUS LES PRODUCTS
+**********************************************************/
+/*
+    Fonction qui permet de lister les products
+
+    Les vérifications : 
+        - l existance de l artisan
+        - l existance de la prestation
+
+*/
+
+exports.getAProduct = async (req, res) => {
+    try {
+        const product = await Product.findByPk(req.params.id_product);
+        if(!product){
+            return res.status(404).json({ message: 'Produit non trouvé.' })
+        }
+
+        const artisan = await Artisan.findOne({where: {id_artisan: product.id_artisan}});
+        if(!artisan){
+            return res.status(404).json({ message: 'Artisan non trouvé.' })
+        }
+
+        const cloth = await Cloth.findOne({where: {id_cloth: product.id_cloth}});
+        if(!cloth){
+            return res.status(404).json({ message: 'Habit non trouvé.' })
+        }
+
+        const presta = await Prestation.findOne({where: {id_prestation: product.id_prestation}});
+        if(!presta) return res.status(404).json({message: 'La prestation n\'existe plus en base de donnés'})
+
+        let newProduct = {
+            price: product.price,
+            categorie: cloth.categorie,
+            clothType: cloth.clothType,
+            reparationType: presta.reparationType,
+            artisan: artisan.id
+        }
+
+        res.status(201).json(newProduct);
+    } 
+    catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
