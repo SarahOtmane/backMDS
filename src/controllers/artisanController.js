@@ -47,6 +47,8 @@ exports.registerAnArtisan = async (req, res) => {
             country: req.body.country,
             acceptNewOrder: true,
             id_job: existingJob.id,
+            siret: req.body.siret,
+            numeroTVA: req.body.numeroTVA
         });
 
         res.status(201).json({ 
