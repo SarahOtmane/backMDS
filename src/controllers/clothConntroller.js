@@ -65,3 +65,31 @@ exports.putACloth = async (req, res) => {
     }
 };
 
+
+/**********************************************************
+            MÉTHODE POUR SUPPRIMER UN CLOTH (ADMIN)
+**********************************************************/
+/*
+    Fonction qui permet de supprimer un cloth
+
+    Les vérifications : 
+        - Vérifier que le cloth existe
+
+*/
+exports.deleteACloth = async (req, res) => {
+    try {
+
+        const deleteCloth = await Cloth.destroy({
+            where: { id: req.params.id_job }
+        });
+        
+        if (!deleteCloth) {
+            return res.status(404).json({ message: 'Habit non trouvé.' });
+        }
+
+        res.status(201).json({ message: 'Habit supprimé avec succès.' });
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
