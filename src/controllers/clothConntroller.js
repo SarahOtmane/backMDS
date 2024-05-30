@@ -1,0 +1,1 @@
+const Cloth = require('../models/clothModel');
