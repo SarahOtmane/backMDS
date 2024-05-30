@@ -13,7 +13,8 @@ const Prestation = sequelize.define('Prestation', {
     },
     reparationType: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     priceSuggested: {
         type: DataTypes.INTEGER,
