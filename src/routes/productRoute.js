@@ -14,6 +14,10 @@ router
     .route('/')
     .post(productController.getAllProductsArtisan)
 
+router 
+    .route('/:id_product')
+    .get(productController.getAProduct)
+
 router
     .route('/:id_product')
     .all(jwtMiddleware.verifyTokenArtisan)
