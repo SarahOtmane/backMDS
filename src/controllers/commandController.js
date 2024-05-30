@@ -1,6 +1,8 @@
 const Command = require('../models/commandModel');
 const Artisan = require('../models/artisanModel');
 const Prestation = require('../models/prestationModel');
+const Cloth = require('../models/clothModel');
+const Product = require('../models/productModel');
 
 
 
@@ -23,21 +25,29 @@ exports.createACommand = async (req, res) => {
             return res.status(404).json({ message: 'L\'artisan n\'existe plus en base de données.' });
         }
 
-        const existingPresta = await Prestation.findOne({where: {
+        const existingCloth = await Cloth.findOne({where: {
             categorie: req.body.categorie,
             clothType: req.body.clothType,
-            reparationType: req.body.reparationType
+            id_job: req.body.id_job
         }})
+        if(!existingCloth) return res.status(404).json({message: 'L\'habit n\'existe plus en base de donnés'});
 
-        if(!existingPresta) return res.status(404).json({message: 'La prestation n\'existe plys en base de donnés'})
+        const existingPresta = await Prestation.findOne({where: {reparationType: req.body.reparationType}});
+        if(!existingPresta) return res.status(404).json({message: 'La prestation n\'existe plus en base de donnés'});
 
-        let NewCommand = await Command.create({
+        const existingProduct = await Product.findOne({where: {
+            id_cloth: existingCloth.id,
+            id_artisan: existingArtisan.id,
+            id_prestation: existingPresta.id
+        }});
+        if(!existingProduct) return res.status(404).json({message: 'Le produit n\'existe déjà'});
+
+        await Command.create({
             name: req.body.name,
             picture: req.body.picture,
             dateFinished: null,
-            id_artisan: req.params.id_artisan,
             id_user: req.user.id,
-            id_prestation: existingPresta.id,
+            id_product: existingProduct.id,
         });
 
         res.status(201).json({ 
