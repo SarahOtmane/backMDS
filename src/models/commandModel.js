@@ -30,9 +30,8 @@ const Commande = sequelize.define('Commande', {
     underscored: true
 });
 
-const Prestation = require('./prestationModel');
 const User = require('./userModel');
-const Artisan = require('./artisanModel');
+const Product = require('./productModel');
 
 User.hasMany(Commande, {
     foreignKey: 'id_user',
@@ -41,19 +40,13 @@ Commande.belongsTo(User, {
     foreignKey: 'id_user',
 });
 
-Artisan.hasMany(Commande, {
-    foreignKey: 'id_artisan',
+Product.hasMany(Commande, {
+    foreignKey: 'id_product',
 });
-Commande.belongsTo(Artisan, {
-    foreignKey: 'id_artisan',
+Commande.belongsTo(Product, {
+    foreignKey: 'id_product',
 });
 
-Prestation.hasMany(Commande, {
-    foreignKey: 'id_prestation',
-});
-Commande.belongsTo(Prestation, {
-    foreignKey: 'id_prestation',
-});
 
 // Synchronisation du modèle avec la base de données
 (async () => {
