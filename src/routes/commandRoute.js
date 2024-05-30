@@ -29,10 +29,10 @@ router
     .get(commandController.getAllCommand)
 
 
-router
-    .route('/:id_command')
-    .all(jwtMiddleware.isAdmin)
-    .put(commandController.putACommand)
+// router
+//     .route('/:id_command')
+//     .all(jwtMiddleware.isAdmin)
+//     .put(commandController.putACommand)
 
 
 

@@ -73,35 +73,32 @@ exports.createACommand = async (req, res) => {
         - Vérifier que la commande existe
 
 */
-exports.putACommand = async (req, res) => {
-    try {
-        const command = await Command.findOne({ where: { id: req.params.id } });
+// exports.putACommand = async (req, res) => {
+//     try {
+//         const command = await Command.findOne({ where: { id: req.params.id } });
+//         if(!command){
+//             return res.status(404).json({ message: 'Commande non trouvée.' });
+//         }
 
-        if(!command){
-            return res.status(404).json({ message: 'Commande non trouvée.' });
-        }
+//         const existingCloth = await Cloth.findOne({where: {
+//             categorie: req.body.categorie,
+//             clothType: req.body.clothType,
+//         }})
+//         if(!existingCloth) return res.status(401).json({message: 'L\'habit n\'existe plys en base de donnés'});
 
-        const existingPresta = await Prestation.findOne({where: {
-            categorie: req.body.categorie,
-            clothType: req.body.clothType,
-            reparationType: req.body.reparationType
-        }})
-
-        if(!existingPresta) return res.status(401).json({message: 'La prestation n\'existe plys en base de donnés'})
-
-        await command.update({ 
-            name: req.body.name,
-            picture: req.body.picture,
-            id_prestation: existingPresta.id,
-        });
+//         await command.update({ 
+//             name: req.body.name,
+//             picture: req.body.picture,
+//             id_prestation: existingPresta.id,
+//         });
 
         
-        res.status(201).json({ message: 'Information mise à jour avec succès.' });
+//         res.status(201).json({ message: 'Information mise à jour avec succès.' });
 
-    } catch (error) {
-        res.status(500).json({message: "Erreur lors du traitement des données."});
-    }
-};
+//     } catch (error) {
+//         res.status(500).json({message: "Erreur lors du traitement des données."});
+//     }
+// };
 
 
 
