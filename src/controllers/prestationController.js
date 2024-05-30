@@ -15,8 +15,6 @@ exports.createAPrestation = async(req, res) =>{
     try {
         let presta = await Prestation.findOne({
             where: {
-                categorie: req.body.categorie,
-                clothType: req.body.clothType,
                 reparationType: req.body.reparationType,
                 priceSuggested: req.body.priceSuggested
             }
@@ -24,7 +22,7 @@ exports.createAPrestation = async(req, res) =>{
 
         if(presta)  return res.status(401).json({ message: 'Cette prestation existe déjà.' });
 
-        let newPresta = await Prestation.create(req.body);
+        await Prestation.create(req.body);
 
         res.status(201).json({message: "Réparation créée avec succés."});
 
