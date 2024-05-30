@@ -11,10 +11,15 @@ router
     .post(productController.createAProduct)
 
 router
+    .route('/')
+    .post(productController.getAllProductsArtisan)
+
+router
     .route('/:id_product')
     .all(jwtMiddleware.verifyTokenArtisan)
     .put(productController.updateAProduct)
     .delete(productController.deleteAProduct)
+
 
 
 
