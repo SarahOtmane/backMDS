@@ -6,7 +6,9 @@ const clothController = require('../controllers/clothConntroller');
 
 
 
-
+router
+    .route('/')
+    .get(jobController.getAllClothes)
 
 
 
