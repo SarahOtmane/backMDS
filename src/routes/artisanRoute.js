@@ -20,6 +20,10 @@ router
     .delete(artisanController.deleteAnArtisan)
 
 router
+    .route('/:id_job/:postalcode')
+    .get(artisanController.getAllArtisansFiltre)
+
+router
     .route('/allArtisan')
     .get(artisanController.getAllArtisans)
 
