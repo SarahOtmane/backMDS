@@ -24,7 +24,7 @@ router
     .route('/:id_job')
     .all(jwtMiddleware.isAdmin)
     .put(clothController.putACloth)
-    .delete(clothController.deleteAJob);
+    .delete(clothController.deleteACloth);
 
 
 
