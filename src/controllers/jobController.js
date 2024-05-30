@@ -18,11 +18,9 @@ exports.createAJob = async (req, res) => {
             return res.status(401).json({ message: 'Ce job existe déjà.' });
         }
 
-        let newJob = await Job.create(req.body);
+        await Job.create(req.body);
 
-        res.status(201).json({ 
-            message: `Job créé avec succès. Le nom : ${newInfo.name}` 
-        });
+        res.status(201).json({message: `Job créé avec succès.`});
     } 
     catch (error) {
         res.status(500).json({message: "Erreur lors du traitement des données."});
