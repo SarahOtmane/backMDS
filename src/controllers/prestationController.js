@@ -81,8 +81,6 @@ exports.putAPresta = async (req, res) => {
         }
 
         await presta.update({ 
-            categorie: req.body.categorie,
-            clothType: req.body.clothType,
             reparationType: req.body.reparationType,
             priceSuggested: req.body.priceSuggested,
         });
