@@ -162,10 +162,8 @@ exports.getAllProductsArtisan = async (req, res) => {
         if(!products){
             return res.status(404).json({ message: 'Auncun product trouvé.' });
         }
+        res.status(201).json(products);
 
-        for(let index = 0; index <products.length; index++){
-            
-        }
     } 
     catch (error) {
         res.status(500).json({message: "Erreur lors du traitement des données."});
