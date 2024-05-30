@@ -64,6 +64,9 @@ app.use('/prestaArtisan', prestationArtisanRoute);
 const newsletterRoute = require('./routes/newsletterRoute.js');
 app.use('/newsletter', newsletterRoute);
 
+const clothRoute = require('./routes/clothRoute.js');
+app.use('/clothes', clothRoute);
+
 // Démarrage du serveur
 app.listen(port, () => {
     console.log(`L'application écoute sur le port ${port}`);
