@@ -55,6 +55,14 @@ const Artisan = sequelize.define('Artisan', {
         type: DataTypes.INTEGER,
         allowNull: true
     },
+    siret: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    numeroTVA: {
+        type: DataTypes.STRING,
+        allowNull: false
+    }
 }, {
     tableName: 'artisans',
     timestamps: true,
