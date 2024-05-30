@@ -238,3 +238,53 @@ exports.getAllArtisans = async (req, res) => {
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 };
+
+
+/************************************************************************
+            MÉTHODE POUR LISTER TOUS LES ARTISANS (id_job, postalCode)
+************************************************************************//*
+    Fonction qui permet de lister tous les artisans
+
+    Les vérifications : 
+        - Vérifier que les artisans existent
+
+*/
+exports.getAllArtisansFiltre = async (req, res) => {
+    try {
+        if(req.params.id_job === '-1'){
+            const artisans = await Artisan.findAll({where: {
+                postalCode: req.params.postalCode
+            }});
+
+            if (!artisans) {
+                return res.status(404).json({ message: 'Aucun artisans trouvé.' });
+            }
+    
+            return res.status(201).json(artisans);
+        }else if(req.params.postalCode === '-1'){
+            const artisans = await Artisan.findAll({where: {
+                id_job: req.params.id_job
+            }});
+
+            if (!artisans) {
+                return res.status(404).json({ message: 'Aucun artisans trouvé.' });
+            }
+    
+            return res.status(201).json(artisans);
+        }
+
+        const artisans = await Artisan.findAll({where: {
+            id_job: req.params.id_job,
+            postalCode: req.params.postalCode
+        }});
+
+        if (!artisans) {
+            return res.status(404).json({ message: 'Aucun artisans trouvé.' });
+        }
+
+        return res.status(201).json(artisans);
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
