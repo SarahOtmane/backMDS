@@ -16,7 +16,8 @@ exports.createAPrestation = async(req, res) =>{
         let presta = await Prestation.findOne({
             where: {
                 reparationType: req.body.reparationType,
-                priceSuggested: req.body.priceSuggested
+                priceSuggested: req.body.priceSuggested,
+                id_job: req.body.id_job
             }
         })
 
@@ -83,6 +84,7 @@ exports.putAPresta = async (req, res) => {
         await presta.update({ 
             reparationType: req.body.reparationType,
             priceSuggested: req.body.priceSuggested,
+            id_job: req.body.id_job
         });
 
         
