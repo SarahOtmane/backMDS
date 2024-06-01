@@ -12,6 +12,10 @@ router
     .route('/:id_prestation')
     .get(prestationController.getAPrestation)
 
+router
+    .route('/:id_job')
+    .get(prestationController.getAllPrestaOfJob)
+
 
     
 /**********************************************************
