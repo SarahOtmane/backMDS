@@ -50,7 +50,7 @@ exports.getAPrestation = async (req, res) => {
         const presta = await Prestation.findOne({ where: { id: req.params.id_prestation } });
 
         if (!presta) {
-            return res.status(404).json({ message: 'Info non trouvé.' });
+            return res.status(404).json({ message: 'Prestation non trouvé.' });
         }
 
         res.status(201).json(presta);
