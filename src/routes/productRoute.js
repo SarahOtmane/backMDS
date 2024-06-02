@@ -12,7 +12,7 @@ router
 
 router
     .route('/')
-    .post(productController.getAllProductsArtisan)
+    .get(productController.getAllProductsArtisan)
 
 router 
     .route('/:id_product')
