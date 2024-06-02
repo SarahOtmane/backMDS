@@ -1,5 +1,7 @@
 const Artisan = require('../models/artisanModel.js');
 const Job = require('../models/jobModel.js');
+const Prestation = require('../models/prestationModel.js');
+const Product = require('../models/productModel.js');
 const functionsMiddleware = require('../middlewares/functionsMiddleware.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -19,22 +21,35 @@ const jwt = require('jsonwebtoken');
 */
 exports.registerAnArtisan = async (req, res) => {
     try {
+        // Vérification de l'email existant
         const existingEmail = await Artisan.findOne({ where: { email: req.body.email } });
         if (existingEmail) {
             return res.status(409).json({ message: 'Cet email existe déjà.' });
         }
 
-        const existingJob = await Job.findOne({where: {name: req.body.job}});
+        // Vérification de l'existence du métier
+        const existingJob = await Job.findOne({ where: { name: req.body.job } });
         if (!existingJob) {
-            return res.status(401).json({ message: 'Ce métier n\'existe pas'})
+            return res.status(401).json({ message: 'Ce métier n\'existe pas' });
         }
 
+        // Vérification du format de l'email
         if (!functionsMiddleware.verifyEmail(req.body.email)) {
-            return res.status(401).json({ message: 'L\'email n\'est pas au bon format'});
+            return res.status(401).json({ message: 'L\'email n\'est pas au bon format' });
         }
 
+        // Vérification du format du numéro de téléphone
+        
+
+        // Vérification des prestations
+        if (!req.body.prestations || req.body.prestations.length === 0) {
+            return res.status(404).json({ message: 'Aucune prestation enregistrée' });
+        }
+
+        // Hachage du mot de passe
         let password = await bcrypt.hash(req.body.password, 10);
 
+        // Création du compte artisan
         let newArtisan = await Artisan.create({
             firstname: req.body.firstname,
             lastname: req.body.lastname,
@@ -51,12 +66,32 @@ exports.registerAnArtisan = async (req, res) => {
             numeroTVA: req.body.numeroTVA
         });
 
-        res.status(201).json({ 
-            message: `Artisan créé avec succès. L'email : ${newArtisan.email}` 
-        });
-    } 
-    catch (error) {
-        res.status(500).json({message: "Erreur lors du traitement des données."});
+        const jsonString = req.body.prestations.replace(/'/g, '"');
+        const prestations =  JSON.parse(jsonString);
+
+        // Création des produits associés aux prestations
+        let products = [];
+        for (let index = 0; index < prestations.length; index++) {
+            const prestaType = prestations[index];
+            console.log(prestaType);
+
+            const existingPresta = await Prestation.findOne({ where: { reparationType: prestaType } });
+            if (existingPresta) {
+                let newProduct = await Product.create({
+                    price: existingPresta.priceSuggested,
+                    id_prestation: existingPresta.id,
+                    id_artisan: newArtisan.id
+                });
+                products.push(newProduct);
+            } else {
+                return res.status(404).json({ message: `La prestation ${prestaType} n'existe pas` });
+            }
+        }
+
+        // Réponse finale
+        res.status(201).json({ newArtisan, products });
+    } catch (error) {
+        res.status(500).json({ message: "Erreur lors du traitement des données.", error: error.message });
     }
 };
 
