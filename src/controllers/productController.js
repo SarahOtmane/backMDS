@@ -24,14 +24,6 @@ exports.createAProduct = async (req, res) => {
             return res.status(404).json({ message: 'Artisan non trouvé.' });
         }
 
-        const cloth = await Cloth.findOne({where: {
-            categorie: req.body.categorie,
-            clothType: req.body.clothType,
-        }})
-        if(!cloth){
-            return res.status(404).json({ message: 'Habit non trouvé.' });
-        }
-
         const existingPresta = await Prestation.findOne({where: {
             reparationType: req.body.reparationType
         }})
