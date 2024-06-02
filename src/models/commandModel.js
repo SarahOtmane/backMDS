@@ -32,6 +32,7 @@ const Commande = sequelize.define('Commande', {
 
 const User = require('./userModel');
 const Product = require('./productModel');
+const Cloth = require('./clothModel')
 
 User.hasMany(Commande, {
     foreignKey: 'id_user',
@@ -45,6 +46,13 @@ Product.hasMany(Commande, {
 });
 Commande.belongsTo(Product, {
     foreignKey: 'id_product',
+});
+
+Cloth.hasMany(Commande, {
+    foreignKey: "id_cloth",
+});
+Commande.belongsTo(Cloth, {
+    foreignKey: "id_cloth",
 });
 
 
