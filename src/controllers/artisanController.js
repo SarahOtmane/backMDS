@@ -21,7 +21,7 @@ exports.registerAnArtisan = async (req, res) => {
     try {
         const existingEmail = await Artisan.findOne({ where: { email: req.body.email } });
         if (existingEmail) {
-            return res.status(401).json({ message: 'Cet email existe déjà.' });
+            return res.status(409).json({ message: 'Cet email existe déjà.' });
         }
 
         const existingJob = await Job.findOne({where: {name: req.body.job}});
