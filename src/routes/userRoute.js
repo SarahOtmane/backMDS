@@ -23,6 +23,14 @@ router
     .all(jwtMiddleware.verifyTokenUser)
     .put(userController.updatePassword)
 
+router
+    .route('/forgot-password')
+    .post(userController.forgotPassword)
+
+router 
+    .route('/reste-password/:token')
+    .post(userController.resetPassword)
+
 
 
 /**********************************************************
