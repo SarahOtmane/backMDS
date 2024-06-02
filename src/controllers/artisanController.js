@@ -66,13 +66,14 @@ exports.registerAnArtisan = async (req, res) => {
             numeroTVA: req.body.numeroTVA
         });
 
-        const jsonString = req.body.prestations.replace(/'/g, '"');
-        const prestations =  JSON.parse(jsonString);
+        // const jsonString = req.body.prestations.replace(/'/g, '"');
+        // const prestations =  JSON.parse(jsonString);
+        const prestation = req.body.prestations;
 
         // Création des produits associés aux prestations
         let products = [];
-        for (let index = 0; index < prestations.length; index++) {
-            const prestaType = prestations[index];
+        for (let index = 0; index < prestation.length; index++) {
+            const prestaType = prestation[index];
             console.log(prestaType);
 
             const existingPresta = await Prestation.findOne({ where: { reparationType: prestaType } });
