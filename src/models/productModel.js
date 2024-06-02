@@ -11,18 +11,6 @@ const Product = sequelize.define('Product', {
         autoIncrement: true,
         primaryKey: true,
     },
-    id_artisan: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-    },
-    id_prestation: {
-        type: DataTypes.INTEGER,  
-        allowNull: false,
-    },
-    id_cloth: {
-        type: DataTypes.INTEGER,  
-        allowNull: false,
-    },
     price: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -51,14 +39,6 @@ Artisan.hasMany(Product, {
 Product.belongsTo(Artisan, {
     foreignKey: "id_artisan",
 });
-
-Cloth.hasMany(Product, {
-    foreignKey: "id_cloth",
-});
-Product.belongsTo(Cloth, {
-    foreignKey: "id_cloth",
-});
-
 
 // Synchronisation du modèle avec la base de données
 (async () => {
