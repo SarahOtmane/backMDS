@@ -36,7 +36,6 @@ exports.createACommand = async (req, res) => {
         if(!existingPresta) return res.status(404).json({message: 'La prestation n\'existe plus en base de donnés'});
 
         const existingProduct = await Product.findOne({where: {
-            id_cloth: existingCloth.id,
             id_artisan: existingArtisan.id,
             id_prestation: existingPresta.id
         }});
@@ -48,6 +47,7 @@ exports.createACommand = async (req, res) => {
             dateFinished: null,
             id_user: req.user.id,
             id_product: existingProduct.id,
+            id_cloth: existingCloth.id
         });
 
         res.status(201).json({ 
