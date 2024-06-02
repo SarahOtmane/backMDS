@@ -1,6 +1,7 @@
 const User = require('../models/userModel.js');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const nodemailer = require('nodemailer');
 require('dotenv').config();
 
 
@@ -239,5 +240,77 @@ exports.getAllUsers = async (req, res) => {
 
     } catch (error) {
         res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
+
+
+
+
+
+
+/**********************************************************
+            MÉTHODE POUR ENVOYER EMAIL FORGOT PASSWORD
+**********************************************************/
+exports.forgotPassword = async (req, res) => {
+    const email = req.body.email;
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).send('Utilisateur non trouvé');
+        }
+
+        // Générer un token JWT contenant l'email de l'utilisateur et une expiration
+        const token = jwt.sign(
+            { email: user.email },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+
+        const transporter = nodemailer.createTransport({
+            service: 'Gmail',
+            auth: {
+                user: process.env.EMAIL_ADDRESS,
+                pass: process.env.EMAIL_PASSWORD,
+            },
+        });
+
+        const mailOptions = {
+            to: user.email,
+            from: process.env.EMAIL_ADDRESS,
+            subject: 'Réinitialisation du mot de passe',
+            text: `Vous recevez ceci parce que vous (ou quelqu'un d'autre) avez demandé la réinitialisation du mot de passe de votre compte.\n\n` +
+                `Veuillez cliquer sur le lien suivant, ou le copier dans votre navigateur pour compléter le processus:\n\n` +
+                `http://localhost:3003/reset-password/${token}\n\n` +
+                `Si vous n'avez pas demandé ceci, veuillez ignorer cet email et votre mot de passe restera inchangé.\n`
+        };
+
+        await transporter.sendMail(mailOptions);
+        res.send('Email de réinitialisation envoyé');
+    } catch (error) {
+        res.status(500).send('Erreur du serveur');
+    }
+};
+
+
+exports.resetPassword = async (req, res) => {
+    const token = req.params.token;
+    try {
+        // Vérifier et décoder le token JWT
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const email = decoded.email;
+
+        const user = await User.findOne({where: {email: email}});
+        if (!user) {
+            return res.status(400).send('Le lien de réinitialisation est invalide ou a expiré.');
+        }
+
+        // Hacher le nouveau mot de passe avant de le sauvegarder
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        user.password = hashedPassword;
+        await user.save();
+
+        res.send('Mot de passe réinitialisé avec succès');
+    } catch (error) {
+        res.status(500).send('Erreur du serveur');
     }
 };
