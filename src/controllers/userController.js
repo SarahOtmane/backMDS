@@ -280,7 +280,7 @@ exports.forgotPassword = async (req, res) => {
             subject: 'Réinitialisation du mot de passe',
             text: `Vous recevez ceci parce que vous (ou quelqu'un d'autre) avez demandé la réinitialisation du mot de passe de votre compte.\n\n` +
                 `Veuillez cliquer sur le lien suivant, ou le copier dans votre navigateur pour compléter le processus:\n\n` +
-                `http://localhost:3003/user/password/reset/${token}\n\n` +
+                `http://localhost:3000/user/password/reset/${token}\n\n` +
                 `Si vous n'avez pas demandé ceci, veuillez ignorer cet email et votre mot de passe restera inchangé.\n`
         };
 
