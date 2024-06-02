@@ -33,7 +33,6 @@ exports.createAProduct = async (req, res) => {
             price: req.body.price,
             id_artisan: artisan.id,
             id_prestation: existingPresta.id,
-            id_cloth: cloth.id
         });
 
         res.status(201).json({ 
