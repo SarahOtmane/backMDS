@@ -252,27 +252,36 @@ exports.getAllUsers = async (req, res) => {
             MÉTHODE POUR ENVOYER EMAIL FORGOT PASSWORD
 **********************************************************/
 exports.forgotPassword = async (req, res) => {
-    const email = req.body.email;
     try {
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ where: {email : req.body.email} }); 
         if (!user) {
-            return res.status(404).send('Utilisateur non trouvé');
+            return res.status(404).json({ message: 'Utilisateur non trouvé' });
         }
 
-        // Générer un token JWT contenant l'email de l'utilisateur et une expiration
+        console.log('Utilisateur trouvé:', user);
+
         const token = jwt.sign(
             { email: user.email },
-            process.env.JWT_SECRET,
+            process.env.JWT_KEY,
             { expiresIn: '1h' }
         );
 
+        console.log('Token généré:', token);
+
+        // Utiliser Ethereal pour les tests
+        const testAccount = await nodemailer.createTestAccount();
+
         const transporter = nodemailer.createTransport({
-            service: 'Gmail',
+            host: 'smtp.ethereal.email',
+            port: 587,
+            secure: false,
             auth: {
-                user: process.env.EMAIL_ADDRESS,
-                pass: process.env.EMAIL_PASSWORD,
-            },
+                user: testAccount.user,
+                pass: testAccount.pass
+            }
         });
+
+        console.log('Transporter créé:', transporter);
 
         const mailOptions = {
             to: user.email,
@@ -284,10 +293,17 @@ exports.forgotPassword = async (req, res) => {
                 `Si vous n'avez pas demandé ceci, veuillez ignorer cet email et votre mot de passe restera inchangé.\n`
         };
 
-        await transporter.sendMail(mailOptions);
-        res.send('Email de réinitialisation envoyé');
+        console.log('Mail options:', mailOptions);
+
+        const info = await transporter.sendMail(mailOptions);
+
+        console.log('Message sent: %s', info.messageId);
+        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+
+        res.status(200).json({ message: 'Email de réinitialisation envoyé', previewUrl: nodemailer.getTestMessageUrl(info) });
     } catch (error) {
-        res.status(500).send('Erreur du serveur');
+        console.error('Erreur lors de la réinitialisation du mot de passe:', error);  
+        res.status(500).json({ message: 'Erreur du serveur' });
     }
 };
 
@@ -301,7 +317,7 @@ exports.resetPassword = async (req, res) => {
 
         const user = await User.findOne({where: {email: email}});
         if (!user) {
-            return res.status(400).send('Le lien de réinitialisation est invalide ou a expiré.');
+            return res.status(400).json({message: 'Le lien de réinitialisation est invalide ou a expiré.'});
         }
 
         // Hacher le nouveau mot de passe avant de le sauvegarder
@@ -309,8 +325,8 @@ exports.resetPassword = async (req, res) => {
         user.password = hashedPassword;
         await user.save();
 
-        res.send('Mot de passe réinitialisé avec succès');
+        res.status(200).json({message: 'Mot de passe réinitialisé avec succès'});
     } catch (error) {
-        res.status(500).send('Erreur du serveur');
+        res.status(500).json({message: 'Erreur du serveur'});
     }
 };
