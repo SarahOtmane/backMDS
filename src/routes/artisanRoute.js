@@ -20,6 +20,11 @@ router
     .delete(artisanController.deleteAnArtisan)
 
 router
+    .route('/updatePassword')
+    .all(jwtMiddleware.verifyTokenArtisan)
+    .put(artisanController.updatePassword)
+
+router
     .route('/:id_job/:postalcode')
     .get(artisanController.getAllArtisansFiltre)
 
