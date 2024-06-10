@@ -134,7 +134,7 @@ exports.getAllClothes = async (req, res) => {
         - Vérifier que les clothes existent
 
 */
-exports.getAllClothesJob = async (req, res) => {
+exports.getAllClothesOfJob = async (req, res) => {
     try {
         
         const clothes = await Cloth.findAll({where: {id_job : req.params.id_job}});
