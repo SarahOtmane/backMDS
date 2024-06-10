@@ -144,12 +144,12 @@ exports.deleteAProduct = async (req, res) => {
 
 exports.getAllProductsArtisan = async (req, res) => {
     try {
-        const artisan = await Artisan.findOne({where: {id: req.artisan.id}});
+        const artisan = await Artisan.findOne({where: {id: req.params.id_artisan}});
         if(!artisan){
             return res.status(404).json({ message: 'Artisan non trouvé.' });
         }
 
-        const products = await Product.findOne({where: {id_artisan: artisan.id}});
+        const products = await Product.findAll({where: {id_artisan: artisan.id}});
         if(!products){
             return res.status(404).json({ message: 'Auncun product trouvé.' });
         }
