@@ -14,6 +14,10 @@ router
     .route('/:id_cloth')
     .get(clothController.getACloth)
 
+router 
+    .route('/job/:id_job')
+    .get(clothController.getAllClothesOfJob)
+
 
 
 
