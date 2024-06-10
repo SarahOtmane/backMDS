@@ -11,7 +11,7 @@ router
     .get(clothController.getAllClothes)
 
 router  
-    .route('/:id_job')
+    .route('/:id_cloth')
     .get(clothController.getACloth)
 
 
@@ -27,7 +27,7 @@ router
     .post(clothController.createACloth)
 
 router
-    .route('/:id_job')
+    .route('/:id_cloth')
     .all(jwtMiddleware.isAdmin)
     .put(clothController.putACloth)
     .delete(clothController.deleteACloth);
