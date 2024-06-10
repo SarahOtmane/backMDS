@@ -214,6 +214,34 @@ exports.putAnArtisan = async (req, res) => {
 };
 
 
+exports.updatePassword = async(req,res) =>{
+    try {
+        const artisan = await Artisan.findOne({ where: { id: req.artisan.id } });
+
+        if(!artisan){
+            return res.status(404).json({ message: 'Artisan non trouvé.' });
+        }
+
+        const validPassword = await bcrypt.compare(req.body.oldPassword, artisan.password);
+        if(!validPassword){
+            return res.status(400).json({ message: 'Mot de passe incorrect.' });
+        }
+
+        password = await bcrypt.hash(req.body.password, 10);
+
+        await artisan.update({ 
+            password: password,
+        });
+
+        
+        res.status(201).json({ message: 'Artisan mis à jour avec succès.' });
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+}
+
+
 
 
 
