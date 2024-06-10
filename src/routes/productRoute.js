@@ -11,7 +11,7 @@ router
     .post(productController.createAProduct)
 
 router
-    .route('/')
+    .route('/:id_artisan')
     .get(productController.getAllProductsArtisan)
 
 router 
