@@ -15,6 +15,10 @@ router
     .route('/:name_job')
     .get(jobController.getAJob)
 
+router 
+    .route('/id/:id_job')
+    .get(jobController.getNameJob)
+
 
 /**********************************************************
             ROUTES UNIQUEMENT POUR LES ADMINS
