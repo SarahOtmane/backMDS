@@ -122,6 +122,35 @@ exports.getAllClothes = async (req, res) => {
 };
 
 
+
+
+/**********************************************************
+            MÉTHODE POUR LISTER TOUS LES CLOTHES D'UN JOB
+**********************************************************/
+/*
+    Fonction qui permet de lister tous les clothes
+
+    Les vérifications : 
+        - Vérifier que les clothes existent
+
+*/
+exports.getAllClothesJob = async (req, res) => {
+    try {
+        
+        const clothes = await Cloth.findAll({where: {id_job : req.params.id_job}});
+        
+        if (!clothes) {
+            return res.status(404).json({ message: 'Auncun cloth trouvé.' });
+        }
+
+        res.status(201).json(clothes);
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
+
+
 /**********************************************************
             MÉTHODE POUR RÉCUP LE NAME D'UN CLOTH
 **********************************************************/
