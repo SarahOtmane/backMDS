@@ -80,7 +80,7 @@ exports.deleteACloth = async (req, res) => {
     try {
 
         const deleteCloth = await Cloth.destroy({
-            where: { id: req.params.id_job }
+            where: { id: req.params.id_cloth }
         });
         
         if (!deleteCloth) {
