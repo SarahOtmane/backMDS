@@ -38,11 +38,9 @@ exports.registerAnArtisan = async (req, res) => {
             return res.status(401).json({ message: 'L\'email n\'est pas au bon format' });
         }
 
-        // Vérification du format du numéro de téléphone
-        
-
         // Vérification des prestations
-        if (!req.body.prestations || req.body.prestations.length === 0) {
+        let prestations = req.body.prestations;
+        if (!prestations || prestations.length === 0) {
             return res.status(404).json({ message: 'Aucune prestation enregistrée' });
         }
 
@@ -66,15 +64,10 @@ exports.registerAnArtisan = async (req, res) => {
             numeroTVA: req.body.numeroTVA
         });
 
-        // const jsonString = req.body.prestations.replace(/'/g, '"');
-        // const prestations =  JSON.parse(jsonString);
-        const prestation = req.body.prestations;
-
         // Création des produits associés aux prestations
         let products = [];
-        for (let index = 0; index < prestation.length; index++) {
-            const prestaType = prestation[index];
-            console.log(prestaType);
+        for (let index = 0; index < prestations.length; index++) {
+            const prestaType = prestations[index];
 
             const existingPresta = await Prestation.findOne({ where: { reparationType: prestaType } });
             if (existingPresta) {
@@ -190,7 +183,9 @@ exports.putAnArtisan = async (req, res) => {
             return res.status(404).json({ message: 'Artisan non trouvé.' });
         }
 
-        const existingJob = await Job.findOne({where: {name: req.body.job}});
+        console.log(artisan);
+
+        const existingJob = await Job.findOne({where: {id: req.body.id_job}});
         if (!existingJob) {
             return res.status(401).json({ message: 'Ce métier n\'existe pas'})
         }
