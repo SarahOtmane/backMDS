@@ -58,6 +58,34 @@ exports.getAJob = async (req, res) => {
 
 
 /**********************************************************
+            MÉTHODE POUR RÉCUP LE NOM D UN JOB
+**********************************************************/
+/*
+    Fonction qui permet de lister un job
+
+    Les vérifications : 
+        - Vérifier que le job existe
+
+*/
+exports.getNameJob = async (req, res) => {
+    try {
+        const job = await Job.findOne({ where: { name: req.params.id_job } });
+
+        if (!job) {
+            return res.status(404).json({ message: 'Job non trouvé.' });
+        }
+
+        res.status(201).json(job);
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
+
+
+
+
+/**********************************************************
             MÉTHODE POUR MODIFIER UN JOB (ADMIN)
 **********************************************************/
 /*
