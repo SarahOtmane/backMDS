@@ -64,21 +64,14 @@ exports.updateAProduct = async (req, res) => {
         if(!product){
             return res.status(404).json({ message: 'Produit non trouvé.' });
         }
+
         const artisan = await Artisan.findOne({ where: { id: req.artisan.id} });
         if(!artisan){
             return res.status(404).json({ message: 'Artisan non trouvé.' });
         }
 
-        const cloth = await Cloth.findOne({where: {
-            categorie: req.body.categorie,
-            clothType: req.body.clothType,
-        }})
-        if(!cloth){
-            return res.status(404).json({ message: 'Habit non trouvé.' });
-        }
-
         const existingPresta = await Prestation.findOne({where: {
-            reparationType: req.body.reparationType
+            id: req.body.id_prestation
         }})
         if(!existingPresta) return res.status(404).json({message: 'La prestation n\'existe plus en base de donnés'})
 
@@ -86,7 +79,6 @@ exports.updateAProduct = async (req, res) => {
             price: req.body.price,
             id_artisan: artisan.id,
             id_prestation: existingPresta.id,
-            id_cloth: cloth.id
         });
 
         res.status(201).json({ 
