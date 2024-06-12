@@ -9,10 +9,9 @@ router
     .get(testimonialController.getAllTestimonial)
 
 router
-    .route('/:id_artisan')
+    .route('/artisan/:id_artisan')
     .get(testimonialController.getAllTestimonialForArtisan)
     .post(jwtMiddleware.verifyTokenUser, testimonialController.createATestimonial)
-
 
 router
     .route('/:id_testimonial')
