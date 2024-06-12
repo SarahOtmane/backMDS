@@ -185,10 +185,6 @@ exports.getAllTestimonialForArtisan = async (req, res) => {
         }
 
         const testimonials = await Testimonial.findAll({where: {id_artisan: req.params.id_artisan}});
-        
-        if (!testimonials) {
-            return res.status(404).json({ message: 'Auncun testimonial trouvé.' });
-        }
 
         res.status(201).json(testimonials);
 
