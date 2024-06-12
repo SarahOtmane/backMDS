@@ -47,7 +47,8 @@ exports.createACommand = async (req, res) => {
             dateFinished: null,
             id_user: req.user.id,
             id_product: existingProduct.id,
-            id_cloth: existingCloth.id
+            id_cloth: existingCloth.id,
+            comment: req.body.comment
         });
 
         res.status(201).json({ 
