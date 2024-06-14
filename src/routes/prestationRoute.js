@@ -13,10 +13,6 @@ router
     .get(prestationController.getAPrestation)
 
 router
-    .route('/name/:reparationType')
-    .get(prestationController.getIDPrestation)
-
-router
     .route('/job/:id_job')
     .get(prestationController.getAllPrestaOfJob)
 
