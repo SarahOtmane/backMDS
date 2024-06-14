@@ -212,12 +212,12 @@ exports.getAProduct = async (req, res) => {
 
 exports.getPrestaProduct = async (req, res) => {
     try {
-        const artisan = await Artisan.findOne({where: {id_artisan: req.params.id_artisan}});
+        const artisan = await Artisan.findOne({where: {id: req.params.id_artisan}});
         if(!artisan){
             return res.status(404).json({ message: 'Artisan non trouvé.' })
         }
 
-        const presta = await Prestation.findOne({where: {id_prestation: req.params.id_prestation}});
+        const presta = await Prestation.findOne({where: {id: req.params.id_prestation}});
         if(!presta) return res.status(404).json({message: 'La prestation n\'existe plus en base de donnés'})
 
         const product = await Product.findOne({where: {
@@ -227,7 +227,7 @@ exports.getPrestaProduct = async (req, res) => {
         if(!product){
             return res.status(404).json({ message: 'Produit non trouvé.' })
         }
-        
+
         res.status(201).json(product);
     } 
     catch (error) {
