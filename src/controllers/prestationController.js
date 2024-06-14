@@ -36,7 +36,7 @@ exports.createAPrestation = async(req, res) =>{
 
 
 /**********************************************************
-            MÉTHODE POUR LISTER UNE PRESTATION
+            MÉTHODE POUR LISTER UNE PRESTATION AVEC UN ID
 **********************************************************/
 /*
     Fonction qui permet de lister une prestation
@@ -48,6 +48,32 @@ exports.createAPrestation = async(req, res) =>{
 exports.getAPrestation = async (req, res) => {
     try {
         const presta = await Prestation.findOne({ where: { id: req.params.id_prestation } });
+
+        if (!presta) {
+            return res.status(404).json({ message: 'Prestation non trouvé.' });
+        }
+
+        res.status(201).json(presta);
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
+
+
+/**********************************************************
+            MÉTHODE POUR LISTER UNE PRESTATION AVEC UN NOM
+**********************************************************/
+/*
+    Fonction qui permet de lister une prestation
+
+    Les vérifications : 
+        - Vérifier que la prestation existe
+
+*/
+exports.getIDPrestation = async (req, res) => {
+    try {
+        const presta = await Prestation.findOne({ where: { id: req.params.reparationType } });
 
         if (!presta) {
             return res.status(404).json({ message: 'Prestation non trouvé.' });
