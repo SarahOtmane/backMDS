@@ -13,6 +13,10 @@ router
 router
     .route('/artisan/:id_artisan')
     .get(productController.getAllProductsArtisan)
+    
+router 
+    .route('/:id_artisan/:id_prestation')
+    .get(productController.getPrestaProduct)
 
 router 
     .route('/:id_product')
