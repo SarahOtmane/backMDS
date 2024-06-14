@@ -122,9 +122,9 @@ exports.deleteAProduct = async (req, res) => {
 
 
 
-/**********************************************************
-            MÉTHODE POUR LISTER TOUS LES PRODUCTS
-**********************************************************/
+/******************************************************************************************
+            MÉTHODE POUR LISTER TOUS LES PRODUCTS LIÉS A UN ARTISAN
+******************************************************************************************/
 /*
     Fonction qui permet de lister les products
 
@@ -153,8 +153,10 @@ exports.getAllProductsArtisan = async (req, res) => {
     }
 };
 
+
+
 /**********************************************************
-            MÉTHODE POUR LISTER TOUS LES PRODUCTS
+            MÉTHODE POUR LISTER UN PRODUCT
 **********************************************************/
 /*
     Fonction qui permet de lister les products
@@ -176,24 +178,57 @@ exports.getAProduct = async (req, res) => {
         if(!artisan){
             return res.status(404).json({ message: 'Artisan non trouvé.' })
         }
-
-        const cloth = await Cloth.findOne({where: {id_cloth: product.id_cloth}});
-        if(!cloth){
-            return res.status(404).json({ message: 'Habit non trouvé.' })
-        }
-
         const presta = await Prestation.findOne({where: {id_prestation: product.id_prestation}});
         if(!presta) return res.status(404).json({message: 'La prestation n\'existe plus en base de donnés'})
 
         let newProduct = {
             price: product.price,
-            categorie: cloth.categorie,
-            clothType: cloth.clothType,
             reparationType: presta.reparationType,
-            artisan: artisan.id
+            id_artisan: artisan.id
         }
 
         res.status(201).json(newProduct);
+    } 
+    catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
+
+
+
+
+
+/***************************************************************************
+            MÉTHODE POUR LISTER UN PRODUCT LIÉ A UNE PRESTA ET UN ARTISAN
+***************************************************************************/
+/*
+    Fonction qui permet de lister les products
+
+    Les vérifications : 
+        - l existance de l artisan
+        - l existance de la prestation
+
+*/
+
+exports.getPrestaProduct = async (req, res) => {
+    try {
+        const artisan = await Artisan.findOne({where: {id_artisan: req.params.id_artisan}});
+        if(!artisan){
+            return res.status(404).json({ message: 'Artisan non trouvé.' })
+        }
+
+        const presta = await Prestation.findOne({where: {id_prestation: req.params.id_prestation}});
+        if(!presta) return res.status(404).json({message: 'La prestation n\'existe plus en base de donnés'})
+
+        const product = await Product.findOne({where: {
+            id_artisan : artisan.id,
+            id_prestation: presta.id
+        }});
+        if(!product){
+            return res.status(404).json({ message: 'Produit non trouvé.' })
+        }
+        
+        res.status(201).json(product);
     } 
     catch (error) {
         res.status(500).json({message: "Erreur lors du traitement des données."});
