@@ -145,7 +145,7 @@ exports.getAllCommand = async (req, res) => {
 */
 exports.getCommandOfArtisan = async (req, res) => {
     try {
-        const product = await Product.findAll({where: {id: req.artisan.id}});
+        const product = await Product.findAll({where: {id_artisan: req.artisan.id}});
         if (!product) {
             return res.status(404).json({ message: 'Auncune produit pour cet artisan.' });
         }
