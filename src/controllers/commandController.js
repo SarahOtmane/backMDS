@@ -180,7 +180,7 @@ exports.getCommandOfArtisan = async (req, res) => {
 */
 exports.getCommandOfUser = async (req, res) => {
     try {
-        const commands = await Command.findAll({where: {id: req.user.id}});
+        const commands = await Command.findAll({where: {id_user: req.user.id}});
         
         if (!commands) {
             return res.status(404).json({ message: 'Auncune commande trouvée.' });
