@@ -1,19 +1,19 @@
 const request = require('supertest');
 const express = require('express');
 const bodyParser = require('body-parser');
-const testimonialController = require('../controllers/testimonialController');
+const testimonialController = require('../controllers/testimonialController.js');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Mock routes for testing
-app.get('/testimonials', testimonialController.getAllTestimonials);
-app.get('/testimonials/artisan/:id_artisan', testimonialController.getTestimonialsByArtisan);
-app.post('/testimonials/artisan/:id_artisan', testimonialController.createTestimonial);
-app.get('/testimonials/:id_testimonial', testimonialController.getTestimonialById);
-app.put('/testimonials/:id_testimonial', testimonialController.updateTestimonial);
-app.delete('/testimonials/:id_testimonial', testimonialController.deleteTestimonial);
+app.get('/testimonials', testimonialController.getAllTestimonial);
+app.get('/testimonials/artisan/:id_artisan', testimonialController.getAllTestimonialForArtisan);
+app.post('/testimonials/artisan/:id_artisan', testimonialController.createATestimonial);
+app.get('/testimonials/:id_testimonial', testimonialController.getATestimonial);
+app.put('/testimonials/:id_testimonial', testimonialController.putATestimonial);
+app.delete('/testimonials/:id_testimonial', testimonialController.deleteATestimonial);
 
 // Mock dependencies
 jest.mock('../models/testimonialModel.js');
