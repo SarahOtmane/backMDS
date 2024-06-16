@@ -1,8 +1,8 @@
 /**
  * @swagger
  * tags:
- *   name: Job
- *   description: CRUD pour la gestion des jobs
+ *   name: Info
+ *   description: CRUD pour la gestion des informations
  */
 
 
@@ -10,38 +10,42 @@
  * @swagger
  * components:
  *   schemas:
- *     Job:
+ *     Info:
  *       type: object
  *       required:
  *         - id
  *         - name
+ *         - content
  *       properties:
  *         id:
  *           type: integer
- *           description: ID du job
+ *           description: ID de l'information
  *         name:
  *           type: string
- *           description: Titre / Nom de la catégorie d'artisans
+ *           description: Nom de l'information
+ *         content:
+ *           type: string
+ *           description: Contenu de l'information
  */
 
 
 /**
  * @swagger
- * /jobs:
+ * /infos:
  *   get:
- *     summary: Récupérer tous les jobs en BDD
- *     tags: [Job]
+ *     summary: Récupérer toutes les informations en BDD
+ *     tags: [Info]
  *     responses:
  *       200:
- *         description: Jobs récupérés avec succès
+ *         description: Informations récupérées avec succès
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Job'
+ *                 $ref: '#/components/schemas/Info'
  *       404:
- *         description: Aucun job trouvé
+ *         description: Aucune information trouvée
  *       500:
  *         description: Erreur interne du serveur
  */
@@ -49,53 +53,26 @@
 
 /**
  * @swagger
- * /jobs/{name_job}:
+ * /infos/{id_info}:
  *   get:
- *     summary: Récupérer un job par nom
- *     tags: [Job]
+ *     summary: Récupérer une information par ID
+ *     tags: [Info]
  *     parameters:
  *       - in: path
- *         name: name_job
- *         required: true
- *         schema:
- *           type: string
- *         description: Nom du job à récupérer
- *     responses:
- *       200:
- *         description: Job récupéré avec succès
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Job'
- *       404:
- *         description: Aucun job trouvé
- *       500:
- *         description: Erreur interne du serveur
- */
-
-
-/**
- * @swagger
- * /jobs/id/{id_job}:
- *   get:
- *     summary: Récupérer un job par ID
- *     tags: [Job]
- *     parameters:
- *       - in: path
- *         name: id_job
+ *         name: id_info
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID du job à récupérer
+ *         description: ID de l'information à récupérer
  *     responses:
  *       200:
- *         description: Job récupéré avec succès
+ *         description: Information récupérée avec succès
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Job'
+ *               $ref: '#/components/schemas/Info'
  *       404:
- *         description: Aucun job trouvé
+ *         description: Aucune information trouvée
  *       500:
  *         description: Erreur interne du serveur
  */
@@ -103,10 +80,10 @@
 
 /**
  * @swagger
- * /jobs:
+ * /infos:
  *   post:
- *     summary: Enregistrer un job en BDD (Admin seulement)
- *     tags: [Job]
+ *     summary: Enregistrer une information en BDD (Admin seulement)
+ *     tags: [Info]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -118,13 +95,16 @@
  *             properties:
  *               name:
  *                 type: string
+ *               content:
+ *                 type: string
  *             required:
  *               - name
+ *               - content
  *     responses:
  *       201:
- *         description: Job créé avec succès
+ *         description: Information créée avec succès
  *       401:
- *         description: Job existe déjà en BDD
+ *         description: Information existe déjà en BDD
  *       403:
  *         description: Token manquant ou invalide
  *       500:
@@ -134,19 +114,19 @@
 
 /**
  * @swagger
- * /jobs/{id_job}:
+ * /infos/{id_info}:
  *   put:
- *     summary: Modifier un job par l'admin
- *     tags: [Job]
+ *     summary: Modifier une information par l'admin
+ *     tags: [Info]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id_job
+ *         name: id_info
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID du job à modifier
+ *         description: ID de l'information à modifier
  *     requestBody:
  *       required: true
  *       content:
@@ -156,36 +136,39 @@
  *             properties:
  *               name:
  *                 type: string
+ *               content:
+ *                 type: string
  *             required:
  *               - name
+ *               - content
  *     responses:
  *       200:
- *         description: Job mis à jour avec succès
+ *         description: Information mise à jour avec succès
  *       403:
  *         description: Token manquant ou invalide
  *       404:
- *         description: Aucun job trouvé
+ *         description: Aucune information trouvée
  *       500:
  *         description: Erreur interne du serveur
  *   delete:
- *     summary: Supprimer un job par l'admin
- *     tags: [Job]
+ *     summary: Supprimer une information par l'admin
+ *     tags: [Info]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id_job
+ *         name: id_info
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID du job à supprimer
+ *         description: ID de l'information à supprimer
  *     responses:
  *       200:
- *         description: Job supprimé avec succès
+ *         description: Information supprimée avec succès
  *       403:
  *         description: Token manquant ou invalide
  *       404:
- *         description: Aucun job trouvé
+ *         description: Aucune information trouvée
  *       500:
  *         description: Erreur interne du serveur
  */
