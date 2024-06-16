@@ -11,9 +11,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Mock routes for testing
 app.post('/users/register', userController.register);
 app.post('/users/login', userController.login);
-app.get('/users', userController.getUser);
-app.put('/users', userController.updateUser);
-app.delete('/users', userController.deleteUser);
+app.get('/users', userController.getAUser);
+app.put('/users', userController.putAUser);
+app.delete('/users', userController.deleteAUser);
 
 // Mock middleware
 app.use((req, res, next) => {
