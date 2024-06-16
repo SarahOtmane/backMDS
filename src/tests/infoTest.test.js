@@ -1,18 +1,18 @@
 const request = require('supertest');
 const express = require('express');
 const bodyParser = require('body-parser');
-const infoController = require('../controllers/infoController');
+const infoController = require('../controllers/infoController.js');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Mock routes for testing
-app.get('/infos', infoController.getAllInfos);
+app.get('/infos', infoController.getAllInfo);
 app.get('/infos/:id_info', infoController.getInfoById);
-app.post('/infos', infoController.createInfo);
+app.post('/infos', infoController.createAnInfo);
 app.put('/infos/:id_info', infoController.updateInfo);
-app.delete('/infos/:id_info', infoController.deleteInfo);
+app.delete('/infos/:id_info', infoController.deleteAnInfo);
 
 // Mock dependencies
 jest.mock('../models/infoModel.js');
