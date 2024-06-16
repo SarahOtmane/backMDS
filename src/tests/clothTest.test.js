@@ -1,7 +1,7 @@
 const request = require('supertest');
 const express = require('express');
 const bodyParser = require('body-parser');
-const clothController = require('../controllers/clothController');
+const clothController = require('../controllers/artisanController.js');
 
 const app = express();
 app.use(bodyParser.json());
