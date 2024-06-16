@@ -14,28 +14,23 @@
  *       type: object
  *       required:
  *         - id
- *         - categorie
- *         - clotheType
  *         - reparationType
  *         - priceSuggested
+ *         - id_job
  *       properties:
  *         id:
  *           type: integer
  *           description: ID de la prestation
- *         categorie:
- *           type: string
- *           description: Categorie de vêtements (ex:haut)
- *         clotheType:
- *           type: string
- *           description: Type de vêtements (ex:doudoune)
  *         reparationType:
  *           type: string
- *           description: Type de la réparation (ex:zip)
+ *           description: Type de la réparation (ex: zip)
  *         priceSuggested:
  *           type: integer
  *           description: Prix conseillé par l'admin
+ *         id_job:
+ *           type: integer
+ *           description: ID du job associé
  */
-
 
 
 /**
@@ -45,12 +40,14 @@
  *     summary: Récupérer toutes les prestations en BDD
  *     tags: [Prestation]
  *     responses:
- *       201:
+ *       200:
  *         description: Prestations récupérées avec succès
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Prestation'
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Prestation'
  *       404:
  *         description: Aucune prestation trouvée
  *       500:
@@ -58,12 +55,11 @@
  */
 
 
-
 /**
  * @swagger
  * /prestations/{id_prestation}:
  *   get:
- *     summary: Récupérer une prestation
+ *     summary: Récupérer une prestation par ID
  *     tags: [Prestation]
  *     parameters:
  *       - in: path
@@ -73,8 +69,8 @@
  *           type: integer
  *         description: ID de la prestation à récupérer
  *     responses:
- *       201:
- *         description: Prestations récupérée avec succès
+ *       200:
+ *         description: Prestation récupérée avec succès
  *         content:
  *           application/json:
  *             schema:
@@ -86,13 +82,40 @@
  */
 
 
+/**
+ * @swagger
+ * /prestations/job/{id_job}:
+ *   get:
+ *     summary: Récupérer toutes les prestations d'un job
+ *     tags: [Prestation]
+ *     parameters:
+ *       - in: path
+ *         name: id_job
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID du job pour lequel récupérer les prestations
+ *     responses:
+ *       200:
+ *         description: Prestations récupérées avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Prestation'
+ *       404:
+ *         description: Aucune prestation trouvée pour ce job
+ *       500:
+ *         description: Erreur interne du serveur
+ */
 
 
 /**
  * @swagger
  * /prestations:
  *   post:
- *     summary: Enregistrer une prestation en BDD
+ *     summary: Enregistrer une prestation en BDD (Admin seulement)
  *     tags: [Prestation]
  *     security:
  *       - bearerAuth: []
@@ -103,33 +126,26 @@
  *           schema:
  *             type: object
  *             properties:
- *               categorie:
- *                 type: string
- *               clothType:
- *                 type: string
  *               reparationType:
  *                 type: string
  *               priceSuggested:
- *                 type: string
+ *                 type: integer
+ *               id_job:
+ *                 type: integer
  *             required:
- *               - categorie
- *               - clothType
  *               - reparationType
  *               - priceSuggested
+ *               - id_job
  *     responses:
- *       200:
- *         description: prestation créée avec succès
+ *       201:
+ *         description: Prestation créée avec succès
  *       401:
- *         description: Prestation existe déja en BDD
+ *         description: Cette prestation existe déjà
  *       403:
- *         description: Token manquant ou invalide 
+ *         description: Token manquant ou invalide
  *       500:
  *         description: Erreur interne du serveur
  */
-
-
-
-
 
 
 /**
@@ -154,24 +170,21 @@
  *           schema:
  *             type: object
  *             properties:
- *               categorie:
- *                 type: string
- *               clothType:
- *                 type: string
  *               reparationType:
  *                 type: string
  *               priceSuggested:
- *                 type: string
+ *                 type: integer
+ *               id_job:
+ *                 type: integer
  *             required:
- *               - categorie
- *               - clothType
  *               - reparationType
  *               - priceSuggested
+ *               - id_job
  *     responses:
  *       201:
  *         description: Prestation mise à jour avec succès
  *       403:
- *         description: token manquant ou invalide
+ *         description: Token manquant ou invalide
  *       404:
  *         description: Aucune prestation trouvée
  *       500:
@@ -192,9 +205,9 @@
  *       201:
  *         description: Prestation supprimée avec succès
  *       403:
- *         description: token manquant ou invalide
+ *         description: Token manquant ou invalide
  *       404:
- *         description: Aucune inprestationfo trouvée
+ *         description: Aucune prestation trouvée
  *       500:
  *         description: Erreur interne du serveur
  */
