@@ -15,15 +15,6 @@
  *       required:
  *         - email
  *         - password
- *         - role
- *         - firstname
- *         - lastname
- *         - mobile
- *         - subscribeNewsletter
- *         - streetAdress
- *         - city
- *         - country
- *         - postalCode
  *       properties:
  *         id:
  *           type: integer
@@ -33,10 +24,10 @@
  *           description: Adresse email de l'utilisateur
  *         password:
  *           type: string
- *           description: Password de l'utilisateur
+ *           description: Mot de passe de l'utilisateur
  *         role:
  *           type: string
- *           description: Role de l'utilisateur
+ *           description: Rôle de l'utilisateur (user/admin)
  *         firstname:
  *           type: string
  *           description: Prénom de l'utilisateur
@@ -47,20 +38,20 @@
  *           type: string
  *           description: Numéro de téléphone de l'utilisateur
  *         subscribeNewsletter:
- *          type: boolean
- *          description: Est ce que l'utilisateur accepte de nouvelles réparations
+ *           type: boolean
+ *           description: Abonnement à la newsletter
  *         streetAdress:
  *           type: string
- *           description: Numéro de la rue de l'utilisateur
+ *           description: Adresse de l'utilisateur
  *         city:
  *           type: string
- *           description: Nom de la ville
+ *           description: Ville de l'utilisateur
  *         country:
- *          type: string
- *          description: Pays de l'artisan
+ *           type: string
+ *           description: Pays de l'utilisateur
  *         postalCode:
- *          type: integer
- *          description: Code postal
+ *           type: string
+ *           description: Code postal de l'utilisateur
  */
 
 
@@ -75,15 +66,36 @@
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               firstname:
+ *                 type: string
+ *               lastname:
+ *                 type: string
+ *               mobile:
+ *                 type: string
+ *               streetAdress:
+ *                 type: string
+ *               city:
+ *                 type: string
+ *               country:
+ *                 type: string
+ *               postalCode:
+ *                 type: string
+ *             required:
+ *               - email
+ *               - password
  *     responses:
  *       201:
  *         description: Utilisateur enregistré avec succès
  *       401:
- *         description: vous ne pouvez pas créer un compte avec le role admin
+ *         description: Vous ne pouvez pas créer un compte avec le rôle admin
  *       409:
- *         description: L'utilisateur avec cet email existe déjà 
- *
+ *         description: L'utilisateur avec cet email existe déjà
  *       500:
  *         description: Erreur interne du serveur
  */
@@ -93,7 +105,7 @@
  * @swagger
  * /users/login:
  *   post:
- *     summary: Se connecter un compte utilisateur 
+ *     summary: Se connecter à un compte utilisateur
  *     tags: [User]
  *     requestBody:
  *       required: true
@@ -113,7 +125,7 @@
  *       200:
  *         description: Utilisateur connecté avec succès
  *       401:
- *         description: Email ou Mdp incorrect
+ *         description: Email ou mot de passe incorrect
  *       404:
  *         description: Utilisateur non trouvé
  *       500:
@@ -152,7 +164,24 @@
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             type: object
+ *             properties:
+ *               firstname:
+ *                 type: string
+ *               lastname:
+ *                 type: string
+ *               mobile:
+ *                 type: string
+ *               subscribeNewsletter:
+ *                 type: boolean
+ *               streetAdress:
+ *                 type: string
+ *               city:
+ *                 type: string
+ *               country:
+ *                 type: string
+ *               postalCode:
+ *                 type: string
  *     responses:
  *       201:
  *         description: Informations de l'utilisateur mises à jour avec succès
@@ -179,29 +208,124 @@
  */
 
 
+/**
+ * @swagger
+ * /users/updatePassword:
+ *   put:
+ *     summary: Mettre à jour le mot de passe de l'utilisateur connecté
+ *     tags: [User]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               oldPassword:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *             required:
+ *               - oldPassword
+ *               - password
+ *     responses:
+ *       201:
+ *         description: Mot de passe mis à jour avec succès
+ *       400:
+ *         description: Mot de passe incorrect
+ *       403:
+ *         description: Token manquant ou invalide
+ *       404:
+ *         description: Utilisateur non trouvé
+ *       500:
+ *         description: Erreur interne du serveur
+ */
 
 
+/**
+ * @swagger
+ * /users/forgot-password:
+ *   post:
+ *     summary: Envoyer un email pour réinitialiser le mot de passe
+ *     tags: [User]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *             required:
+ *               - email
+ *     responses:
+ *       200:
+ *         description: Email de réinitialisation envoyé
+ *       404:
+ *         description: Utilisateur non trouvé
+ *       500:
+ *         description: Erreur interne du serveur
+ */
+
+
+/**
+ * @swagger
+ * /users/reset-password/{token}:
+ *   post:
+ *     summary: Réinitialiser le mot de passe via un token
+ *     tags: [User]
+ *     parameters:
+ *       - in: path
+ *         name: token
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Token pour réinitialiser le mot de passe
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               password:
+ *                 type: string
+ *             required:
+ *               - password
+ *     responses:
+ *       200:
+ *         description: Mot de passe réinitialisé avec succès
+ *       400:
+ *         description: Lien de réinitialisation invalide ou expiré
+ *       500:
+ *         description: Erreur interne du serveur
+ */
 
 
 /**
  * @swagger
  * /users/admin:
  *   get:
- *     summary: Récupérer tous les utilisateurs
+ *     summary: Récupérer tous les utilisateurs (Admin seulement)
  *     tags: [User]
  *     security:
  *       - bearerAuth: []
  *     responses:
- *       201:
- *         description: Comptes utilisateurs récup avec succès
+ *       200:
+ *         description: Liste des utilisateurs récupérée avec succès
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
  *       403:
  *         description: Token manquant ou invalide
  *       404:
- *         description: Utilisateur non trouvé
+ *         description: Aucun utilisateur trouvé
  *       500:
  *         description: Erreur interne du serveur
  */
