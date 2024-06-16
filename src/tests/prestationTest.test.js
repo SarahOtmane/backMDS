@@ -1,19 +1,19 @@
 const request = require('supertest');
 const express = require('express');
 const bodyParser = require('body-parser');
-const prestationController = require('../controllers/prestationController');
+const prestationController = require('../controllers//prestationController.js');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Mock routes for testing
-app.get('/prestations', prestationController.getAllPrestations);
-app.get('/prestations/:id_prestation', prestationController.getPrestationById);
-app.get('/prestations/job/:id_job', prestationController.getPrestationsByJob);
-app.post('/prestations', prestationController.createPrestation);
+app.get('/prestations', prestationController.getAllPresta);
+app.get('/prestations/:id_prestation', prestationController.getAPrestation);
+app.get('/prestations/job/:id_job', prestationController.getAllPrestaOfJob);
+app.post('/prestations', prestationController.createAPrestation);
 app.put('/prestations/:id_prestation', prestationController.updatePrestation);
-app.delete('/prestations/:id_prestation', prestationController.deletePrestation);
+app.delete('/prestations/:id_prestation', prestationController.deleteAPresta);
 
 // Mock dependencies
 jest.mock('../models/prestationModel.js');
