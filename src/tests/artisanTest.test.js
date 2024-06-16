@@ -1,7 +1,7 @@
 const request = require('supertest');
 const express = require('express');
 const bodyParser = require('body-parser');
-const artisanController = require('../controllers/artisanController');
+const artisanController = require('../controllers/artisanController.js');
 const jwt = require('jsonwebtoken');
 
 const app = express();
