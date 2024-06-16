@@ -145,25 +145,26 @@ exports.getAllCommand = async (req, res) => {
 */
 exports.getCommandOfArtisan = async (req, res) => {
     try {
-        const product = await Product.findAll({where: {id_artisan: req.artisan.id}});
-        if (!product) {
-            return res.status(404).json({ message: 'Auncune produit pour cet artisan.' });
+        const products = await Product.findAll({ where: { id_artisan: req.artisan.id } });
+        if (!products.length) {
+            return res.status(404).json({ message: 'Aucun produit pour cet artisan.' });
         }
 
-        let comands = [];
+        let commands = [];
 
-        for(let index = 0; index < product.length; index++){
-            const comand = await Command.findAll({where: {id_product: product[index].id}});
-            if(comand) comands.push(comand)
+        for (let product of products) {
+            const productCommands = await Command.findAll({ where: { id_product: product.id } });
+            if (productCommands.length) {
+                commands = commands.concat(productCommands);
+            }
         }
 
-        if(!comands) return res.status(404).json({ message: 'Auncune commande trouvée.' });
-        res.status(201).json(comands);
-
+        res.status(200).json(commands);
     } catch (error) {
-        res.status(500).json({message: "Erreur lors du traitement des données."});
+        res.status(500).json({ message: "Erreur lors du traitement des données." });
     }
 };
+
 
 
 
