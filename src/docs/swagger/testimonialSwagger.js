@@ -6,12 +6,11 @@
  */
 
 
-
 /**
  * @swagger
  * components:
  *   schemas:
- *     Command:
+ *     Testimonial:
  *       type: object
  *       required:
  *         - id
@@ -29,19 +28,17 @@
  *           description: Contenu du témoignage
  *         picture:
  *           type: string
- *           description: Image du vêtement de l'utilisateur
+ *           description: Image associée au témoignage
  *         stars:
  *           type: integer
- *           description: Note sur 5 attribué par l'utilisateur
+ *           description: Note sur 5 attribuée par l'utilisateur
  *         id_user:
  *           type: integer
  *           description: Clé étrangère, correspond à l'utilisateur qui a laissé le témoignage
  *         id_artisan:
- *          type: integer
- *          description: Clé étrangère, correspond à l'artisan à qui on a laissé le témoignage
+ *           type: integer
+ *           description: Clé étrangère, correspond à l'artisan à qui on a laissé le témoignage
  */
-
-
 
 
 /**
@@ -51,12 +48,14 @@
  *     summary: Récupérer tous les témoignages en BDD
  *     tags: [Testimonial]
  *     responses:
- *       201:
+ *       200:
  *         description: Témoignages récupérés avec succès
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Testimonial'
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Testimonial'
  *       404:
  *         description: Aucun témoignage trouvé
  *       500:
@@ -64,11 +63,9 @@
  */
 
 
-
-
 /**
  * @swagger
- * /testimonials/{id_artisan}:
+ * /testimonials/artisan/{id_artisan}:
  *   get:
  *     summary: Récupérer tous les témoignages liés à un artisan
  *     tags: [Testimonial]
@@ -80,12 +77,14 @@
  *           type: integer
  *         description: ID de l'artisan
  *     responses:
- *       201:
+ *       200:
  *         description: Témoignages récupérés avec succès
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Testimonial'
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Testimonial'
  *       404:
  *         description: Aucun témoignage trouvé / Artisan non trouvé
  *       500:
@@ -106,11 +105,22 @@
  *       required: true
  *       content:
  *         application/json:
- *             schema:
- *               $ref: '#/components/schemas/Testimonial'
+ *           schema:
+ *             type: object
+ *             properties:
+ *               content:
+ *                 type: string
+ *               picture:
+ *                 type: string
+ *               stars:
+ *                 type: integer
+ *             required:
+ *               - content
+ *               - picture
+ *               - stars
  *     responses:
  *       201:
- *         description: Témoignage crée avec succès
+ *         description: Témoignage créé avec succès
  *       404:
  *         description: Artisan non trouvé en BDD
  *       403:
@@ -118,7 +128,6 @@
  *       500:
  *         description: Erreur interne du serveur
  */
-
 
 
 /**
@@ -135,14 +144,14 @@
  *           type: integer
  *         description: ID du témoignage à récupérer
  *     responses:
- *       201:
+ *       200:
  *         description: Témoignage récupéré avec succès
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Testimonial'
  *       404:
- *         description: Aucun Témoignage trouvé
+ *         description: Aucun témoignage trouvé
  *       500:
  *         description: Erreur interne du serveur
  *   put:
@@ -156,18 +165,29 @@
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID du témoignage à modifié
+ *         description: ID du témoignage à modifier
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
- *             schema:
- *               $ref: '#/components/schemas/Testimonial'
+ *           schema:
+ *             type: object
+ *             properties:
+ *               content:
+ *                 type: string
+ *               picture:
+ *                 type: string
+ *               stars:
+ *                 type: integer
+ *             required:
+ *               - content
+ *               - picture
+ *               - stars
  *     responses:
  *       201:
- *         description: témoignage mis à jour avec succès
+ *         description: Témoignage mis à jour avec succès
  *       403:
- *         description: token manquant ou invalide / Vous n'avez pas l'autorisation pour modifier
+ *         description: Token manquant ou invalide / Vous n'avez pas l'autorisation pour modifier
  *       404:
  *         description: Aucun témoignage trouvé
  *       500:
@@ -186,12 +206,11 @@
  *         description: ID du témoignage à supprimer
  *     responses:
  *       201:
- *         description: témoignage supprimé avec succès
+ *         description: Témoignage supprimé avec succès
  *       403:
- *         description: token manquant ou invalide / Vous n'avez pas l'autorisation pour supprimer
+ *         description: Token manquant ou invalide / Vous n'avez pas l'autorisation pour supprimer
  *       404:
  *         description: Aucun témoignage trouvé
  *       500:
  *         description: Erreur interne du serveur
- 
  */
