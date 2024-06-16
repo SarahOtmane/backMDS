@@ -2,7 +2,7 @@
  * @swagger
  * tags:
  *   name: Job
- *   description: CRUD pour la gestion des job
+ *   description: CRUD pour la gestion des jobs
  */
 
 
@@ -25,7 +25,6 @@
  */
 
 
-
 /**
  * @swagger
  * /jobs:
@@ -33,8 +32,37 @@
  *     summary: Récupérer tous les jobs en BDD
  *     tags: [Job]
  *     responses:
- *       201:
+ *       200:
  *         description: Jobs récupérés avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Job'
+ *       404:
+ *         description: Aucun job trouvé
+ *       500:
+ *         description: Erreur interne du serveur
+ */
+
+
+/**
+ * @swagger
+ * /jobs/{name_job}:
+ *   get:
+ *     summary: Récupérer un job par nom
+ *     tags: [Job]
+ *     parameters:
+ *       - in: path
+ *         name: name_job
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Nom du job à récupérer
+ *     responses:
+ *       200:
+ *         description: Job récupéré avec succès
  *         content:
  *           application/json:
  *             schema:
@@ -46,12 +74,11 @@
  */
 
 
-
 /**
  * @swagger
- * /jobs/{id_job}:
+ * /jobs/id/{id_job}:
  *   get:
- *     summary: Récupérer un job
+ *     summary: Récupérer un job par ID
  *     tags: [Job]
  *     parameters:
  *       - in: path
@@ -61,26 +88,24 @@
  *           type: integer
  *         description: ID du job à récupérer
  *     responses:
- *       201:
+ *       200:
  *         description: Job récupéré avec succès
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Job'
  *       404:
- *         description: Aucun job trouvée
+ *         description: Aucun job trouvé
  *       500:
  *         description: Erreur interne du serveur
  */
-
-
 
 
 /**
  * @swagger
  * /jobs:
  *   post:
- *     summary: Enregistrer un job en BDD
+ *     summary: Enregistrer un job en BDD (Admin seulement)
  *     tags: [Job]
  *     security:
  *       - bearerAuth: []
@@ -96,19 +121,15 @@
  *             required:
  *               - name
  *     responses:
- *       200:
- *         description: job créé avec succès
+ *       201:
+ *         description: Job créé avec succès
  *       401:
- *         description: Job existe déja en BDD
+ *         description: Job existe déjà en BDD
  *       403:
  *         description: Token manquant ou invalide
  *       500:
  *         description: Erreur interne du serveur
  */
-
-
-
-
 
 
 /**
@@ -138,12 +159,12 @@
  *             required:
  *               - name
  *     responses:
- *       201:
+ *       200:
  *         description: Job mis à jour avec succès
  *       403:
- *         description: token manquant ou invalide
+ *         description: Token manquant ou invalide
  *       404:
- *         description: Aucun job trouvée
+ *         description: Aucun job trouvé
  *       500:
  *         description: Erreur interne du serveur
  *   delete:
@@ -159,12 +180,12 @@
  *           type: integer
  *         description: ID du job à supprimer
  *     responses:
- *       201:
+ *       200:
  *         description: Job supprimé avec succès
  *       403:
- *         description: token manquant ou invalide
+ *         description: Token manquant ou invalide
  *       404:
- *         description: Aucun job trouvée
+ *         description: Aucun job trouvé
  *       500:
  *         description: Erreur interne du serveur
  */
