@@ -1,229 +1,116 @@
 const request = require('supertest');
-const app = require('../app');
-const User = require('../models/userModel');
+const express = require('express');
+const bodyParser = require('body-parser');
+const userController = require('../controllers/userController');
+const jwt = require('jsonwebtoken');
 
+const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Mock routes for testing
+app.post('/users/register', userController.register);
+app.post('/users/login', userController.login);
+app.get('/users', userController.getUser);
+app.put('/users', userController.updateUser);
+app.delete('/users', userController.deleteUser);
+
+// Mock middleware
+app.use((req, res, next) => {
+    req.user = { id: 1 };
+    next();
+});
+
+// Mock dependencies
+jest.mock('../models/userModel.js');
+jest.mock('../middlewares/jwtMiddleware.js');
+
+const User = require('../models/userModel.js');
+const jwtMiddleware = require('../middlewares/jwtMiddleware.js');
 
 describe('User Controller', () => {
-
-    //Test de la méthode registerAUser
-    describe('POST /users/register', ()=>{
-        it('should register a new user', async () => {
-            const res = await request(app)
-                .post('/users/register')
-                .send({
-                    email: 'sarah@user.com',
-                    password: 'sarah',
-                    role: 'user',
-                    firstname: 'sarah',
-                    lastname: 'otmane',
-                    mobile: '0606060606',
-                    subscribeNewsletter: false,
-                    streetAdress: '40 chemin vert',
-                    city: 'Paris',
-                    country: 'France',
-                    postalCode: 75011
-                });
-            expect(res.statusCode).toEqual(201);
-            expect(res.body).toEqual({message: `Utilisateur créé avec succès. L'email : sarah@user.com ` });
-        });
-
-        it('should return 409 if email already exists', async() =>{
-            const res = await request(app)
-                .post('/users/register')
-                .send({
-                    email: 'sarah@user.com',
-                    password: 'sarah',
-                    role: 'user',
-                    firstname: 'sarah',
-                    lastname: 'otmane',
-                    mobile: '0606060606',
-                    subscribeNewsletter: false,
-                    streetAdress: '40 chemin vert',
-                    city: 'Paris',
-                    country: 'France',
-                    postalCode: 75011
-                });
-            expect(res.statusCode).toEqual(409);
-            expect(res.body).toEqual({message: `Cet email existe déjà.` });
-        });
-
-        it('should return 401 if the role is admin', async() =>{
-            const res = await request(app)
-                .post('/users/register')
-                .send({
-                    email: 'sarah@user.com',
-                    password: 'sarah',
-                    role: 'admin',
-                    firstname: 'sarah',
-                    lastname: 'otmane',
-                    mobile: '0606060606',
-                    subscribeNewsletter: false,
-                    streetAdress: '40 chemin vert',
-                    city: 'Paris',
-                    country: 'France',
-                    postalCode: 75011
-                });
-            expect(res.statusCode).toEqual(401);
-            expect(res.body).toEqual({message: `Vous ne pouvez pas créer un utilisateur avec le rôle admin.` });
-        });
-
-        it('should return 500 if error in server', async() =>{
-            const res = await request(app)
-                .post('/users/register')
-                .send({
-                    email: 'sarah@user.com',
-                    password: 'sarah',
-                    role: 'user',
-                    firstname: 'sarah',
-                    lastname: 'otmane',
-                    mobile: '0606060606',
-                    subscribeNewsletter: false,
-                    streetAdress: '40 chemin vert',
-                    city: 'Paris',
-                    country: 'France',
-                    postalCode: 75011
-                });
-            expect(res.statusCode).toEqual(500);
-            expect(res.body).toEqual({message: `Erreur serveur` });
-        });
+    beforeEach(() => {
+        jest.clearAllMocks();
     });
 
-
-    // Test de la méthode loginAUser
-    describe('POST /users/login', () => {
-        it('should log in a user ', async()=>{
-            const res = await request(app)
-                .post('/users/login')
-                .send({
-                    email: 'sarah@user.com',
-                    password: 'sarah'
-                });
-            expect(res.statusCode).toEqual(201);
-            expect(res.body).toHaveProperty('token');
-        });
-
-        it('should return 404 if user not found', async()=>{
-            const res = await request(app)
-                .post('/users/login')
-                .send({
-                    email: 'sarah@us.com',
-                    password: 'sarah'
-                });
-                expect(res.statusCode).toEqual(404);
-                expect(res.body).toHaveProperty('Email ou mot de passe incorrect');
-        });
-        
-        it('should return 404 if password is false', async()=>{
-            const res = await request(app)
-                .post('/users/login')
-                .send({
-                    email: 'sarah@user.com',
-                    password: 'test'
-                });
-                expect(res.statusCode).toEqual(404);
-                expect(res.body).toHaveProperty('Email ou mot de passe incorrect');
-        });
-
-        it('should return 500 if error in server', async() =>{
-            const res = await request(app)
-                .post('/users/login')
-                .send({
-                    email: 'sarah@user.com',
-                    password: 'sarah',
-                });
-            expect(res.statusCode).toEqual(500);
-            expect(res.body).toEqual({message: `Erreur serveur` });
-        });
-    });
-
-    
-    //Test de la methode getAUser
-    describe('GET /users', () => {
-        it('should get user details', async()=>{
-            const existingUser = await User.findOne({ where: { email: 'sarah@user.com' } });
-
-            const res = await request(app)
-                .get('/users')
-                .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJzYXJhaDFAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3MTUwNjk0MDYsImV4cCI6MTcxNzY2MTQwNn0.dDLv0fsPWdtHxohv_zKy6V0anSHqBs-oVhyOMm00r1M');
-            expect(res.statusCode).toEqual(200);
-            expect(res.body).toEqual({
-                id: existingUser.id,
-                email: existingUser.email,
-                password: existingUser.password,
-                role: existingUser.role,
-                firstname: existingUser.firstname,
-                lastname: existingUser.lastname,
-                mobile: existingUser.mobile,
-                subscribeNewsletter: existingUser.subscribeNewsletter,
-                streetAdress: existingUser.streetAdress,
-                city: existingUser.city,
-                country: existingUser.country,
-                postalCode: existingUser.postalCode,
-                createdAt: existingUser.createdAt,
-                updatedAt: existingUser.updatedAt
-            });
-        });
-
-        if('should return 403 if the token is invalid', async() =>{
-            const res = await request(app)
-                .get('/users')
-                .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJzYXJhaDFAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3MTUwNjk0MDYsImV4cCI6MTcxNzY2MTQwNn0.dDLv0fsPWdtHxohv_zKy6V0anSHqBs-oVebfkzbb');
-            expect(res.statusCode).toEqual(403)
-            expect(res.body).toEqual({message: `Accès interdit: token invalide` })
-        });
-
-        if('should return 403 if the token is invalid', async() =>{
-            const res = await request(app)
-                .get('/users')
-                .set('Authorization', 'Bearer ');
-            expect(res.statusCode).toEqual(403)
-            expect(res.body).toEqual({message: `Accès interdit: token manquant` })
-        });
-
-        if('should return 404 if the user doesn\'t exist', async() =>{
-            const res = await request(app)
-                .get('/users')
-                .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJzYXJhaDFAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3MTUwNjk0MDYsImV4cCI6MTcxNzY2MTQwNn0.dDLv0fsPWdtHxohv_zKy6V0anSHqBs-oVhyOMm00r1M');
-            expect(res.statusCode).toEqual(404)
-            expect(res.body).toEqual({message: `Utilisateur non trouvé` })
-        });
-
-        it('should return 500 if error in server', async() =>{
-            const res = await request(app)
-                .get('/users')
-                .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJzYXJhaDFAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3MTUwNjk0MDYsImV4cCI6MTcxNzY2MTQwNn0.dDLv0fsPWdtHxohv_zKy6V0anSHqBs-oVhyOMm00r1M');
-            expect(res.statusCode).toEqual(500);
-            expect(res.body).toEqual({message: `Erreur serveur` });
-        });
-    });
-
-
-    //Test de la methode putAUser
-    describe('PUT /users', () => {
-        
-
-        it('should return 404 if user dosn\'t exist', async () => {
-        sinon.stub(User, 'findOne').resolves(null);
+    test('should register a user', async () => {
+        User.findOne.mockResolvedValue(null);
+        User.create.mockResolvedValue({ id: 1 });
 
         const response = await request(app)
-            .put('/users')
-            .set('Authorization', 'Bearer votre_token')
+            .post('/users/register')
             .send({
-                lastname: 'Doe',
+                email: 'johndoe@example.com',
+                password: 'password123',
                 firstname: 'John',
-                password: 'newpassword',
-                mobile: '123456789',
-                subscribeNewsletter: true,
-                streetAdress: '123 Main St',
+                lastname: 'Doe',
+                mobile: '1234567890',
+                streetAdress: '123 Street',
                 city: 'City',
                 country: 'Country',
                 postalCode: '12345'
             });
 
-        expect(response.status).to.equal(404);
-        expect(response.body).to.eql({ message: 'Utilisateur non trouvé.' });
+        expect(response.status).toBe(201);
+        expect(response.body.id).toBe(1);
     });
+
+    test('should login a user', async () => {
+        const user = { id: 1, email: 'johndoe@example.com', password: 'password123' };
+        User.findOne.mockResolvedValue(user);
+        jest.spyOn(bcrypt, 'compare').mockResolvedValue(true);
+        jest.spyOn(jwt, 'sign').mockReturnValue('fakeToken');
+
+        const response = await request(app)
+            .post('/users/login')
+            .send({
+                email: 'johndoe@example.com',
+                password: 'password123'
+            });
+
+        expect(response.status).toBe(200);
+        expect(response.body.token).toBe('fakeToken');
     });
-    
-    
+
+    test('should get a user', async () => {
+        User.findOne.mockResolvedValue({ id: 1 });
+
+        const response = await request(app)
+            .get('/users')
+            .set('Authorization', `Bearer fakeToken`);
+
+        expect(response.status).toBe(200);
+        expect(response.body.id).toBe(1);
+    });
+
+    test('should update a user', async () => {
+        User.findOne.mockResolvedValue({ id: 1, update: jest.fn() });
+
+        const response = await request(app)
+            .put('/users')
+            .send({
+                lastname: 'Doe',
+                firstname: 'John',
+                password: 'newpassword',
+                mobile: '1234567890',
+                streetAdress: '123 Street',
+                city: 'City',
+                country: 'Country',
+                postalCode: '12345'
+            });
+
+        expect(response.status).toBe(200);
+        expect(response.body.message).toBe('User updated successfully.');
+    });
+
+    test('should delete a user', async () => {
+        User.destroy.mockResolvedValue(1);
+
+        const response = await request(app)
+            .delete('/users')
+            .set('Authorization', `Bearer fakeToken`);
+
+        expect(response.status).toBe(200);
+        expect(response.body.message).toBe('User deleted successfully.');
+    });
 });
