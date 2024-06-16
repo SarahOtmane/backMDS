@@ -1,18 +1,18 @@
 const request = require('supertest');
 const express = require('express');
 const bodyParser = require('body-parser');
-const productController = require('../controllers/productController');
+const productController = require('../controllers/productController.js');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Mock routes for testing
-app.post('/products', productController.createProduct);
-app.get('/products/artisan/:id_artisan', productController.getProductsByArtisan);
-app.get('/products/:id_product', productController.getProductById);
-app.put('/products/:id_product', productController.updateProduct);
-app.delete('/products/:id_product', productController.deleteProduct);
+app.post('/products', productController.createAProduct);
+app.get('/products/artisan/:id_artisan', productController.getAllProductsArtisan);
+app.get('/products/:id_product', productController.getAProduct);
+app.put('/products/:id_product', productController.updateAProduct);
+app.delete('/products/:id_product', productController.deleteAProduct);
 
 // Mock dependencies
 jest.mock('../models/productModel.js');
