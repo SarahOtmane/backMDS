@@ -1,12 +1,18 @@
 # Application de Gestion des Services
 
 Cette application est une API RESTful pour la gestion des services, elle inclut : des utilisateurs, artisans, commandes, prestations, produits, témoignages, et abonnements à la newsletter. 
+
 Elle est construite avec Node.js, Express, et utilise Sequelize pour l'ORM avec une base de données MySQL.
+
+
+
 
 
 ## Prérequis
 - Docker et docker compose
 - Node.js et npm
+
+
 
 
 ## Installation
@@ -28,6 +34,10 @@ Elle est construite avec Node.js, Express, et utilise Sequelize pour l'ORM avec 
     JWT_KEY=your_jwt_secret
 ```
 
+
+
+
+
 ## Démarrage
 Pour démarrer l'application :
 
@@ -40,12 +50,17 @@ Pour démarrer l'application :
 
 L'application sera disponible sur http://localhost:3004 et phpMyAdmin sur http://localhost:8081.
 
+
 ### Documentation de l'API
 La documentation Swagger est disponible à l'adresse http://localhost:3004/api-docs.
 
 
+
+
+
+
 ## Structure du Projet
-1. compose.yaml et compose.prod.yaml : fichiers pour la config swagger.
+1. compose.yaml et compose.prod.yaml : fichiers pour la config docker.
 
 2. .env : variables d'environnements
 
@@ -59,6 +74,7 @@ La documentation Swagger est disponible à l'adresse http://localhost:3004/api-d
 - controllers/: Dossier contenant les fonctions développées
 - tests/ : Dossier des tests unitaires
 - package.json : Dépendances du projet et scripts npm.
+
 
 ### Dépendances et versions 
 - Version de NodeJs utilisée : v20.8.0
