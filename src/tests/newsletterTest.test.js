@@ -1,7 +1,7 @@
 const request = require('supertest');
 const express = require('express');
 const bodyParser = require('body-parser');
-const newsletterController = require('../controllers/newsletterController');
+const newsletterController = require('../controllers/newsletterController.js');
 
 const app = express();
 app.use(bodyParser.json());
