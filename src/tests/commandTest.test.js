@@ -1,17 +1,17 @@
 const request = require('supertest');
 const express = require('express');
 const bodyParser = require('body-parser');
-const commandController = require('../controllers/commandController');
+const commandController = require('../controllers/commandController.js');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Mock routes for testing
-app.post('/commands/:id_artisan', commandController.createCommand);
-app.get('/commands/artisans', commandController.getCommandsForArtisan);
-app.get('/commands/users', commandController.getCommandsForUser);
-app.get('/commands', commandController.getAllCommands);
+app.post('/commands/:id_artisan', commandController.createACommand);
+app.get('/commands/artisans', commandController.getCommandOfArtisan);
+app.get('/commands/users', commandController.getCommandOfUser);
+app.get('/commands', commandController.getAllCommand);
 app.put('/commands/:id_command', commandController.updateCommand);
 
 // Mock dependencies
