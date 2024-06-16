@@ -1,86 +1,123 @@
 const request = require('supertest');
 const express = require('express');
 const bodyParser = require('body-parser');
-const clothController = require('../controllers/artisanController.js');
+const clothController = require('../controllers/clothConntroller');
+const jwtMiddleware = require('../middlewares/jwtMiddleware');
+const Cloth = require('../models/clothModel');
+
+jest.mock('../models/clothModel');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Mock routes for testing
-app.get('/clothes', clothController.getAllClothes);
-app.get('/clothes/:id_cloth', clothController.getClothById);
-app.post('/clothes', clothController.createCloth);
-app.put('/clothes/:id_cloth', clothController.updateCloth);
-app.delete('/clothes/:id_cloth', clothController.deleteCloth);
+// Define routes as in clothRoute.js
+app.get('/', clothController.getAllClothes);
+app.get('/:id_cloth', clothController.getACloth);
+app.get('/job/:id_job', clothController.getAllClothesOfJob);
 
-// Mock dependencies
-jest.mock('../models/clothModel.js');
+// Routes for admins
+app.post('/', jwtMiddleware.isAdmin, clothController.createACloth);
+app.put('/:id_cloth', jwtMiddleware.isAdmin, clothController.putACloth);
+app.delete('/:id_cloth', jwtMiddleware.isAdmin, clothController.deleteACloth);
 
-const Cloth = require('../models/clothModel.js');
+// Mock admin middleware
+jest.mock('../middlewares/jwtMiddleware', () => ({
+  isAdmin: (req, res, next) => {
+    req.user = { role: 'admin' };
+    next();
+  },
+}));
 
 describe('Cloth Controller', () => {
-    beforeEach(() => {
-        jest.clearAllMocks();
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe('createACloth', () => {
+    test('should create a new cloth', async () => {
+      Cloth.findOne.mockResolvedValue(null);
+      Cloth.create.mockResolvedValue({ id: 1, categorie: 'Category 1', clothType: 'Type 1', id_job: 1 });
+
+      const response = await request(app)
+        .post('/')
+        .send({
+          categorie: 'Category 1',
+          clothType: 'Type 1',
+          id_job: 1
+        });
+
+      expect(response.status).toBe(201);
+      expect(response.body.message).toBe('Habit créé avec succès.');
     });
+  });
 
-    test('should get all clothes', async () => {
-        Cloth.findAll.mockResolvedValue([{ id: 1, categorie: 'Categorie 1', clothType: 'Type 1' }]);
-
-        const response = await request(app)
-            .get('/clothes');
-
-        expect(response.status).toBe(200);
-        expect(response.body.length).toBeGreaterThan(0);
-    });
-
-    test('should get cloth by id', async () => {
-        Cloth.findOne.mockResolvedValue({ id: 1, categorie: 'Categorie 1', clothType: 'Type 1' });
-
-        const response = await request(app)
-            .get('/clothes/1');
-
-        expect(response.status).toBe(200);
-        expect(response.body.id).toBe(1);
-    });
-
-    test('should create a cloth', async () => {
-        Cloth.create.mockResolvedValue({ id: 1, categorie: 'Categorie 1', clothType: 'Type 1' });
-
-        const response = await request(app)
-            .post('/clothes')
-            .send({
-                categorie: 'Categorie 1',
-                clothType: 'Type 1',
-                id_job: 1
-            });
-
-        expect(response.status).toBe(201);
-        expect(response.body.id).toBe(1);
-    });
-
+  describe('putACloth', () => {
     test('should update a cloth', async () => {
-        Cloth.update.mockResolvedValue([1]);
+      Cloth.findOne.mockResolvedValue({ id: 1, update: jest.fn() });
 
-        const response = await request(app)
-            .put('/clothes/1')
-            .send({
-                categorie: 'Updated Categorie',
-                clothType: 'Updated Type',
-                id_job: 1
-            });
+      const response = await request(app)
+        .put('/1')
+        .send({
+          categorie: 'Updated Category',
+          clothType: 'Updated Type',
+          id_job: 1
+        });
 
-        expect(response.status).toBe(200);
-        expect(response.body.message).toBe('Cloth updated successfully.');
+      expect(response.status).toBe(201);
+      expect(response.body.message).toBe('Cloth mis à jour avec succès.');
     });
+  });
 
+  describe('deleteACloth', () => {
     test('should delete a cloth', async () => {
-        Cloth.destroy.mockResolvedValue(1);
+      Cloth.destroy.mockResolvedValue(1);
 
-        const response = await request(app)
-            .delete('/clothes/1');
+      const response = await request(app)
+        .delete('/1');
 
-        expect(response.status).toBe(200);
-        expect(response.body.message).toBe('Cloth deleted successfully.');
+      expect(response.status).toBe(201);
+      expect(response.body.message).toBe('Habit supprimé avec succès.');
     });
+  });
+
+  describe('getAllClothes', () => {
+    test('should get all clothes', async () => {
+      Cloth.findAll.mockResolvedValue([{
+        id: 1, categorie: 'Category 1', clothType: 'Type 1' }]);
+
+      const response = await request(app)
+        .get('/');
+
+      expect(response.status).toBe(201);
+      expect(response.body.length).toBeGreaterThan(0);
+      expect(response.body[0].categorie).toBe('Category 1');
+    });
+  }); 
+  
+  describe('getAllClothesOfJob', () => {
+    test('should get all clothes of a specific job', async () => {
+      Cloth.findAll.mockResolvedValue([{ id: 1, categorie: 'Category 1', clothType: 'Type 1', id_job: 1 }]);
+
+      const response = await request(app)
+        .get('/job/1');
+
+      expect(response.status).toBe(201);
+      expect(response.body.length).toBeGreaterThan(0);
+      expect(response.body[0].id_job).toBe(1);
+    });
+  });
+
+  describe('getACloth', () => {
+    test('should get a specific cloth by id', async () => {
+      Cloth.findOne.mockResolvedValue({ id: 1, categorie: 'Category 1', clothType: 'Type 1' });
+
+      const response = await request(app)
+        .get('/1');
+
+      expect(response.status).toBe(201);
+      expect(response.body.id).toBe(1);
+      expect(response.body.categorie).toBe('Category 1');
+    });
+  });
 });

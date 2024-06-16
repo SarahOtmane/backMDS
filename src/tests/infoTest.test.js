@@ -1,84 +1,104 @@
 const request = require('supertest');
 const express = require('express');
 const bodyParser = require('body-parser');
-const infoController = require('../controllers/infoController.js');
+const infoController = require('../controllers/infoController');
+const jwtMiddleware = require('../middlewares/jwtMiddleware');
+const Info = require('../models/infoModel');
+
+jest.mock('../models/infoModel');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Mock routes for testing
-app.get('/infos', infoController.getAllInfo);
-app.get('/infos/:id_info', infoController.getInfoById);
-app.post('/infos', infoController.createAnInfo);
-app.put('/infos/:id_info', infoController.updateInfo);
-app.delete('/infos/:id_info', infoController.deleteAnInfo);
+// Define routes as in infoRoute.js
+app.get('/', infoController.getAllInfo);
+app.get('/:id_info', infoController.getAnInfo);
+app.post('/', jwtMiddleware.isAdmin, infoController.createAnInfo);
+app.put('/:id_info', jwtMiddleware.isAdmin, infoController.putAnInfo);
+app.delete('/:id_info', jwtMiddleware.isAdmin, infoController.deleteAnInfo);
 
-// Mock dependencies
-jest.mock('../models/infoModel.js');
-
-const Info = require('../models/infoModel.js');
+// Mock admin middleware
+jest.mock('../middlewares/jwtMiddleware', () => ({
+  isAdmin: (req, res, next) => {
+    req.user = { role: 'admin' };
+    next();
+  },
+}));
 
 describe('Info Controller', () => {
-    beforeEach(() => {
-        jest.clearAllMocks();
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe('createAnInfo', () => {
+    test('should create a new info', async () => {
+      Info.findOne.mockResolvedValue(null);
+      Info.create.mockResolvedValue({ id: 1, name: 'Info 1', content: 'Content 1' });
+
+      const response = await request(app)
+        .post('/')
+        .send({
+          name: 'Info 1',
+          content: 'Content 1'
+        });
+
+      expect(response.status).toBe(201);
+      expect(response.body.message).toBe('Info créé avec succès. Le nom : Info 1');
     });
+  });
 
-    test('should get all infos', async () => {
-        Info.findAll.mockResolvedValue([{ id: 1, name: 'Info 1', content: 'Content 1' }]);
+  describe('getAnInfo', () => {
+    test('should get a specific info by id', async () => {
+      Info.findOne.mockResolvedValue({ id: 1, name: 'Info 1', content: 'Content 1' });
 
-        const response = await request(app)
-            .get('/infos');
+      const response = await request(app)
+        .get('/1');
 
-        expect(response.status).toBe(200);
-        expect(response.body.length).toBeGreaterThan(0);
+      expect(response.status).toBe(201);
+      expect(response.body.id).toBe(1);
+      expect(response.body.name).toBe('Info 1');
     });
+  });
 
-    test('should get info by id', async () => {
-        Info.findOne.mockResolvedValue({ id: 1, name: 'Info 1', content: 'Content 1' });
-
-        const response = await request(app)
-            .get('/infos/1');
-
-        expect(response.status).toBe(200);
-        expect(response.body.id).toBe(1);
-    });
-
-    test('should create an info', async () => {
-        Info.create.mockResolvedValue({ id: 1, name: 'Info 1', content: 'Content 1' });
-
-        const response = await request(app)
-            .post('/infos')
-            .send({
-                name: 'Info 1',
-                content: 'Content 1'
-            });
-
-        expect(response.status).toBe(201);
-        expect(response.body.id).toBe(1);
-    });
-
+  describe('putAnInfo', () => {
     test('should update an info', async () => {
-        Info.update.mockResolvedValue([1]);
+      Info.findOne.mockResolvedValue({ id: 1, update: jest.fn() });
 
-        const response = await request(app)
-            .put('/infos/1')
-            .send({
-                name: 'Updated Info',
-                content: 'Updated Content'
-            });
+      const response = await request(app)
+        .put('/1')
+        .send({
+          name: 'Updated Info',
+          content: 'Updated Content'
+        });
 
-        expect(response.status).toBe(200);
-        expect(response.body.message).toBe('Info updated successfully.');
+      expect(response.status).toBe(201);
+      expect(response.body.message).toBe('Information mise à jour avec succès.');
     });
+  });
 
+  describe('deleteAnInfo', () => {
     test('should delete an info', async () => {
-        Info.destroy.mockResolvedValue(1);
+      Info.destroy.mockResolvedValue(1);
 
-        const response = await request(app)
-            .delete('/infos/1');
+      const response = await request(app)
+        .delete('/1');
 
-        expect(response.status).toBe(200);
-        expect(response.body.message).toBe('Info deleted successfully.');
+      expect(response.status).toBe(201);
+      expect(response.body.message).toBe('Information supprimée avec succès.');
     });
+  });
+
+  describe('getAllInfo', () => {
+    test('should get all infos', async () => {
+      Info.findAll.mockResolvedValue([{ id: 1, name: 'Info 1', content: 'Content 1' }]);
+
+      const response = await request(app)
+        .get('/');
+
+      expect(response.status).toBe(201);
+      expect(response.body.length).toBeGreaterThan(0);
+      expect(response.body[0].name).toBe('Info 1');
+    });
+  });
 });

@@ -1,93 +1,116 @@
 const request = require('supertest');
 const express = require('express');
 const bodyParser = require('body-parser');
-const jobController = require('../controllers/jobController.js');
+const jobController = require('../controllers/jobController');
+const jwtMiddleware = require('../middlewares/jwtMiddleware');
+const Job = require('../models/jobModel');
+
+jest.mock('../models/jobModel');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Mock routes for testing
-app.get('/jobs', jobController.getAllJobs);
-app.get('/jobs/:name_job', jobController.getJobByName);
-app.get('/jobs/id/:id_job', jobController.getJobById);
-app.post('/jobs', jobController.createJob);
-app.put('/jobs/:id_job', jobController.updateJob);
-app.delete('/jobs/:id_job', jobController.deleteJob);
+// Define routes as in jobRoute.js
+app.get('/', jobController.getAllJobs);
+app.get('/:name_job', jobController.getAJob);
+app.get('/id/:id_job', jobController.getNameJob);
+app.post('/', jwtMiddleware.isAdmin, jobController.createAJob);
+app.put('/:id_job', jwtMiddleware.isAdmin, jobController.putAJob);
+app.delete('/:id_job', jwtMiddleware.isAdmin, jobController.deleteAJob);
 
-// Mock dependencies
-jest.mock('../models/jobModel.js');
-
-const Job = require('../models/jobModel.js');
+// Mock admin middleware
+jest.mock('../middlewares/jwtMiddleware', () => ({
+  isAdmin: (req, res, next) => {
+    req.user = { role: 'admin' };
+    next();
+  },
+}));
 
 describe('Job Controller', () => {
-    beforeEach(() => {
-        jest.clearAllMocks();
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe('createAJob', () => {
+    test('should create a new job', async () => {
+      Job.findOne.mockResolvedValue(null);
+      Job.create.mockResolvedValue({ id: 1, name: 'Job 1' });
+
+      const response = await request(app)
+        .post('/')
+        .send({
+          name: 'Job 1'
+        });
+
+      expect(response.status).toBe(201);
+      expect(response.body.message).toBe('Job créé avec succès.');
     });
+  });
 
-    test('should get all jobs', async () => {
-        Job.findAll.mockResolvedValue([{ id: 1, name: 'Job 1' }]);
+  describe('getAJob', () => {
+    test('should get a specific job by name', async () => {
+      Job.findOne.mockResolvedValue({ id: 1, name: 'Job 1' });
 
-        const response = await request(app)
-            .get('/jobs');
+      const response = await request(app)
+        .get('/Job 1');
 
-        expect(response.status).toBe(200);
-        expect(response.body.length).toBeGreaterThan(0);
+      expect(response.status).toBe(201);
+      expect(response.body.id).toBe(1);
+      expect(response.body.name).toBe('Job 1');
     });
+  });
 
-    test('should get job by name', async () => {
-        Job.findOne.mockResolvedValue({ id: 1, name: 'Job 1' });
+  describe('getNameJob', () => {
+    test('should get a specific job by id', async () => {
+      Job.findOne.mockResolvedValue({ id: 1, name: 'Job 1' });
 
-        const response = await request(app)
-            .get('/jobs/Job%201');
+      const response = await request(app)
+        .get('/id/1');
 
-        expect(response.status).toBe(200);
-        expect(response.body.name).toBe('Job 1');
+      expect(response.status).toBe(201);
+      expect(response.body.id).toBe(1);
+      expect(response.body.name).toBe('Job 1');
     });
+  });
 
-    test('should get job by id', async () => {
-        Job.findOne.mockResolvedValue({ id: 1, name: 'Job 1' });
-
-        const response = await request(app)
-            .get('/jobs/id/1');
-
-        expect(response.status).toBe(200);
-        expect(response.body.id).toBe(1);
-    });
-
-    test('should create a job', async () => {
-        Job.create.mockResolvedValue({ id: 1, name: 'Job 1' });
-
-        const response = await request(app)
-            .post('/jobs')
-            .send({
-                name: 'Job 1'
-            });
-
-        expect(response.status).toBe(201);
-        expect(response.body.id).toBe(1);
-    });
-
+  describe('putAJob', () => {
     test('should update a job', async () => {
-        Job.update.mockResolvedValue([1]);
+      Job.findOne.mockResolvedValue({ id: 1, update: jest.fn() });
 
-        const response = await request(app)
-            .put('/jobs/1')
-            .send({
-                name: 'Updated Job'
-            });
+      const response = await request(app)
+        .put('/1')
+        .send({
+          name: 'Updated Job'
+        });
 
-        expect(response.status).toBe(200);
-        expect(response.body.message).toBe('Job updated successfully.');
+      expect(response.status).toBe(201);
+      expect(response.body.message).toBe('Job mis à jour avec succès.');
     });
+  });
 
+  describe('deleteAJob', () => {
     test('should delete a job', async () => {
-        Job.destroy.mockResolvedValue(1);
+      Job.destroy.mockResolvedValue(1);
 
-        const response = await request(app)
-            .delete('/jobs/1');
+      const response = await request(app)
+        .delete('/1');
 
-        expect(response.status).toBe(200);
-        expect(response.body.message).toBe('Job deleted successfully.');
+      expect(response.status).toBe(201);
+      expect(response.body.message).toBe('Job supprimé avec succès.');
     });
+  });
+
+  describe('getAllJobs', () => {
+    test('should get all jobs', async () => {
+      Job.findAll.mockResolvedValue([{ id: 1, name: 'Job 1' }]);
+
+      const response = await request(app)
+        .get('/');
+
+      expect(response.status).toBe(201);
+      expect(response.body.length).toBeGreaterThan(0);
+      expect(response.body[0].name).toBe('Job 1');
+    });
+  });
 });

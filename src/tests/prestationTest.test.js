@@ -1,97 +1,135 @@
 const request = require('supertest');
 const express = require('express');
 const bodyParser = require('body-parser');
-const prestationController = require('../controllers//prestationController.js');
+const prestationController = require('../controllers/prestationController');
+const jwtMiddleware = require('../middlewares/jwtMiddleware');
+const Prestation = require('../models/prestationModel');
+
+jest.mock('../models/prestationModel');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Mock routes for testing
-app.get('/prestations', prestationController.getAllPresta);
-app.get('/prestations/:id_prestation', prestationController.getAPrestation);
-app.get('/prestations/job/:id_job', prestationController.getAllPrestaOfJob);
-app.post('/prestations', prestationController.createAPrestation);
-app.put('/prestations/:id_prestation', prestationController.updatePrestation);
-app.delete('/prestations/:id_prestation', prestationController.deleteAPresta);
+// Define routes as in prestationRoute.js
+app.get('/', prestationController.getAllPresta);
+app.get('/:id_prestation', prestationController.getAPrestation);
+app.get('/job/:id_job', prestationController.getAllPrestaOfJob);
+app.post('/', jwtMiddleware.isAdmin, prestationController.createAPrestation);
+app.put('/:id_prestation', jwtMiddleware.isAdmin, prestationController.putAPresta);
+app.delete('/:id_prestation', jwtMiddleware.isAdmin, prestationController.deleteAPresta);
 
-// Mock dependencies
-jest.mock('../models/prestationModel.js');
-
-const Prestation = require('../models/prestationModel.js');
+// Mock admin middleware
+jest.mock('../middlewares/jwtMiddleware', () => ({
+  isAdmin: (req, res, next) => {
+    req.user = { role: 'admin' };
+    next();
+  },
+}));
 
 describe('Prestation Controller', () => {
-    beforeEach(() => {
-        jest.clearAllMocks();
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe('createAPrestation', () => {
+    test('should create a new prestation', async () => {
+      Prestation.findOne.mockResolvedValue(null);
+      Prestation.create.mockResolvedValue({ id: 1, reparationType: 'Repair 1', priceSuggested: 100, id_job: 1 });
+
+      const response = await request(app)
+        .post('/')
+        .send({
+          reparationType: 'Repair 1',
+          priceSuggested: 100,
+          id_job: 1
+        });
+
+      expect(response.status).toBe(201);
+      expect(response.body.message).toBe('Réparation créée avec succés.');
     });
 
-    test('should get all prestations', async () => {
-        Prestation.findAll.mockResolvedValue([{ id: 1, reparationType: 'Type 1' }]);
+    test('should return 401 if prestation already exists', async () => {
+      Prestation.findOne.mockResolvedValue({ id: 1, reparationType: 'Repair 1', priceSuggested: 100, id_job: 1 });
 
-        const response = await request(app)
-            .get('/prestations');
+      const response = await request(app)
+        .post('/')
+        .send({
+          reparationType: 'Repair 1',
+          priceSuggested: 100,
+          id_job: 1
+        });
 
-        expect(response.status).toBe(200);
-        expect(response.body.length).toBeGreaterThan(0);
+      expect(response.status).toBe(401);
+      expect(response.body.message).toBe('Cette prestation existe déjà.');
     });
+  });
 
-    test('should get prestation by id', async () => {
-        Prestation.findOne.mockResolvedValue({ id: 1, reparationType: 'Type 1' });
+  describe('getAPrestation', () => {
+    test('should get a specific prestation by id', async () => {
+      Prestation.findOne.mockResolvedValue({ id: 1, reparationType: 'Repair 1', priceSuggested: 100, id_job: 1 });
 
-        const response = await request(app)
-            .get('/prestations/1');
+      const response = await request(app)
+        .get('/1');
 
-        expect(response.status).toBe(200);
-        expect(response.body.id).toBe(1);
+      expect(response.status).toBe(201);
+      expect(response.body.id).toBe(1);
+      expect(response.body.reparationType).toBe('Repair 1');
     });
+  });
 
-    test('should get prestations by job', async () => {
-        Prestation.findAll.mockResolvedValue([{ id: 1, reparationType: 'Type 1' }]);
-
-        const response = await request(app)
-            .get('/prestations/job/1');
-
-        expect(response.status).toBe(200);
-        expect(response.body.length).toBeGreaterThan(0);
-    });
-
-    test('should create a prestation', async () => {
-        Prestation.create.mockResolvedValue({ id: 1, reparationType: 'Type 1' });
-
-        const response = await request(app)
-            .post('/prestations')
-            .send({
-                reparationType: 'Type 1',
-                priceSuggested: 100,
-                id_job: 1
-            });
-
-        expect(response.status).toBe(201);
-        expect(response.body.id).toBe(1);
-    });
-
+  describe('putAPresta', () => {
     test('should update a prestation', async () => {
-        Prestation.update.mockResolvedValue([1]);
+      Prestation.findOne.mockResolvedValue({ id: 1, update: jest.fn() });
 
-        const response = await request(app)
-            .put('/prestations/1')
-            .send({
-                reparationType: 'Updated Type',
-                priceSuggested: 150,
-                id_job: 1
-            });
+      const response = await request(app)
+        .put('/1')
+        .send({
+          reparationType: 'Updated Repair',
+          priceSuggested: 150,
+          id_job: 1
+        });
 
-        expect(response.status).toBe(200);
-        expect(response.body.message).toBe('Prestation updated successfully.');
+      expect(response.status).toBe(201);
+      expect(response.body.message).toBe('Prestation mise à jour avec succès.');
     });
+  });
 
+  describe('deleteAPresta', () => {
     test('should delete a prestation', async () => {
-        Prestation.destroy.mockResolvedValue(1);
+      Prestation.destroy.mockResolvedValue(1);
 
-        const response = await request(app)
-            .delete('/prestations/1');
+      const response = await request(app)
+        .delete('/1');
 
-        expect(response.status).toBe(200);
-        expect(response.body.message).toBe('Prestation deleted successfully.');
+      expect(response.status).toBe(201);
+      expect(response.body.message).toBe('Prestation supprimée avec succès.');
     });
+  });
+
+  describe('getAllPresta', () => {
+    test('should get all prestations', async () => {
+      Prestation.findAll.mockResolvedValue([{ id: 1, reparationType: 'Repair 1', priceSuggested: 100, id_job: 1 }]);
+
+      const response = await request(app)
+        .get('/');
+
+      expect(response.status).toBe(201);
+      expect(response.body.length).toBeGreaterThan(0);
+      expect(response.body[0].reparationType).toBe('Repair 1');
+    });
+  });
+
+  describe('getAllPrestaOfJob', () => {
+    test('should get all prestations of a specific job', async () => {
+      Prestation.findAll.mockResolvedValue([{ id: 1, reparationType: 'Repair 1', priceSuggested: 100, id_job: 1 }]);
+
+      const response = await request(app)
+        .get('/job/1');
+
+      expect(response.status).toBe(201);
+      expect(response.body.length).toBeGreaterThan(0);
+      expect(response.body[0].id_job).toBe(1);
+    });
+  });
 });
