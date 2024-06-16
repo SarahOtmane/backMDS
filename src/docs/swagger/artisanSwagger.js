@@ -43,25 +43,25 @@
  *           description: Numéro de téléphone de l'artisan
  *         password:
  *           type: string
- *           description: Password de l'artisan
+ *           description: Mot de passe de l'artisan
  *         acceptNewOrder:
- *          type: boolean
- *          description: Est ce que l'artisan accepte de nouvelles réparations
+ *           type: boolean
+ *           description: L'artisan accepte-t-il de nouvelles commandes
  *         streetAdress:
  *           type: string
- *           description: Numéro de la rue de l'artisan
+ *           description: Adresse de l'artisan
  *         city:
  *           type: string
- *           description: Nom de la ville
+ *           description: Ville de l'artisan
  *         country:
- *          type: string
- *          description: Pays de l'artisan
+ *           type: string
+ *           description: Pays de l'artisan
  *         postalCode:
- *          type: integer
- *          description: Code postal
+ *           type: integer
+ *           description: Code postal
  *         id_job:
- *          type: integer
- *          description: Clé étrangère vers la table jobs
+ *           type: integer
+ *           description: ID du job associé
  */
 
 
@@ -81,7 +81,7 @@
  *       201:
  *         description: Artisan enregistré avec succès
  *       401:
- *         description: L'artisan avec cet email existe déjà / mauvais format de numero ou email
+ *         description: L'artisan avec cet email existe déjà / mauvais format de numéro ou email
  *       500:
  *         description: Erreur interne du serveur
  */
@@ -109,11 +109,11 @@
  *               - password
  *     responses:
  *       201:
- *         description: artisan connecté avec succès
+ *         description: Artisan connecté avec succès
  *       401:
- *         description: Email ou Mdp incorrect
+ *         description: Email ou mot de passe incorrect
  *       404:
- *         description: artisan non trouvé
+ *         description: Artisan non trouvé
  *       500:
  *         description: Erreur interne du serveur
  */
@@ -135,9 +135,9 @@
  *             schema:
  *               $ref: '#/components/schemas/Artisan'
  *       403:
- *         description: token manquant ou invalide
+ *         description: Token manquant ou invalide
  *       404:
- *         description: artisan non trouvé
+ *         description: Artisan non trouvé
  *       500:
  *         description: Erreur interne du serveur
  *   put:
@@ -155,9 +155,9 @@
  *       201:
  *         description: Informations de l'artisan mises à jour avec succès
  *       403:
- *         description: token manquant ou invalide
+ *         description: Token manquant ou invalide
  *       404:
- *         description: artisan non trouvé
+ *         description: Artisan non trouvé
  *       500:
  *         description: Erreur interne du serveur
  *   delete:
@@ -169,14 +169,12 @@
  *       201:
  *         description: Compte artisan supprimé avec succès
  *       403:
- *         description: token manquant ou invalide
+ *         description: Token manquant ou invalide
  *       404:
- *         description: artisan non trouvé
+ *         description: Artisan non trouvé
  *       500:
  *         description: Erreur interne du serveur
  */
-
-
 
 
 /**
@@ -191,9 +189,46 @@
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Artisan'
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Artisan'
  *       404:
- *         description: artisan non trouvé
+ *         description: Aucun artisan trouvé
+ *       500:
+ *         description: Erreur interne du serveur
+ */
+
+
+/**
+ * @swagger
+ * /artisans/{id_job}/{postalcode}:
+ *   get:
+ *     summary: Récupérer tous les artisans filtrés par job et code postal
+ *     tags: [Artisan]
+ *     parameters:
+ *       - in: path
+ *         name: id_job
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID du job
+ *       - in: path
+ *         name: postalcode
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Code postal
+ *     responses:
+ *       201:
+ *         description: Artisans récupérés avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Artisan'
+ *       404:
+ *         description: Aucun artisan trouvé
  *       500:
  *         description: Erreur interne du serveur
  */
