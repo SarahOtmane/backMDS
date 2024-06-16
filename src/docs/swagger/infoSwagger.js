@@ -1,8 +1,8 @@
 /**
  * @swagger
  * tags:
- *   name: Info
- *   description: CRUD pour la gestion des info
+ *   name: Job
+ *   description: CRUD pour la gestion des jobs
  */
 
 
@@ -10,127 +10,105 @@
  * @swagger
  * components:
  *   schemas:
- *     Info:
+ *     Job:
  *       type: object
  *       required:
  *         - id
  *         - name
- *         - content
  *       properties:
  *         id:
  *           type: integer
- *           description: ID de l'info
+ *           description: ID du job
  *         name:
  *           type: string
- *           description: Titre / Nom de l'info
- *         content:
- *           type: string
- *           description: Contenu de l'info
+ *           description: Titre / Nom de la catégorie d'artisans
  */
-
-
 
 
 /**
  * @swagger
- * /infos:
+ * /jobs:
  *   get:
- *     summary: Récupérer toutes les infos en BDD
- *     tags: [Info]
- *     responses:
- *       201:
- *         description: Informations récupérées avec succès
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Info'
- *       404:
- *         description: Aucune info trouvée
- *       500:
- *         description: Erreur interne du serveur
- */
-
-
-
-/**
- * @swagger
- * /infos/{id_info}:
- *   get:
- *     summary: Récupérer une info
- *     tags: [Info]
- *     parameters:
- *       - in: path
- *         name: id_info
- *         required: true
- *         schema:
- *           type: integer
- *         description: ID de l'info à récupérer
- *     responses:
- *       201:
- *         description: Information récupérée avec succès
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Info'
- *       404:
- *         description: Aucune info trouvée
- *       500:
- *         description: Erreur interne du serveur
- */
-
-
-
-/**
- * @swagger
- * /infos:
- *   post:
- *     summary: Enregistrer une info en BDD
- *     tags: [Info]
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *               content:
- *                 type: string
- *             required:
- *               - name
- *               - content
+ *     summary: Récupérer tous les jobs en BDD
+ *     tags: [Job]
  *     responses:
  *       200:
- *         description: info crée avec succès
- *       401:
- *         description: Info existe déja en BDD
- *       403:
- *         description: Token manquant ou invalide / Vous n'etes pas un admin
+ *         description: Jobs récupérés avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Job'
+ *       404:
+ *         description: Aucun job trouvé
  *       500:
  *         description: Erreur interne du serveur
  */
 
 
+/**
+ * @swagger
+ * /jobs/{name_job}:
+ *   get:
+ *     summary: Récupérer un job par nom
+ *     tags: [Job]
+ *     parameters:
+ *       - in: path
+ *         name: name_job
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Nom du job à récupérer
+ *     responses:
+ *       200:
+ *         description: Job récupéré avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Job'
+ *       404:
+ *         description: Aucun job trouvé
+ *       500:
+ *         description: Erreur interne du serveur
+ */
 
 
 /**
  * @swagger
- * /infos/{id_info}:
- *   put:
- *     summary: Modifier une info par l'admin
- *     tags: [Info]
- *     security:
- *       - bearerAuth: []
+ * /jobs/id/{id_job}:
+ *   get:
+ *     summary: Récupérer un job par ID
+ *     tags: [Job]
  *     parameters:
  *       - in: path
- *         name: id_info
+ *         name: id_job
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID de l'info à modifier
+ *         description: ID du job à récupérer
+ *     responses:
+ *       200:
+ *         description: Job récupéré avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Job'
+ *       404:
+ *         description: Aucun job trouvé
+ *       500:
+ *         description: Erreur interne du serveur
+ */
+
+
+/**
+ * @swagger
+ * /jobs:
+ *   post:
+ *     summary: Enregistrer un job en BDD (Admin seulement)
+ *     tags: [Job]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -140,39 +118,74 @@
  *             properties:
  *               name:
  *                 type: string
- *               content:
+ *             required:
+ *               - name
+ *     responses:
+ *       201:
+ *         description: Job créé avec succès
+ *       401:
+ *         description: Job existe déjà en BDD
+ *       403:
+ *         description: Token manquant ou invalide
+ *       500:
+ *         description: Erreur interne du serveur
+ */
+
+
+/**
+ * @swagger
+ * /jobs/{id_job}:
+ *   put:
+ *     summary: Modifier un job par l'admin
+ *     tags: [Job]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id_job
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID du job à modifier
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
  *                 type: string
  *             required:
  *               - name
- *               - content
  *     responses:
- *       201:
- *         description: Information mise à jour avec succès
+ *       200:
+ *         description: Job mis à jour avec succès
  *       403:
- *         description: token manquant ou invalide
+ *         description: Token manquant ou invalide
  *       404:
- *         description: Aucune info trouvée
+ *         description: Aucun job trouvé
  *       500:
  *         description: Erreur interne du serveur
  *   delete:
- *     summary: Supprimer une info par l'admin
- *     tags: [Info]
+ *     summary: Supprimer un job par l'admin
+ *     tags: [Job]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id_info
+ *         name: id_job
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID de l'info à supprimer
+ *         description: ID du job à supprimer
  *     responses:
- *       201:
- *         description: Information supprimée avec succès
+ *       200:
+ *         description: Job supprimé avec succès
  *       403:
- *         description: token manquant ou invalide
+ *         description: Token manquant ou invalide
  *       404:
- *         description: Aucune info trouvée
+ *         description: Aucun job trouvé
  *       500:
  *         description: Erreur interne du serveur
  */
