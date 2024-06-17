@@ -23,7 +23,7 @@
  *           description: ID de la prestation
  *         reparationType:
  *           type: string
- *           description: Type de la réparation (ex: zip)
+ *           description: Type de la réparation
  *         priceSuggested:
  *           type: integer
  *           description: Prix conseillé par l'admin
