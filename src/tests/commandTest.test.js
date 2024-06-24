@@ -68,7 +68,7 @@ describe('Command Controller', () => {
         });
 
       expect(response.status).toBe(201);
-      expect(response.body.message).toBe('Commande créée avec succès.');
+      expect(response.body.message).toEqual('Commande créée avec succès.');
     });
 
     test('should return 404 if artisan does not exist', async () => {
@@ -87,7 +87,7 @@ describe('Command Controller', () => {
         });
 
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('L\'artisan n\'existe plus en base de données.');
+      expect(response.body.message).toEqual('L\'artisan n\'existe plus en base de données.');
     });
 
     test('should return 404 if cloth does not exist', async () => {
@@ -107,7 +107,7 @@ describe('Command Controller', () => {
         });
 
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('L\'habit n\'existe plus en base de donnés');
+      expect(response.body.message).toEqual('L\'habit n\'existe plus en base de donnés');
     });
 
     test('should return 404 if prestation does not exist', async () => {
@@ -128,7 +128,7 @@ describe('Command Controller', () => {
         });
 
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('La prestation n\'existe plus en base de donnés');
+      expect(response.body.message).toEqual('La prestation n\'existe plus en base de donnés');
     });
 
     test('should return 404 if product does not exist', async () => {
@@ -150,7 +150,7 @@ describe('Command Controller', () => {
         });
 
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Le produit n\'existe déjà');
+      expect(response.body.message).toEqual('Le produit n\'existe déjà');
     });
   });
 
@@ -165,7 +165,7 @@ describe('Command Controller', () => {
         });
 
       expect(response.status).toBe(201);
-      expect(response.body.message).toBe('Information mise à jour avec succès.');
+      expect(response.body.message).toEqual('Information mise à jour avec succès.');
     });
 
     test('should return 404 if command not found', async () => {
@@ -178,7 +178,7 @@ describe('Command Controller', () => {
         });
 
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Commande non trouvée.');
+      expect(response.body.message).toEqual('Commande non trouvée.');
     });
   });
 
@@ -191,7 +191,7 @@ describe('Command Controller', () => {
 
       expect(response.status).toBe(201);
       expect(response.body.length).toBeGreaterThan(0);
-      expect(response.body[0].name).toBe('Command 1');
+      expect(response.body[0].name).toEqual('Command 1');
     });
 
     test('should return 404 if no commands found', async () => {
@@ -201,7 +201,7 @@ describe('Command Controller', () => {
         .get('/');
 
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Auncune commande trouvée.');
+      expect(response.body.message).toEqual('Auncune commande trouvée.');
     });
   });
 
@@ -215,7 +215,7 @@ describe('Command Controller', () => {
 
       expect(response.status).toBe(200);
       expect(response.body.length).toBeGreaterThan(0);
-      expect(response.body[0].name).toBe('Command 1');
+      expect(response.body).toEqual([{ id: 1, name: 'Command 1' }]);
     });
 
     test('should return 404 if no products found for artisan', async () => {
@@ -249,7 +249,7 @@ describe('Command Controller', () => {
 
       expect(response.status).toBe(201);
       expect(response.body.length).toBeGreaterThan(0);
-      expect(response.body[0].name).toBe('Command 1');
+      expect(response.body).toBe([{ id: 1, name: 'Command 1' }]);
     });
 
     test('should return 404 if no commands found for user', async () => {
