@@ -165,7 +165,7 @@ describe('Artisan Controller', () => {
         });
 
       expect(response.status).toBe(201);
-      expect(response.body.token).toBe('fakeToken');
+      expect(response.body.token).toEqual('fakeToken');
     });
 
     test('should return 404 if artisan not found', async () => {
@@ -201,14 +201,14 @@ describe('Artisan Controller', () => {
 
   describe('getAnArtisan', () => {
     test('should get an artisan', async () => {
-      Artisan.findOne.mockResolvedValue({ id: 1 });
+      Artisan.findOne.mockResolvedValue({ id: 1, email: 'johndoe@example.com', });
 
       const response = await request(app)
         .get('/')
         .set('Authorization', `Bearer fakeToken`);
 
       expect(response.status).toBe(201);
-      expect(response.body.id).toBe(1);
+      expect(response.body).toEqual({ id: 1, email: 'johndoe@example.com', });
     });
 
     test('should return 404 if artisan not found', async () => {
@@ -319,7 +319,7 @@ describe('Artisan Controller', () => {
 
   describe('getAllArtisans', () => {
     test('should get all artisans', async () => {
-      Artisan.findAll.mockResolvedValue([{ id: 1 }]);
+      Artisan.findAll.mockResolvedValue([{ id: 1, email:'test@gmail.com' }]);
 
       const response = await request(app)
         .get('/allArtisan')
@@ -327,6 +327,7 @@ describe('Artisan Controller', () => {
 
       expect(response.status).toBe(201);
       expect(response.body.length).toBeGreaterThan(0);
+      expect(response.body).toEqual([{ id: 1, email:'test@gmail.com' }]);
     });
 
     test('should return 404 if no artisans found', async () => {
