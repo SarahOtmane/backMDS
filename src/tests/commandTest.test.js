@@ -21,6 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Define routes as in commandRoute.js
 app.post('/:id_artisan', jwtMiddleware.verifyTokenUser, commandController.createACommand);
+app.put('/:id', jwtMiddleware.isAdmin, commandController.putACommand);
 app.get('/artisans', jwtMiddleware.verifyTokenArtisan, commandController.getCommandOfArtisan);
 app.get('/users', jwtMiddleware.verifyTokenUser, commandController.getCommandOfUser);
 app.get('/', commandController.getAllCommand);
@@ -33,6 +34,10 @@ jest.mock('../middlewares/jwtMiddleware', () => ({
   },
   verifyTokenArtisan: (req, res, next) => {
     req.artisan = { id: 1 };
+    next();
+  },
+  isAdmin: (req, res, next) => {
+    req.user = { role: 'admin' };
     next();
   }
 }));
@@ -65,6 +70,116 @@ describe('Command Controller', () => {
       expect(response.status).toBe(201);
       expect(response.body.message).toBe('Commande créée avec succès.');
     });
+
+    test('should return 404 if artisan does not exist', async () => {
+      Artisan.findOne.mockResolvedValue(null);
+
+      const response = await request(app)
+        .post('/1')
+        .send({
+          name: 'Command 1',
+          picture: 'picture.jpg',
+          categorie: 'Category 1',
+          clothType: 'Type 1',
+          id_job: 1,
+          reparationType: 'Repair 1',
+          comment: 'Some comment'
+        });
+
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe('L\'artisan n\'existe plus en base de données.');
+    });
+
+    test('should return 404 if cloth does not exist', async () => {
+      Artisan.findOne.mockResolvedValue({ id: 1 });
+      Cloth.findOne.mockResolvedValue(null);
+
+      const response = await request(app)
+        .post('/1')
+        .send({
+          name: 'Command 1',
+          picture: 'picture.jpg',
+          categorie: 'Category 1',
+          clothType: 'Type 1',
+          id_job: 1,
+          reparationType: 'Repair 1',
+          comment: 'Some comment'
+        });
+
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe('L\'habit n\'existe plus en base de donnés');
+    });
+
+    test('should return 404 if prestation does not exist', async () => {
+      Artisan.findOne.mockResolvedValue({ id: 1 });
+      Cloth.findOne.mockResolvedValue({ id: 1 });
+      Prestation.findOne.mockResolvedValue(null);
+
+      const response = await request(app)
+        .post('/1')
+        .send({
+          name: 'Command 1',
+          picture: 'picture.jpg',
+          categorie: 'Category 1',
+          clothType: 'Type 1',
+          id_job: 1,
+          reparationType: 'Repair 1',
+          comment: 'Some comment'
+        });
+
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe('La prestation n\'existe plus en base de donnés');
+    });
+
+    test('should return 404 if product does not exist', async () => {
+      Artisan.findOne.mockResolvedValue({ id: 1 });
+      Cloth.findOne.mockResolvedValue({ id: 1 });
+      Prestation.findOne.mockResolvedValue({ id: 1 });
+      Product.findOne.mockResolvedValue(null);
+
+      const response = await request(app)
+        .post('/1')
+        .send({
+          name: 'Command 1',
+          picture: 'picture.jpg',
+          categorie: 'Category 1',
+          clothType: 'Type 1',
+          id_job: 1,
+          reparationType: 'Repair 1',
+          comment: 'Some comment'
+        });
+
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe('Le produit n\'existe déjà');
+    });
+  });
+
+  describe('putACommand', () => {
+    test('should update a command', async () => {
+      Command.findOne.mockResolvedValue({ id: 1, update: jest.fn() });
+
+      const response = await request(app)
+        .put('/1')
+        .send({
+          dateFinished: '2024-06-24'
+        });
+
+      expect(response.status).toBe(201);
+      expect(response.body.message).toBe('Information mise à jour avec succès.');
+    });
+
+    test('should return 404 if command not found', async () => {
+      Command.findOne.mockResolvedValue(null);
+
+      const response = await request(app)
+        .put('/1')
+        .send({
+          dateFinished: '2024-06-24'
+        });
+
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe('Commande non trouvée.');
+    });
   });
 
   describe('getAllCommand', () => {
@@ -77,6 +192,16 @@ describe('Command Controller', () => {
       expect(response.status).toBe(201);
       expect(response.body.length).toBeGreaterThan(0);
       expect(response.body[0].name).toBe('Command 1');
+    });
+
+    test('should return 404 if no commands found', async () => {
+      Command.findAll.mockResolvedValue(null);
+
+      const response = await request(app)
+        .get('/');
+
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe('Auncune commande trouvée.');
     });
   });
 
@@ -92,6 +217,27 @@ describe('Command Controller', () => {
       expect(response.body.length).toBeGreaterThan(0);
       expect(response.body[0].name).toBe('Command 1');
     });
+
+    test('should return 404 if no products found for artisan', async () => {
+      Product.findAll.mockResolvedValue([]);
+
+      const response = await request(app)
+        .get('/artisans');
+
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe('Aucun produit pour cet artisan.');
+    });
+
+    test('should return 200 if no commands found for artisan', async () => {
+      Product.findAll.mockResolvedValue([{ id: 1 }]);
+      Command.findAll.mockResolvedValue([]);
+
+      const response = await request(app)
+        .get('/artisans');
+
+      expect(response.status).toBe(200);
+      expect(response.body.length).toBe(0);
+    });
   });
 
   describe('getCommandOfUser', () => {
@@ -104,6 +250,16 @@ describe('Command Controller', () => {
       expect(response.status).toBe(201);
       expect(response.body.length).toBeGreaterThan(0);
       expect(response.body[0].name).toBe('Command 1');
+    });
+
+    test('should return 404 if no commands found for user', async () => {
+      Command.findAll.mockResolvedValue(null);
+
+      const response = await request(app)
+        .get('/users');
+
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe('Auncune commande trouvée.');
     });
   });
 });
