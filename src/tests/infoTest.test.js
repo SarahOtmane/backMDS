@@ -146,7 +146,7 @@ describe('Info Controller', () => {
 
       expect(response.status).toBe(201);
       expect(response.body.length).toBeGreaterThan(0);
-      expect(response.body[0].name).toEqual([{ id: 1, name: 'instaLink', content: 'Le lien insta' }]);
+      expect(response.body).toEqual([{ id: 1, name: 'instaLink', content: 'Le lien insta' }]);
     });
 
     test('should return 404 if no infos found', async () => {

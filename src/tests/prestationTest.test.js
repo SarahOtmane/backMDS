@@ -194,14 +194,14 @@ describe('Prestation Controller', () => {
 
   describe('getAllPresta', () => {
     test('should get all prestations', async () => {
-      Prestation.findAll.mockResolvedValue([{ id: 1, reparationType: 'Couture décousue', priceSuggested: 100, id_job: 1 }]);
+      Prestation.findAll.mockResolvedValue([{ id: 1, reparationType: 'Couture décousue', priceSuggested: 10, id_job: 1 }]);
 
       const response = await request(app)
         .get('/');
 
       expect(response.status).toBe(201);
       expect(response.body.length).toBeGreaterThan(0);
-      expect(response.body).toBe([{ id: 1, reparationType: 'Couture décousue', priceSuggested: 100, id_job: 1 }]);
+      expect(response.body).toBe([{ id: 1, reparationType: 'Couture décousue', priceSuggested: 10, id_job: 1 }]);
     });
 
     test('should return 404 if no prestations found', async () => {
@@ -234,7 +234,7 @@ describe('Prestation Controller', () => {
 
       expect(response.status).toBe(201);
       expect(response.body.length).toBeGreaterThan(0);
-      expect(response.body).toBe([{ id: 1, reparationType: 'Couture décousue', priceSuggested: 100, id_job: 1 }]);
+      expect(response.body).toBe([{ id: 1, reparationType: 'Couture décousue', priceSuggested: 10, id_job: 1 }]);
     });
 
     test('should return 404 if no prestations found for the job', async () => {
