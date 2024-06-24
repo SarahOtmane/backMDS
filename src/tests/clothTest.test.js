@@ -48,7 +48,7 @@ describe('Cloth Controller', () => {
         });
 
       expect(response.status).toBe(201);
-      expect(response.body.message).toBe('Habit créé avec succès.');
+      expect(response.body.message).toEqual('Habit créé avec succès.');
     });
 
     test('should return 401 if cloth already exists', async () => {
@@ -63,7 +63,7 @@ describe('Cloth Controller', () => {
         });
 
       expect(response.status).toBe(401);
-      expect(response.body.message).toBe('Cet habit existe déjà.');
+      expect(response.body.message).toEqual('Cet habit existe déjà.');
     });
   });
 
@@ -80,7 +80,7 @@ describe('Cloth Controller', () => {
         });
 
       expect(response.status).toBe(201);
-      expect(response.body.message).toBe('Cloth mis à jour avec succès.');
+      expect(response.body.message).toEqual('Cloth mis à jour avec succès.');
     });
 
     test('should return 401 if cloth not found', async () => {
@@ -95,7 +95,7 @@ describe('Cloth Controller', () => {
         });
 
       expect(response.status).toBe(401);
-      expect(response.body.message).toBe('Cet habit non trouvé.');
+      expect(response.body.message).toEqual('Cet habit non trouvé.');
     });
   });
 
@@ -107,7 +107,7 @@ describe('Cloth Controller', () => {
         .delete('/1');
 
       expect(response.status).toBe(201);
-      expect(response.body.message).toBe('Habit supprimé avec succès.');
+      expect(response.body.message).toEqual('Habit supprimé avec succès.');
     });
 
     test('should return 404 if cloth not found', async () => {
@@ -117,7 +117,7 @@ describe('Cloth Controller', () => {
         .delete('/1');
 
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Habit non trouvé.');
+      expect(response.body.message).toEqual('Habit non trouvé.');
     });
   });
 
@@ -130,7 +130,7 @@ describe('Cloth Controller', () => {
 
       expect(response.status).toBe(201);
       expect(response.body.length).toBeGreaterThan(0);
-      expect(response.body[0].categorie).toBe('Haut');
+      expect(response.body).toEqual([{ id: 1, categorie: 'Haut', clothType: 'Vestes' }]);
     });
 
     test('should return 404 if no clothes found', async () => {
@@ -140,7 +140,7 @@ describe('Cloth Controller', () => {
         .get('/');
 
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Auncun cloth trouvé.');
+      expect(response.body.message).toEqual('Auncun cloth trouvé.');
     });
   });
 
@@ -153,7 +153,7 @@ describe('Cloth Controller', () => {
 
       expect(response.status).toBe(201);
       expect(response.body.length).toBeGreaterThan(0);
-      expect(response.body[0].id_job).toBe(1);
+      expect(response.body[0].id_job).toEqual(1);
     });
 
     test('should return 404 if no clothes found for the job', async () => {
@@ -163,7 +163,7 @@ describe('Cloth Controller', () => {
         .get('/job/1');
 
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Auncun cloth trouvé.');
+      expect(response.body.message).toEqual('Auncun cloth trouvé.');
     });
   });
 
@@ -176,7 +176,7 @@ describe('Cloth Controller', () => {
 
       expect(response.status).toBe(201);
       expect(response.body.id).toBe(1);
-      expect(response.body.categorie).toBe('Haut');
+      expect(response.body).toEqual([{ id: 1, categorie: 'Haut', clothType: 'Vestes' }]);
     });
 
     test('should return 404 if cloth not found', async () => {
@@ -186,7 +186,7 @@ describe('Cloth Controller', () => {
         .get('/1');
 
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Habit non trouvé.');
+      expect(response.body.message).toEqual('Habit non trouvé.');
     });
   });
 });
