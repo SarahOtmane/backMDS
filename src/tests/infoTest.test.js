@@ -34,30 +34,54 @@ describe('Info Controller', () => {
   describe('createAnInfo', () => {
     test('should create a new info', async () => {
       Info.findOne.mockResolvedValue(null);
-      Info.create.mockResolvedValue({ id: 1, name: 'Info 1', content: 'Content 1' });
+      Info.create.mockResolvedValue({ id: 1, name: 'instaLink', content: 'Le lien insta' });
 
       const response = await request(app)
         .post('/')
         .send({
-          name: 'Info 1',
-          content: 'Content 1'
+          name: 'instaLink',
+          content: 'Le lien insta'
         });
 
       expect(response.status).toBe(201);
-      expect(response.body.message).toBe('Info créé avec succès. Le nom : Info 1');
+      expect(response.body.message).toBe('Info créé avec succès. Le nom : instaLink');
+    });
+
+    test('should return 401 if info already exists', async () => {
+      Info.findOne.mockResolvedValue({ id: 1, name: 'instaLink' });
+
+      const response = await request(app)
+        .post('/')
+        .send({
+          name: 'instaLink',
+          content: 'Le lien insta'
+        });
+
+      expect(response.status).toBe(401);
+      expect(response.body.message).toBe('Cette info existe déjà.');
     });
   });
 
   describe('getAnInfo', () => {
     test('should get a specific info by id', async () => {
-      Info.findOne.mockResolvedValue({ id: 1, name: 'Info 1', content: 'Content 1' });
+      Info.findOne.mockResolvedValue({ id: 1, name: 'instaLink', content: 'Le lien insta' });
 
       const response = await request(app)
         .get('/1');
 
       expect(response.status).toBe(201);
       expect(response.body.id).toBe(1);
-      expect(response.body.name).toBe('Info 1');
+      expect(response.body.name).toBe({id: 1, name: 'instaLink', content: 'Le lien insta'});
+    });
+
+    test('should return 404 if info not found', async () => {
+      Info.findOne.mockResolvedValue(null);
+
+      const response = await request(app)
+        .get('/1');
+
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe('Info non trouvé.');
     });
   });
 
@@ -75,6 +99,20 @@ describe('Info Controller', () => {
       expect(response.status).toBe(201);
       expect(response.body.message).toBe('Information mise à jour avec succès.');
     });
+
+    test('should return 404 if info not found', async () => {
+      Info.findOne.mockResolvedValue(null);
+
+      const response = await request(app)
+        .put('/1')
+        .send({
+          name: 'Updated Info',
+          content: 'Updated Content'
+        });
+
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe('Information non trouvé.');
+    });
   });
 
   describe('deleteAnInfo', () => {
@@ -87,18 +125,38 @@ describe('Info Controller', () => {
       expect(response.status).toBe(201);
       expect(response.body.message).toBe('Information supprimée avec succès.');
     });
+
+    test('should return 404 if info not found', async () => {
+      Info.destroy.mockResolvedValue(0);
+
+      const response = await request(app)
+        .delete('/1');
+
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe('Information non trouvé.');
+    });
   });
 
   describe('getAllInfo', () => {
     test('should get all infos', async () => {
-      Info.findAll.mockResolvedValue([{ id: 1, name: 'Info 1', content: 'Content 1' }]);
+      Info.findAll.mockResolvedValue([{ id: 1, name: 'instaLink', content: 'Le lien insta' }]);
 
       const response = await request(app)
         .get('/');
 
       expect(response.status).toBe(201);
       expect(response.body.length).toBeGreaterThan(0);
-      expect(response.body[0].name).toBe('Info 1');
+      expect(response.body[0].name).toBe([{ id: 1, name: 'instaLink', content: 'Le lien insta' }]);
+    });
+
+    test('should return 404 if no infos found', async () => {
+      Info.findAll.mockResolvedValue(null);
+
+      const response = await request(app)
+        .get('/');
+
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe('Auncune information trouvée.');
     });
   });
 });
