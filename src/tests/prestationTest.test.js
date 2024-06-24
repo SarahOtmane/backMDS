@@ -89,7 +89,7 @@ describe('Prestation Controller', () => {
 
       expect(response.status).toBe(201);
       expect(response.body.id).toBe(1);
-      expect(response.body).toBe({ id: 1, reparationType: 'Couture décousue', priceSuggested: 100, id_job: 1 });
+      expect(response.body).toEqual({ id: 1, reparationType: 'Couture décousue', priceSuggested: 100, id_job: 1 });
     });
 
     test('should return 404 if prestation not found', async () => {
@@ -201,7 +201,7 @@ describe('Prestation Controller', () => {
 
       expect(response.status).toBe(201);
       expect(response.body.length).toBeGreaterThan(0);
-      expect(response.body).toBe([{ id: 1, reparationType: 'Couture décousue', priceSuggested: 10, id_job: 1 }]);
+      expect(response.body).toEqual([{ id: 1, reparationType: 'Couture décousue', priceSuggested: 10, id_job: 1 }]);
     });
 
     test('should return 404 if no prestations found', async () => {
@@ -234,7 +234,7 @@ describe('Prestation Controller', () => {
 
       expect(response.status).toBe(201);
       expect(response.body.length).toBeGreaterThan(0);
-      expect(response.body).toBe([{ id: 1, reparationType: 'Couture décousue', priceSuggested: 10, id_job: 1 }]);
+      expect(response.body).toEqual([{ id: 1, reparationType: 'Couture décousue', priceSuggested: 10, id_job: 1 }]);
     });
 
     test('should return 404 if no prestations found for the job', async () => {
