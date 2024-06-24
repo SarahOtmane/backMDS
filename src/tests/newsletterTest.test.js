@@ -103,8 +103,8 @@ describe('Newsletter Controller', () => {
     });
 
     test('should return 404 if no emails are subscribed', async () => {
-      User.findAll.mockResolvedValue([]);
-      Newsletter.findAll.mockResolvedValue([]);
+      User.findAll.mockResolvedValue(null);
+      Newsletter.findAll.mockResolvedValue(null);
 
       const response = await request(app)
         .get('/')
