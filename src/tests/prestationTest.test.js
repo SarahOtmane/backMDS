@@ -35,13 +35,13 @@ describe('Prestation Controller', () => {
   describe('createAPrestation', () => {
     test('should create a new prestation', async () => {
       Prestation.findOne.mockResolvedValue(null);
-      Prestation.create.mockResolvedValue({ id: 1, reparationType: 'Repair 1', priceSuggested: 100, id_job: 1 });
+      Prestation.create.mockResolvedValue({ id: 1, reparationType: 'Couture décousue', priceSuggested: 10, id_job: 1 });
 
       const response = await request(app)
         .post('/')
         .send({
-          reparationType: 'Repair 1',
-          priceSuggested: 100,
+          reparationType: 'Couture décousue',
+          priceSuggested: 10,
           id_job: 1
         });
 
@@ -50,31 +50,66 @@ describe('Prestation Controller', () => {
     });
 
     test('should return 401 if prestation already exists', async () => {
-      Prestation.findOne.mockResolvedValue({ id: 1, reparationType: 'Repair 1', priceSuggested: 100, id_job: 1 });
+      Prestation.findOne.mockResolvedValue({ id: 1, reparationType: 'Couture décousue', priceSuggested: 10, id_job: 1 });
 
       const response = await request(app)
         .post('/')
         .send({
-          reparationType: 'Repair 1',
-          priceSuggested: 100,
+          reparationType: 'Couture décousue',
+          priceSuggested: 10,
           id_job: 1
         });
 
       expect(response.status).toBe(401);
       expect(response.body.message).toBe('Cette prestation existe déjà.');
     });
+
+    test('should handle errors gracefully', async () => {
+      Prestation.findOne.mockRejectedValue(new Error('Database error'));
+
+      const response = await request(app)
+        .post('/')
+        .send({
+          reparationType: 'Couture décousue',
+          priceSuggested: 10,
+          id_job: 1
+        });
+
+      expect(response.status).toBe(500);
+      expect(response.body.message).toBe('Erreur lors du traitement des données.');
+    });
   });
 
   describe('getAPrestation', () => {
     test('should get a specific prestation by id', async () => {
-      Prestation.findOne.mockResolvedValue({ id: 1, reparationType: 'Repair 1', priceSuggested: 100, id_job: 1 });
+      Prestation.findOne.mockResolvedValue({ id: 1, reparationType: 'Couture décousue', priceSuggested: 100, id_job: 1 });
 
       const response = await request(app)
         .get('/1');
 
       expect(response.status).toBe(201);
       expect(response.body.id).toBe(1);
-      expect(response.body.reparationType).toBe('Repair 1');
+      expect(response.body.reparationType).toBe({ id: 1, reparationType: 'Couture décousue', priceSuggested: 100, id_job: 1 });
+    });
+
+    test('should return 404 if prestation not found', async () => {
+      Prestation.findOne.mockResolvedValue(null);
+
+      const response = await request(app)
+        .get('/1');
+
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe('Prestation non trouvé.');
+    });
+
+    test('should handle errors gracefully', async () => {
+      Prestation.findOne.mockRejectedValue(new Error('Database error'));
+
+      const response = await request(app)
+        .get('/1');
+
+      expect(response.status).toBe(500);
+      expect(response.body.message).toBe('Erreur lors du traitement des données.');
     });
   });
 
@@ -93,6 +128,36 @@ describe('Prestation Controller', () => {
       expect(response.status).toBe(201);
       expect(response.body.message).toBe('Prestation mise à jour avec succès.');
     });
+
+    test('should return 404 if prestation not found', async () => {
+      Prestation.findOne.mockResolvedValue(null);
+
+      const response = await request(app)
+        .put('/1')
+        .send({
+          reparationType: 'Updated Repair',
+          priceSuggested: 150,
+          id_job: 1
+        });
+
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe('Prestation non trouvé.');
+    });
+
+    test('should handle errors gracefully', async () => {
+      Prestation.findOne.mockRejectedValue(new Error('Database error'));
+
+      const response = await request(app)
+        .put('/1')
+        .send({
+          reparationType: 'Updated Repair',
+          priceSuggested: 150,
+          id_job: 1
+        });
+
+      expect(response.status).toBe(500);
+      expect(response.body.message).toBe('Erreur lors du traitement des données.');
+    });
   });
 
   describe('deleteAPresta', () => {
@@ -105,31 +170,91 @@ describe('Prestation Controller', () => {
       expect(response.status).toBe(201);
       expect(response.body.message).toBe('Prestation supprimée avec succès.');
     });
+
+    test('should return 404 if prestation not found', async () => {
+      Prestation.destroy.mockResolvedValue(0);
+
+      const response = await request(app)
+        .delete('/1');
+
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe('Prestation non trouvé.');
+    });
+
+    test('should handle errors gracefully', async () => {
+      Prestation.destroy.mockRejectedValue(new Error('Database error'));
+
+      const response = await request(app)
+        .delete('/1');
+
+      expect(response.status).toBe(500);
+      expect(response.body.message).toBe('Erreur lors du traitement des données.');
+    });
   });
 
   describe('getAllPresta', () => {
     test('should get all prestations', async () => {
-      Prestation.findAll.mockResolvedValue([{ id: 1, reparationType: 'Repair 1', priceSuggested: 100, id_job: 1 }]);
+      Prestation.findAll.mockResolvedValue([{ id: 1, reparationType: 'Couture décousue', priceSuggested: 100, id_job: 1 }]);
 
       const response = await request(app)
         .get('/');
 
       expect(response.status).toBe(201);
       expect(response.body.length).toBeGreaterThan(0);
-      expect(response.body[0].reparationType).toBe('Repair 1');
+      expect(response.body).toBe([{ id: 1, reparationType: 'Couture décousue', priceSuggested: 100, id_job: 1 }]);
+    });
+
+    test('should return 404 if no prestations found', async () => {
+      Prestation.findAll.mockResolvedValue(null);
+
+      const response = await request(app)
+        .get('/');
+
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe('Auncune prestation trouvée.');
+    });
+
+    test('should handle errors gracefully', async () => {
+      Prestation.findAll.mockRejectedValue(new Error('Database error'));
+
+      const response = await request(app)
+        .get('/');
+
+      expect(response.status).toBe(500);
+      expect(response.body.message).toBe('Erreur lors du traitement des données.');
     });
   });
 
   describe('getAllPrestaOfJob', () => {
     test('should get all prestations of a specific job', async () => {
-      Prestation.findAll.mockResolvedValue([{ id: 1, reparationType: 'Repair 1', priceSuggested: 100, id_job: 1 }]);
+      Prestation.findAll.mockResolvedValue([{ id: 1, reparationType: 'Couture décousue', priceSuggested: 10, id_job: 1 }]);
 
       const response = await request(app)
         .get('/job/1');
 
       expect(response.status).toBe(201);
       expect(response.body.length).toBeGreaterThan(0);
-      expect(response.body[0].id_job).toBe(1);
+      expect(response.body).toBe([{ id: 1, reparationType: 'Couture décousue', priceSuggested: 100, id_job: 1 }]);
+    });
+
+    test('should return 404 if no prestations found for the job', async () => {
+      Prestation.findAll.mockResolvedValue(null);
+
+      const response = await request(app)
+        .get('/job/1');
+
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe('Auncune prestation trouvée.');
+    });
+
+    test('should handle errors gracefully', async () => {
+      Prestation.findAll.mockRejectedValue(new Error('Database error'));
+
+      const response = await request(app)
+        .get('/job/1');
+
+      expect(response.status).toBe(500);
+      expect(response.body.message).toBe('Erreur lors du traitement des données.');
     });
   });
 });
