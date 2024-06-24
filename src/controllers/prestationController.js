@@ -110,8 +110,7 @@ exports.putAPresta = async (req, res) => {
 */
 exports.deleteAPresta = async (req, res) => {
     try {
-        
-        const deletePresta = await Presta.destroy({
+        const deletePresta = await Prestation.destroy({
             where: { id: req.params.id_prestation }
         });
         
