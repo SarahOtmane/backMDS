@@ -48,8 +48,8 @@ describe('Artisan Controller', () => {
   describe('registerAnArtisan', () => {
     test('should register a new artisan', async () => {
       Artisan.findOne.mockResolvedValue(null);
-      Job.findOne.mockResolvedValue({ id: 1 });
-      Prestation.findOne.mockResolvedValue({ id: 1, reparationType: 'type', priceSuggested: 100 });
+      Job.findOne.mockResolvedValue({ id: 1, name: 'couture' });
+      Prestation.findOne.mockResolvedValue({ id: 1, reparationType: 'Couture décousue', priceSuggested: 10 });
       Artisan.create.mockResolvedValue({ id: 1 });
       Product.create.mockResolvedValue({});
 
@@ -65,8 +65,8 @@ describe('Artisan Controller', () => {
           city: 'City',
           postalCode: '12345',
           country: 'Country',
-          job: 'Job',
-          prestations: ['type'],
+          job: 'couture',
+          prestations: ['Couture décousue'],
           siret: '123456789',
           numeroTVA: 'FR123456789'
         });
