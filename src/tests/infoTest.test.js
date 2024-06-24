@@ -64,26 +64,26 @@ describe('Info Controller', () => {
 
   describe('getAnInfo', () => {
     test('should get a specific info by id', async () => {
-      Info.findOne.mockResolvedValue({ id: 1, name: 'instaLink', content: 'Le lien insta' });
+        Info.findOne.mockResolvedValue({ id: 1, name: 'instaLink', content: 'Le lien insta' });
 
-      const response = await request(app)
-        .get('/1');
+        const response = await request(app)
+            .get('/1');
 
-      expect(response.status).toBe(201);
-      expect(response.body.id).toBe(1);
-      expect(response.body.name).toEqual({id: 1, name: 'instaLink', content: 'Le lien insta'});
+        expect(response.status).toBe(201);
+        expect(response.body.id).toBe(1);
+        expect(response.body).toEqual({ id: 1, name: 'instaLink', content: 'Le lien insta' }); // Corrected here
     });
 
     test('should return 404 if info not found', async () => {
-      Info.findOne.mockResolvedValue(null);
+        Info.findOne.mockResolvedValue(null);
 
-      const response = await request(app)
-        .get('/1');
+        const response = await request(app)
+            .get('/1');
 
-      expect(response.status).toBe(404);
-      expect(response.body.message).toEqual('Info non trouvé.');
+        expect(response.status).toBe(404);
+        expect(response.body.message).toEqual('Info non trouvé.');
     });
-  });
+});
 
   describe('putAnInfo', () => {
     test('should update an info', async () => {
