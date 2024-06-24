@@ -44,7 +44,7 @@ describe('Info Controller', () => {
         });
 
       expect(response.status).toBe(201);
-      expect(response.body.message).toBe('Info créé avec succès. Le nom : instaLink');
+      expect(response.body.message).toEqual('Info créé avec succès. Le nom : instaLink');
     });
 
     test('should return 401 if info already exists', async () => {
@@ -58,7 +58,7 @@ describe('Info Controller', () => {
         });
 
       expect(response.status).toBe(401);
-      expect(response.body.message).toBe('Cette info existe déjà.');
+      expect(response.body.message).toEqual('Cette info existe déjà.');
     });
   });
 
@@ -71,7 +71,7 @@ describe('Info Controller', () => {
 
       expect(response.status).toBe(201);
       expect(response.body.id).toBe(1);
-      expect(response.body.name).toBe({id: 1, name: 'instaLink', content: 'Le lien insta'});
+      expect(response.body.name).toEqual({id: 1, name: 'instaLink', content: 'Le lien insta'});
     });
 
     test('should return 404 if info not found', async () => {
@@ -81,7 +81,7 @@ describe('Info Controller', () => {
         .get('/1');
 
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Info non trouvé.');
+      expect(response.body.message).toEqual('Info non trouvé.');
     });
   });
 
@@ -97,7 +97,7 @@ describe('Info Controller', () => {
         });
 
       expect(response.status).toBe(201);
-      expect(response.body.message).toBe('Information mise à jour avec succès.');
+      expect(response.body.message).toEqual('Information mise à jour avec succès.');
     });
 
     test('should return 404 if info not found', async () => {
@@ -111,7 +111,7 @@ describe('Info Controller', () => {
         });
 
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Information non trouvé.');
+      expect(response.body.message).toEqual('Information non trouvé.');
     });
   });
 
@@ -123,7 +123,7 @@ describe('Info Controller', () => {
         .delete('/1');
 
       expect(response.status).toBe(201);
-      expect(response.body.message).toBe('Information supprimée avec succès.');
+      expect(response.body.message).toEqual('Information supprimée avec succès.');
     });
 
     test('should return 404 if info not found', async () => {
@@ -133,7 +133,7 @@ describe('Info Controller', () => {
         .delete('/1');
 
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Information non trouvé.');
+      expect(response.body.message).toEqual('Information non trouvé.');
     });
   });
 
@@ -146,7 +146,7 @@ describe('Info Controller', () => {
 
       expect(response.status).toBe(201);
       expect(response.body.length).toBeGreaterThan(0);
-      expect(response.body[0].name).toBe([{ id: 1, name: 'instaLink', content: 'Le lien insta' }]);
+      expect(response.body[0].name).toEqual([{ id: 1, name: 'instaLink', content: 'Le lien insta' }]);
     });
 
     test('should return 404 if no infos found', async () => {
@@ -156,7 +156,7 @@ describe('Info Controller', () => {
         .get('/');
 
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Auncune information trouvée.');
+      expect(response.body.message).toEqual('Auncune information trouvée.');
     });
   });
 });
