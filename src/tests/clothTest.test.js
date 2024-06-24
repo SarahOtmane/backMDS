@@ -37,13 +37,13 @@ describe('Cloth Controller', () => {
   describe('createACloth', () => {
     test('should create a new cloth', async () => {
       Cloth.findOne.mockResolvedValue(null);
-      Cloth.create.mockResolvedValue({ id: 1, categorie: 'Category 1', clothType: 'Type 1', id_job: 1 });
+      Cloth.create.mockResolvedValue({ id: 1, categorie: 'Haut', clothType: 'Vestes', id_job: 1 });
 
       const response = await request(app)
         .post('/')
         .send({
-          categorie: 'Category 1',
-          clothType: 'Type 1',
+          categorie: 'Haut',
+          clothType: 'Vestes',
           id_job: 1
         });
 
@@ -57,8 +57,8 @@ describe('Cloth Controller', () => {
       const response = await request(app)
         .post('/')
         .send({
-          categorie: 'Category 1',
-          clothType: 'Type 1',
+          categorie: 'Haut',
+          clothType: 'Vestes',
           id_job: 1
         });
 
@@ -123,14 +123,14 @@ describe('Cloth Controller', () => {
 
   describe('getAllClothes', () => {
     test('should get all clothes', async () => {
-      Cloth.findAll.mockResolvedValue([{ id: 1, categorie: 'Category 1', clothType: 'Type 1' }]);
+      Cloth.findAll.mockResolvedValue([{ id: 1, categorie: 'Haut', clothType: 'Vestes' }]);
 
       const response = await request(app)
         .get('/');
 
       expect(response.status).toBe(201);
       expect(response.body.length).toBeGreaterThan(0);
-      expect(response.body[0].categorie).toBe('Category 1');
+      expect(response.body[0].categorie).toBe('Haut');
     });
 
     test('should return 404 if no clothes found', async () => {
@@ -146,7 +146,7 @@ describe('Cloth Controller', () => {
 
   describe('getAllClothesOfJob', () => {
     test('should get all clothes of a specific job', async () => {
-      Cloth.findAll.mockResolvedValue([{ id: 1, categorie: 'Category 1', clothType: 'Type 1', id_job: 1 }]);
+      Cloth.findAll.mockResolvedValue([{ id: 1, categorie: 'Haut', clothType: 'Vestes', id_job: 1 }]);
 
       const response = await request(app)
         .get('/job/1');
@@ -169,14 +169,14 @@ describe('Cloth Controller', () => {
 
   describe('getACloth', () => {
     test('should get a specific cloth by id', async () => {
-      Cloth.findOne.mockResolvedValue({ id: 1, categorie: 'Category 1', clothType: 'Type 1' });
+      Cloth.findOne.mockResolvedValue({ id: 1, categorie: 'Haut', clothType: 'Vestes' });
 
       const response = await request(app)
         .get('/1');
 
       expect(response.status).toBe(201);
       expect(response.body.id).toBe(1);
-      expect(response.body.categorie).toBe('Category 1');
+      expect(response.body.categorie).toBe('Haut');
     });
 
     test('should return 404 if cloth not found', async () => {
