@@ -73,6 +73,19 @@ describe('Newsletter Controller', () => {
       expect(response.body.message).toBe('Vous êtes inscrit à la newsletter');
       expect(user.save).toHaveBeenCalled();
     });
+
+    test('should handle errors gracefully', async () => {
+      User.findOne.mockRejectedValue(new Error('Database error'));
+
+      const response = await request(app)
+        .post('/')
+        .send({
+          email: 'test@example.com'
+        });
+
+      expect(response.status).toBe(500);
+      expect(response.body.message).toBe('Erreur lors du traitement des données.');
+    });
   });
 
   describe('getAllInNewsletter', () => {
@@ -99,6 +112,17 @@ describe('Newsletter Controller', () => {
 
       expect(response.status).toBe(404);
       expect(response.body.message).toBe("Aucun email n'est inscrit à la newsletter");
+    });
+
+    test('should handle errors gracefully', async () => {
+      User.findAll.mockRejectedValue(new Error('Database error'));
+
+      const response = await request(app)
+        .get('/')
+        .set('Authorization', 'Bearer adminToken');
+
+      expect(response.status).toBe(500);
+      expect(response.body.message).toBe('Erreur lors du traitement des données.');
     });
   });
 });
