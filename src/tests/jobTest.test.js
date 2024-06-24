@@ -70,7 +70,7 @@ describe('Job Controller', () => {
 
       expect(response.status).toBe(201);
       expect(response.body.id).toBe(1);
-      expect(response.body).toBe({ id: 1, name: 'Couture' });
+      expect(response.body).toEqual({ id: 1, name: 'Couture' });
     });
 
     test('should return 404 if job not found', async () => {
@@ -93,7 +93,7 @@ describe('Job Controller', () => {
 
       expect(response.status).toBe(201);
       expect(response.body.id).toBe(1);
-      expect(response.body).toBe({ id: 1, name: 'Couture' });
+      expect(response.body).toEqual({ id: 1, name: 'Couture' });
     });
 
     test('should return 404 if job not found', async () => {
@@ -166,7 +166,7 @@ describe('Job Controller', () => {
 
       expect(response.status).toBe(201);
       expect(response.body.length).toBeGreaterThan(0);
-      expect(response.body).toBe([{ id: 1, name: 'Couture' }]);
+      expect(response.body).toEqual([{ id: 1, name: 'Couture' }]);
     });
 
     test('should return 404 if no jobs found', async () => {
