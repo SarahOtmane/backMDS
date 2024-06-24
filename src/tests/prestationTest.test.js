@@ -162,7 +162,7 @@ describe('Prestation Controller', () => {
 
   describe('deleteAPresta', () => {
     test('should delete a prestation', async () => {
-      Prestation.destroy.mockResolvedValue(1);
+      Prestation.destroy.mockResolvedValue({ id: 1, reparationType: 'Couture décousue', priceSuggested: 100, id_job: 1 });
 
       const response = await request(app)
         .delete('/1');
@@ -172,7 +172,7 @@ describe('Prestation Controller', () => {
     });
 
     test('should return 404 if prestation not found', async () => {
-      Prestation.destroy.mockResolvedValue(0);
+      Prestation.destroy.mockResolvedValue(null);
 
       const response = await request(app)
         .delete('/1');
