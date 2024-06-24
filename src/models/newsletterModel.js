@@ -19,16 +19,6 @@ const Newsletter = sequelize.define('Newsletter', {
     underscored: true
 });
 
-// Synchronisation du modèle avec la base de données
-(async () => {
-    try {
-        //ne pas forcer a supp et recréer la table
-        await Newsletter.sync({ force: false });
-        console.log("Modèle Newsletter synchronisée avec la base de données.");
-    } catch (error) {
-        console.error("Erreur lors de la synchronisation du modèle Newsletter:", error);
-    }
-})();
 
 
 module.exports = Newsletter;

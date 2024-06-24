@@ -70,16 +70,5 @@ const User = sequelize.define('User', {
     underscored: true
 });
 
-// Synchronisation du modèle avec la base de données
-(async () => {
-    try {
-        //ne pas forcer a supp et recréer la table
-        await User.sync({ force: false });
-        console.log("Modèle User synchronisé avec la base de données.");
-    } catch (error) {
-        console.error("Erreur lors de la synchronisation du modèle User:", error);
-    }
-})();
-
 
 module.exports = User;

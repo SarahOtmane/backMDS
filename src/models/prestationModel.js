@@ -36,14 +36,5 @@ Prestation.belongsTo(Job, {
 });
 
 
-// Synchronisation du modèle avec la base de données
-(async () => {
-    try {
-        await Prestation.sync({ force: false });
-        console.log("Modèle Prestation synchronisé avec la base de données.");
-    } catch (error) {
-        console.error("Erreur lors de la synchronisation du modèle Prestation:", error);
-    }
-})();
 
 module.exports = Prestation;

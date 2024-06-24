@@ -23,16 +23,6 @@ const Job = sequelize.define('Job', {
     underscored: true
 });
 
-// Synchronisation du modèle avec la base de données
-(async () => {
-    try {
-        //ne pas forcer a supp et recréer la table
-        await Job.sync({ force: false });
-        console.log("Modèle Job synchronisé avec la base de données.");
-    } catch (error) {
-        console.error("Erreur lors de la synchronisation du modèle Job:", error);
-    }
-})();
 
 
 module.exports = Job;

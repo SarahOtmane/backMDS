@@ -29,14 +29,5 @@ const Cloth = sequelize.define('Cloth', {
     underscored: true
 });
 
-// Synchronisation du modèle avec la base de données
-(async () => {
-    try {
-        await Cloth.sync({ force: false });
-        console.log("Modèle Cloth synchronisé avec la base de données.");
-    } catch (error) {
-        console.error("Erreur lors de la synchronisation du modèle Cloth:", error);
-    }
-})();
 
 module.exports = Cloth;

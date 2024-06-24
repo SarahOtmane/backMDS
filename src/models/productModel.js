@@ -39,14 +39,5 @@ Product.belongsTo(Artisan, {
     foreignKey: "id_artisan",
 });
 
-// Synchronisation du modèle avec la base de données
-(async () => {
-    try {
-        await Product.sync({ force: false });
-        console.log("Modèle Product synchronisé avec la base de données.");
-    } catch (error) {
-        console.error("Erreur lors de la synchronisation du modèle Product:", error);
-    }
-})();
 
 module.exports = Product;

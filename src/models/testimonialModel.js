@@ -48,16 +48,6 @@ Testimonial.belongsTo(Artisan, {
 });
 
 
-// Synchronisation du modèle avec la base de données
-(async () => {
-    try {
-        //ne pas forcer a supp et recréer la table
-        await Testimonial.sync({ force: false });
-        console.log("Modèle Testimonial synchronisé avec la base de données.");
-    } catch (error) {
-        console.error("Erreur lors de la synchronisation du modèle Testimonial:", error);
-    }
-})();
 
 
 module.exports = Testimonial;

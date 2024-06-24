@@ -27,16 +27,7 @@ const Info = sequelize.define('Info', {
     underscored: true
 });
 
-// Synchronisation du modèle avec la base de données
-(async () => {
-    try {
-        //ne pas forcer a supp et recréer la table
-        await Info.sync({ force: false });
-        console.log("Modèle Info synchronisé avec la base de données.");
-    } catch (error) {
-        console.error("Erreur lors de la synchronisation du modèle Info:", error);
-    }
-})();
+
 
 
 module.exports = Info;

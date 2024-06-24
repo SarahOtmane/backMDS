@@ -60,16 +60,4 @@ Commande.belongsTo(Cloth, {
 });
 
 
-// Synchronisation du modèle avec la base de données
-(async () => {
-    try {
-        //ne pas forcer a supp et recréer la table
-        await Commande.sync({ force: false });
-        console.log("Modèle Commande synchronisé avec la base de données.");
-    } catch (error) {
-        console.error("Erreur lors de la synchronisation du modèle Commande:", error);
-    }
-})();
-
-
 module.exports = Commande;
