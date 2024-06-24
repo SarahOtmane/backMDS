@@ -169,24 +169,24 @@ describe('Cloth Controller', () => {
 
   describe('getACloth', () => {
     test('should get a specific cloth by id', async () => {
-      Cloth.findOne.mockResolvedValue({ id: 1, categorie: 'Haut', clothType: 'Vestes' });
+        Cloth.findOne.mockResolvedValue({ id: 1, categorie: 'Haut', clothType: 'Vestes' });
 
-      const response = await request(app)
-        .get('/1');
+        const response = await request(app)
+            .get('/1');
 
-      expect(response.status).toBe(201);
-      expect(response.body.id).toBe(1);
-      expect(response.body).toEqual([{ id: 1, categorie: 'Haut', clothType: 'Vestes' }]);
+        expect(response.status).toBe(201);
+        expect(response.body.id).toBe(1);
+        expect(response.body).toEqual({ id: 1, categorie: 'Haut', clothType: 'Vestes' }); 
     });
 
     test('should return 404 if cloth not found', async () => {
-      Cloth.findOne.mockResolvedValue(null);
+        Cloth.findOne.mockResolvedValue(null);
 
-      const response = await request(app)
-        .get('/1');
+        const response = await request(app)
+            .get('/1');
 
-      expect(response.status).toBe(404);
-      expect(response.body.message).toEqual('Habit non trouvé.');
+        expect(response.status).toBe(404);
+        expect(response.body.message).toEqual('Habit non trouvé.');
     });
-  });
+});
 });
