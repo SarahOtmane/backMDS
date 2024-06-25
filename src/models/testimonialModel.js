@@ -30,22 +30,25 @@ const Testimonial = sequelize.define('Testimonial', {
     underscored: true
 });
 
-const User = require('./userModel');
-const Artisan = require('./artisanModel');
 
-User.hasMany(Testimonial, {
-    foreignKey: 'id_user',
-});
-Testimonial.belongsTo(User, {
-    foreignKey: 'id_user',
-});
+if (process.env.NODE_ENV !== 'test') {
+    const User = require('./userModel');
+    const Artisan = require('./artisanModel');
 
-Artisan.hasMany(Testimonial, {
-    foreignKey: 'id_artisan',
-});
-Testimonial.belongsTo(Artisan, {
-    foreignKey: 'id_artisan',
-});
+    User.hasMany(Testimonial, {
+        foreignKey: 'id_user',
+    });
+    Testimonial.belongsTo(User, {
+        foreignKey: 'id_user',
+    });
+    
+    Artisan.hasMany(Testimonial, {
+        foreignKey: 'id_artisan',
+    });
+    Testimonial.belongsTo(Artisan, {
+        foreignKey: 'id_artisan',
+    });
+}
 
 
 

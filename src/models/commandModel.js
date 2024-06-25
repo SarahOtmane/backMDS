@@ -34,30 +34,34 @@ const Command = sequelize.define('Command', {
     underscored: true
 });
 
-const User = require('./userModel');
-const Product = require('./productModel');
-const Cloth = require('./clothModel')
 
-User.hasMany(Command, {
-    foreignKey: 'id_user',
-});
-Command.belongsTo(User, {
-    foreignKey: 'id_user',
-});
 
-Product.hasMany(Command, {
-    foreignKey: 'id_product',
-});
-Command.belongsTo(Product, {
-    foreignKey: 'id_product',
-});
-
-Cloth.hasMany(Command, {
-    foreignKey: "id_cloth",
-});
-Command.belongsTo(Cloth, {
-    foreignKey: "id_cloth",
-});
+if (process.env.NODE_ENV !== 'test') {
+    const User = require('./userModel');
+    const Product = require('./productModel');
+    const Cloth = require('./clothModel')
+    
+    User.hasMany(Command, {
+        foreignKey: 'id_user',
+    });
+    Command.belongsTo(User, {
+        foreignKey: 'id_user',
+    });
+    
+    Product.hasMany(Command, {
+        foreignKey: 'id_product',
+    });
+    Command.belongsTo(Product, {
+        foreignKey: 'id_product',
+    });
+    
+    Cloth.hasMany(Command, {
+        foreignKey: "id_cloth",
+    });
+    Command.belongsTo(Cloth, {
+        foreignKey: "id_cloth",
+    });
+}
 
 
 module.exports = Command;

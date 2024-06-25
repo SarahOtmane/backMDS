@@ -40,4 +40,24 @@ Product.belongsTo(Artisan, {
 });
 
 
+if (process.env.NODE_ENV !== 'test') {
+    const Prestation = require('./prestationModel');
+    const Artisan = require('./artisanModel');
+
+    Prestation.hasMany(Product, {
+        foreignKey: "id_prestation",
+    });
+    Product.belongsTo(Prestation, {
+        foreignKey: "id_prestation",
+    });
+    
+    Artisan.hasMany(Product, {
+        foreignKey: "id_artisan",
+    });
+    Product.belongsTo(Artisan, {
+        foreignKey: "id_artisan",
+    });
+}
+
+
 module.exports = Product;

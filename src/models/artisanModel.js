@@ -70,12 +70,14 @@ const Artisan = sequelize.define('Artisan', {
 });
 
 // Définition des relations
-const Job = require('./jobModel');
-Job.hasMany(Artisan, {
-    foreignKey: 'id_job',
-});
-Artisan.belongsTo(Job, {
-    foreignKey: 'id_job',
-});
+if (process.env.NODE_ENV !== 'test') {
+    const Job = require('./jobModel');
+    Job.hasMany(Artisan, {
+        foreignKey: 'id_job',
+    });
+    Artisan.belongsTo(Job, {
+        foreignKey: 'id_job',
+    });
+}
 
 module.exports = Artisan;

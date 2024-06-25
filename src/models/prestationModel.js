@@ -26,14 +26,16 @@ const Prestation = sequelize.define('Prestation', {
     underscored: true
 });
 
-// Définition des relations
-const Job = require('./jobModel');
-Job.hasMany(Prestation, {
-    foreignKey: 'id_job',
-});
-Prestation.belongsTo(Job, {
-    foreignKey: 'id_job',
-});
+
+if (process.env.NODE_ENV !== 'test') {
+    const Job = require('./jobModel');
+    Job.hasMany(Prestation, {
+        foreignKey: 'id_job',
+    });
+    Prestation.belongsTo(Job, {
+        foreignKey: 'id_job',
+    });
+}
 
 
 
