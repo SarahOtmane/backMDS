@@ -23,8 +23,7 @@ const Product = sequelize.define('Product', {
 
 
 
-if (process.env.NODE_ENV !== 'test') {
-    const Prestation = require('./prestationModel');
+const Prestation = require('./prestationModel');
     const Artisan = require('./artisanModel');
 
     Prestation.hasMany(Product, {
@@ -40,7 +39,6 @@ if (process.env.NODE_ENV !== 'test') {
     Product.belongsTo(Artisan, {
         foreignKey: "id_artisan",
     });
-}
 
 
 module.exports = Product;

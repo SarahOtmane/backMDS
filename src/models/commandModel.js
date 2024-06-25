@@ -36,8 +36,7 @@ const Command = sequelize.define('Command', {
 
 
 
-if (process.env.NODE_ENV !== 'test') {
-    const User = require('./userModel');
+const User = require('./userModel');
     const Product = require('./productModel');
     const Cloth = require('./clothModel')
     
@@ -61,7 +60,6 @@ if (process.env.NODE_ENV !== 'test') {
     Command.belongsTo(Cloth, {
         foreignKey: "id_cloth",
     });
-}
 
 
 module.exports = Command;

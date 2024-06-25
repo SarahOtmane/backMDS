@@ -27,15 +27,13 @@ const Prestation = sequelize.define('Prestation', {
 });
 
 
-if (process.env.NODE_ENV !== 'test') {
-    const Job = require('./jobModel');
+const Job = require('./jobModel');
     Job.hasMany(Prestation, {
         foreignKey: 'id_job',
     });
     Prestation.belongsTo(Job, {
         foreignKey: 'id_job',
     });
-}
 
 
 
