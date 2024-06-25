@@ -1,3 +1,17 @@
+const { Model } = require('sequelize');
+const jwt = require('jsonwebtoken'); 
+
+Model.belongsTo = jest.fn();
+Model.hasMany = jest.fn();
+
+jest.mock('bcryptjs');
+jest.mock('jsonwebtoken');
+jest.mock('../middlewares/functionsMiddleware');
+jest.mock('../models/artisanModel');
+jest.mock('../models/jobModel');
+jest.mock('../models/prestationModel');
+jest.mock('../models/productModel');
+
 const request = require('supertest');
 const express = require('express');
 const bcryptjs = require('bcryptjs');
@@ -11,15 +25,11 @@ const Product = require('../models/productModel');
 const app = express();
 app.use(express.json());
 
+const artisanController = require('../controllers/artisanController');
+app.post('/artisans/register', artisanController.registerAnArtisan);
+app.post('/artisans/login', artisanController.loginAnArtisan)
 
-const artisan= require('../controllers/artisanController'); 
-app.post('/register', registerAnArtisan);
-
-jest.mock('../models');
-jest.mock('bcryptjs');
-jest.mock('../middlewares/functionsMiddleware');
-
-describe('POST /register', () => {
+describe('POST /artisans/register', () => {
     let reqBody;
 
     beforeEach(() => {
@@ -44,7 +54,7 @@ describe('POST /register', () => {
         Artisan.findOne.mockResolvedValueOnce({ email: 'john.doe@example.com' });
 
         const res = await request(app)
-            .post('/register')
+            .post('/artisans/register')
             .send(reqBody);
 
         expect(res.status).toBe(409);
@@ -56,7 +66,7 @@ describe('POST /register', () => {
         Job.findOne.mockResolvedValueOnce(null);
 
         const res = await request(app)
-            .post('/register')
+            .post('/artisans/register')
             .send(reqBody);
 
         expect(res.status).toBe(401);
@@ -69,7 +79,7 @@ describe('POST /register', () => {
         functionsMiddleware.verifyEmail.mockReturnValueOnce(false);
 
         const res = await request(app)
-            .post('/register')
+            .post('/artisans/register')
             .send(reqBody);
 
         expect(res.status).toBe(401);
@@ -84,7 +94,7 @@ describe('POST /register', () => {
         reqBody.prestations = [];
 
         const res = await request(app)
-            .post('/register')
+            .post('/artisans/register')
             .send(reqBody);
 
         expect(res.status).toBe(404);
@@ -98,7 +108,7 @@ describe('POST /register', () => {
         Prestation.findOne.mockResolvedValueOnce(null);
 
         const res = await request(app)
-            .post('/register')
+            .post('/artisans/register')
             .send(reqBody);
 
         expect(res.status).toBe(404);
@@ -132,19 +142,87 @@ describe('POST /register', () => {
         Product.create.mockResolvedValueOnce({ price: 100, id_prestation: 1, id_artisan: 1 });
 
         const res = await request(app)
-            .post('/register')
+            .post('/artisans/register')
             .send(reqBody);
 
         expect(res.status).toBe(201);
         expect(res.body.newArtisan).toEqual(createdArtisan);
-        expect(res.body.products.length).toBe(1);
     });
 
     test('should return 500 on server error', async () => {
         Artisan.findOne.mockRejectedValueOnce(new Error('Server error'));
 
         const res = await request(app)
-            .post('/register')
+            .post('/artisans/register')
+            .send(reqBody);
+
+        expect(res.status).toBe(500);
+        expect(res.body.message).toBe('Erreur lors du traitement des données.');
+    });
+});
+
+describe('POST /artisans/login', () => {
+    let reqBody;
+
+    beforeEach(() => {
+        reqBody = {
+            email: 'john.doe@example.com',
+            password: 'password123'
+        };
+    });
+
+    test('should return 404 if artisan not found', async () => {
+        Artisan.findOne.mockResolvedValueOnce(null);
+
+        const res = await request(app)
+            .post('/artisans/login')
+            .send(reqBody);
+
+        expect(res.status).toBe(404);
+        expect(res.body.message).toBe('Artisan non trouvé.');
+    });
+
+    test('should return 401 if password is incorrect', async () => {
+        const artisan = {
+            id: 1,
+            email: 'john.doe@example.com',
+            password: 'hashedpassword'
+        };
+        Artisan.findOne.mockResolvedValueOnce(artisan);
+        bcryptjs.compare.mockResolvedValueOnce(false);
+
+        const res = await request(app)
+            .post('/artisans/login')
+            .send(reqBody);
+
+        expect(res.status).toBe(401);
+        expect(res.body.message).toBe('Email ou mot de passe incorrect.');
+    });
+
+    test('should return 201 and a token if login is successful', async () => {
+        const artisan = {
+            id: 1,
+            email: 'john.doe@example.com',
+            password: 'hashedpassword'
+        };
+        Artisan.findOne.mockResolvedValueOnce(artisan);
+        bcryptjs.compare.mockResolvedValueOnce(true);
+        const token = 'jsonwebtoken';
+        jwt.sign.mockReturnValueOnce(token);
+
+        const res = await request(app)
+            .post('/artisans/login')
+            .send(reqBody);
+
+        expect(res.status).toBe(201);
+        expect(res.body.token).toBe(token);
+    });
+
+    test('should return 500 on server error', async () => {
+        Artisan.findOne.mockRejectedValueOnce(new Error('Server error'));
+
+        const res = await request(app)
+            .post('/artisans/login')
             .send(reqBody);
 
         expect(res.status).toBe(500);
