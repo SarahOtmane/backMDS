@@ -6,7 +6,7 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
 });
 
 
-const Commande = sequelize.define('Commande', {
+const Command = sequelize.define('Command', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -38,26 +38,26 @@ const User = require('./userModel');
 const Product = require('./productModel');
 const Cloth = require('./clothModel')
 
-User.hasMany(Commande, {
+User.hasMany(Command, {
     foreignKey: 'id_user',
 });
-Commande.belongsTo(User, {
+Command.belongsTo(User, {
     foreignKey: 'id_user',
 });
 
-Product.hasMany(Commande, {
+Product.hasMany(Command, {
     foreignKey: 'id_product',
 });
-Commande.belongsTo(Product, {
+Command.belongsTo(Product, {
     foreignKey: 'id_product',
 });
 
-Cloth.hasMany(Commande, {
+Cloth.hasMany(Command, {
     foreignKey: "id_cloth",
 });
-Commande.belongsTo(Cloth, {
+Command.belongsTo(Cloth, {
     foreignKey: "id_cloth",
 });
 
 
-module.exports = Commande;
+module.exports = Command;
