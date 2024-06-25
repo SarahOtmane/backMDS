@@ -195,7 +195,7 @@ describe('User Controller', () => {
 
         it('should return 201 when updating the password', async () => {
             const { statusCode, body } = await supertest(app)
-                .put('/users')
+                .put('/users/updatePassword')
                 .set("authorization", token)
                 .send({
                     oldPassword : 'S@rah2024',
@@ -207,13 +207,12 @@ describe('User Controller', () => {
 
         it('should return 400 when the old password is incorrect', async () => {
             const { statusCode, body } = await supertest(app)
-                .put('/users')
+                .put('/users/updatePassword')
                 .set("authorization", token)
                 .send({
-                    oldPassword : 'SARAHtest@2024',
+                    oldPassword : 'SARAHtest@2024uhhh',
                     password : 'nbjhvhjvgg',
                 });
-
             expect(statusCode).toBe(400);
         });
     });
