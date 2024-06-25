@@ -132,7 +132,6 @@ describe('User Controller', () => {
             });
 
             token = tokenRes.body.token;
-            console.log(token);
         })
 
         it('should return 200 when getting the informations', async () => {
@@ -156,7 +155,6 @@ describe('User Controller', () => {
             });
 
             token = tokenRes.body.token;
-            console.log(token);
         })
 
         it('should return 201 when updating the informations', async () => {
@@ -190,7 +188,6 @@ describe('User Controller', () => {
             });
 
             token = tokenRes.body.token;
-            console.log(token);
         })
 
         it('should return 201 when updating the password', async () => {
