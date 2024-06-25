@@ -4,7 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const artisanController = require('../controllers/artisanController');
 const jwtMiddleware = require('../middlewares/jwtMiddleware');
-const bcrypt = require('bcrypt');
+const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const Artisan = require('../models/artisanModel');
@@ -12,13 +12,14 @@ const Job = require('../models/jobModel');
 const Prestation = require('../models/prestationModel');
 const Product = require('../models/productModel');
 
-
+//créer une simulation des models
 jest.mock('../models/artisanModel');
 jest.mock('../models/jobModel');
 jest.mock('../models/prestationModel');
 jest.mock('../models/productModel');
 jest.mock('../middlewares/functionsMiddleware');
 
+//configuration de l app avec les routes
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -32,7 +33,7 @@ app.put('/updatePassword', jwtMiddleware.verifyTokenArtisan, artisanController.u
 app.get('/allArtisan', artisanController.getAllArtisans);
 app.get('/:id_job/:postalcode', artisanController.getAllArtisansFiltre);
 
-// Mock middleware to inject artisan into request
+//forcer le midlleware à injecter un artisan fictif dans chaque requêtes
 jest.mock('../middlewares/jwtMiddleware', () => ({
   verifyTokenArtisan: (req, res, next) => {
     req.artisan = { id: 1 };
@@ -41,6 +42,7 @@ jest.mock('../middlewares/jwtMiddleware', () => ({
 }));
 
 describe('Artisan Controller', () => {
+  //réinitialiser chaque mock avant chaque test
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -154,7 +156,7 @@ describe('Artisan Controller', () => {
     test('should login an artisan', async () => {
       const artisan = { id: 1, email: 'johndoe@example.com', password: 'password123' };
       Artisan.findOne.mockResolvedValue(artisan);
-      jest.spyOn(bcrypt, 'compare').mockResolvedValue(true);
+      jest.spyOn(bcryptjs, 'compare').mockResolvedValue(true);
       jest.spyOn(jwt, 'sign').mockReturnValue('fakeToken');
 
       const response = await request(app)
@@ -185,7 +187,7 @@ describe('Artisan Controller', () => {
     test('should return 401 if password is incorrect', async () => {
       const artisan = { id: 1, email: 'johndoe@example.com', password: 'password123' };
       Artisan.findOne.mockResolvedValue(artisan);
-      jest.spyOn(bcrypt, 'compare').mockResolvedValue(false);
+      jest.spyOn(bcryptjs, 'compare').mockResolvedValue(false);
 
       const response = await request(app)
         .post('/login')
@@ -392,8 +394,8 @@ describe('Artisan Controller', () => {
     test('should update the password for an artisan', async () => {
       const artisan = { id: 1, password: 'oldPasswordHash' };
       Artisan.findOne.mockResolvedValue(artisan);
-      jest.spyOn(bcrypt, 'compare').mockResolvedValue(true);
-      jest.spyOn(bcrypt, 'hash').mockResolvedValue('newPasswordHash');
+      jest.spyOn(bcryptjs, 'compare').mockResolvedValue(true);
+      jest.spyOn(bcryptjs, 'hash').mockResolvedValue('newPasswordHash');
 
       const response = await request(app)
         .put('/updatePassword')
@@ -410,7 +412,7 @@ describe('Artisan Controller', () => {
     test('should return 400 if old password is incorrect', async () => {
       const artisan = { id: 1, password: 'oldPasswordHash' };
       Artisan.findOne.mockResolvedValue(artisan);
-      jest.spyOn(bcrypt, 'compare').mockResolvedValue(false);
+      jest.spyOn(bcryptjs, 'compare').mockResolvedValue(false);
 
       const response = await request(app)
         .put('/updatePassword')

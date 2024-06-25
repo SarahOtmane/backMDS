@@ -4,12 +4,12 @@ const bodyParser = require('body-parser');
 const userController = require('../controllers/userController');
 const jwtMiddleware = require('../middlewares/jwtMiddleware');
 const User = require('../models/userModel');
-const bcrypt = require('bcrypt');
+const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 
 jest.mock('../models/userModel');
-jest.mock('bcrypt');
+jest.mock('bcryptjs');
 jest.mock('jsonwebtoken');
 jest.mock('nodemailer');
 
@@ -48,7 +48,7 @@ describe('User Controller', () => {
   describe('registerAUser', () => {
     test('should register a new user', async () => {
       User.findOne.mockResolvedValue(null);
-      bcrypt.hash.mockResolvedValue('hashedPassword');
+      bcryptjs.hash.mockResolvedValue('hashedPassword');
       User.create.mockResolvedValue({ id: 1, email: 'test@example.com' });
 
       const response = await request(app)
@@ -112,7 +112,7 @@ describe('User Controller', () => {
     test('should login a user', async () => {
       const user = { id: 1, email: 'test@example.com', password: 'hashedPassword' };
       User.findOne.mockResolvedValue(user);
-      bcrypt.compare.mockResolvedValue(true);
+      bcryptjs.compare.mockResolvedValue(true);
       jwt.sign.mockReturnValue('fakeToken');
 
       const response = await request(app)
@@ -143,7 +143,7 @@ describe('User Controller', () => {
     test('should return 401 if password is incorrect', async () => {
       const user = { id: 1, email: 'test@example.com', password: 'hashedPassword' };
       User.findOne.mockResolvedValue(user);
-      bcrypt.compare.mockResolvedValue(false);
+      bcryptjs.compare.mockResolvedValue(false);
 
       const response = await request(app)
         .post('/login')
@@ -272,8 +272,8 @@ describe('User Controller', () => {
     test('should update the password for a user', async () => {
       const user = { id: 1, password: 'oldPasswordHash' };
       User.findOne.mockResolvedValue(user);
-      bcrypt.compare.mockResolvedValue(true);
-      bcrypt.hash.mockResolvedValue('newPasswordHash');
+      bcryptjs.compare.mockResolvedValue(true);
+      bcryptjs.hash.mockResolvedValue('newPasswordHash');
 
       const response = await request(app)
         .put('/updatePassword')
@@ -290,7 +290,7 @@ describe('User Controller', () => {
     test('should return 400 if old password is incorrect', async () => {
       const user = { id: 1, password: 'oldPasswordHash' };
       User.findOne.mockResolvedValue(user);
-      bcrypt.compare.mockResolvedValue(false);
+      bcryptjs.compare.mockResolvedValue(false);
 
       const response = await request(app)
         .put('/updatePassword')
@@ -452,7 +452,7 @@ describe('User Controller', () => {
       jwt.verify.mockResolvedValue({ email: 'test@example.com' });
       const user = { email: 'test@example.com', save: jest.fn() };
       User.findOne.mockResolvedValue(user);
-      bcrypt.hash.mockResolvedValue('newHashedPassword');
+      bcryptjs.hash.mockResolvedValue('newHashedPassword');
 
       const response = await request(app)
         .post(`/resetPassword/${token}`)
