@@ -1,7 +1,6 @@
 const Product = require('../models/productModel');
 const Artisan = require('../models/artisanModel');
 const Prestation = require('../models/prestationModel');
-const Cloth = require('../models/clothModel');
 
 
 
