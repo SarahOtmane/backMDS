@@ -174,10 +174,10 @@ exports.updatePassword = async(req,res) =>{
             return res.status(400).json({ message: 'Mot de passe incorrect.' });
         }
 
-        const password = await bcryptjs.hash(req.body.password, 10);
+        const newPassword = await bcryptjs.hash(req.body.password, 10);
 
         await user.update({ 
-            password: password,
+            password: newPassword,
         });
 
         
