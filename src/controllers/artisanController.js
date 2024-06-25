@@ -3,7 +3,7 @@ const Job = require('../models/jobModel.js');
 const Prestation = require('../models/prestationModel.js');
 const Product = require('../models/productModel.js');
 const functionsMiddleware = require('../middlewares/functionsMiddleware.js');
-const bcrypt = require('bcrypt');
+const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 
@@ -45,7 +45,7 @@ exports.registerAnArtisan = async (req, res) => {
         }
 
         // Hachage du mot de passe
-        let password = await bcrypt.hash(req.body.password, 10);
+        let password = await bcryptjs.hash(req.body.password, 10);
 
         // Création du compte artisan
         let newArtisan = await Artisan.create({
@@ -112,7 +112,7 @@ exports.loginAnArtisan = async (req, res) => {
             return res.status(404).json({ message: 'Artisan non trouvé.' });
         }
 
-        const validPassword = await bcrypt.compare(req.body.password, artisan.password);
+        const validPassword = await bcryptjs.compare(req.body.password, artisan.password);
 
         if (validPassword) {
             const artisanData = {
@@ -190,7 +190,7 @@ exports.putAnArtisan = async (req, res) => {
             return res.status(401).json({ message: 'Ce métier n\'existe pas'})
         }
 
-        let password = await bcrypt.hash(req.body.password, 10);
+        let password = await bcryptjs.hash(req.body.password, 10);
 
         await artisan.update({ 
             lastname: req.body.lastname,
@@ -222,12 +222,12 @@ exports.updatePassword = async(req,res) =>{
             return res.status(404).json({ message: 'Artisan non trouvé.' });
         }
 
-        const validPassword = await bcrypt.compare(req.body.oldPassword, artisan.password);
+        const validPassword = await bcryptjs.compare(req.body.oldPassword, artisan.password);
         if(!validPassword){
             return res.status(400).json({ message: 'Mot de passe incorrect.' });
         }
 
-        password = await bcrypt.hash(req.body.password, 10);
+        password = await bcryptjs.hash(req.body.password, 10);
 
         await artisan.update({ 
             password: password,

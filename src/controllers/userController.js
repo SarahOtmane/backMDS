@@ -1,6 +1,6 @@
 const User = require('../models/userModel.js');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+const bcryptjs = require('bcryptjs');
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
@@ -27,7 +27,7 @@ exports.registerAUser = async (req, res) => {
             return res.status(401).json({ message: 'Vous ne pouvez pas créer un utilisateur avec le rôle admin.'});
         }
 
-        let password = await bcrypt.hash(req.body.password, 10);
+        let password = await bcryptjs.hash(req.body.password, 10);
 
         let newUser = await User.create({
             firstname: req.body.firstname,
@@ -73,7 +73,7 @@ exports.loginAUser = async (req, res) => {
             return res.status(404).json({ message: 'Utilisateur non trouvé.' });
         }
 
-        const validPassword = await bcrypt.compare(req.body.password, user.password);
+        const validPassword = await bcryptjs.compare(req.body.password, user.password);
 
         if (validPassword) {
             const userData = {
@@ -169,12 +169,12 @@ exports.updatePassword = async(req,res) =>{
             return res.status(404).json({ message: 'Utilisateur non trouvé.' });
         }
 
-        const validPassword = await bcrypt.compare(req.body.oldPassword, user.password);
+        const validPassword = await bcryptjs.compare(req.body.oldPassword, user.password);
         if(!validPassword){
             return res.status(400).json({ message: 'Mot de passe incorrect.' });
         }
 
-        password = await bcrypt.hash(req.body.password, 10);
+        password = await bcryptjs.hash(req.body.password, 10);
 
         await user.update({ 
             password: password,
@@ -321,7 +321,7 @@ exports.resetPassword = async (req, res) => {
         }
 
         // Hacher le nouveau mot de passe avant de le sauvegarder
-        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        const hashedPassword = await bcryptjs.hash(req.body.password, 10);
         user.password = hashedPassword;
         await user.save();
 
