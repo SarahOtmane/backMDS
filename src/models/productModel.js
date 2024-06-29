@@ -1,9 +1,5 @@
-const { Sequelize, DataTypes } = require('sequelize');
-
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
-    host: "db",
-    dialect: "mysql"
-});
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/connectBdd');
 
 const Product = sequelize.define('Product', {
     id: {
@@ -24,7 +20,7 @@ const Product = sequelize.define('Product', {
 
 
 const Prestation = require('./prestationModel');
-    const Artisan = require('./artisanModel');
+const Person = require('./personModel');
 
     Prestation.hasMany(Product, {
         foreignKey: "id_prestation",
@@ -33,11 +29,11 @@ const Prestation = require('./prestationModel');
         foreignKey: "id_prestation",
     });
     
-    Artisan.hasMany(Product, {
-        foreignKey: "id_artisan",
+    Person.hasMany(Product, {
+        foreignKey: "email_artisan",
     });
-    Product.belongsTo(Artisan, {
-        foreignKey: "id_artisan",
+    Product.belongsTo(Person, {
+        foreignKey: "email_artisan",
     });
 
 
