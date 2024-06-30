@@ -1,6 +1,5 @@
 const createServeur = require('../config/serveur');
 const Job = require('../models/jobModel');
-const { Op, where } = require('sequelize');
 const supertest = require('supertest');
 
 const app = createServeur();
@@ -47,7 +46,7 @@ describe('Job controller', () => {
     describe('DELETE /jobs/:name_job', () => {
         it('should return 201 when deleting all the jobs', async () => {
             await Job.create({name: 'Cordonnerie'});
-            
+
             const { statusCode, body } = await supertest(app)
                 .delete('/jobs/Cordonnerie')
 
