@@ -48,15 +48,15 @@ const Person = sequelize.define('Person', {
     underscored: true
 });
 
-// const Address = require('./adressModel');
+const Address = require('./adressModel');
 // const Artisan = require('./artisanModel');
 
-//     Address.hasMany(Person, {
-//         foreignKey: 'id_address',
-//     });
-//     Person.belongsTo(Address, {
-//         foreignKey: 'id_address',
-//     });
+    Address.hasMany(Person, {
+        foreignKey: 'id_address',
+    });
+    Person.belongsTo(Address, {
+        foreignKey: 'id_address',
+    });
 
 //     Artisan.hasMany(Person, {
 //         foreignKey: 'id_artisan',
