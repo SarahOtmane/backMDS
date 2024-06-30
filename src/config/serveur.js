@@ -31,17 +31,17 @@ function createServeur() {
     // Configuration de Swagger
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-    app.use('/adresses', adressRoute);
-    app.use('/persons', personRoute);
+    // app.use('/adresses', adressRoute);
+    // app.use('/persons', personRoute);
     app.use('/infos', infoRoute);
     app.use('/jobs', jobRoute);
     app.use('/newsletter', newsletterRoute);
-    app.use('/artisans', artisanRoute);
+    // app.use('/artisans', artisanRoute);
     app.use('/prestations', prestationRoute);
-    app.use('/products', productRoute);
+    // app.use('/products', productRoute);
     app.use('/clothes', clothRoute);
-    app.use('/testimonials', testimonialRoute);
-    app.use('/commands', commandRoute);
+    // app.use('/testimonials', testimonialRoute);
+    // app.use('/commands', commandRoute);
 
     return app;
 }
