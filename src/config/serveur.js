@@ -4,7 +4,8 @@ const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('../docs/swagger/config.js');
 
-const userRoute = require('../routes/userRoute.js'); 
+const adressRoute = require('../routes/adressRoute.js');
+const personRoute = require('../routes/personRoute.js'); 
 const infoRoute = require('../routes/infoRoute.js'); 
 const jobRoute = require('../routes/jobRoute.js'); 
 const newsletterRoute = require('../routes/newsletterRoute.js');
@@ -30,7 +31,8 @@ function createServeur() {
     // Configuration de Swagger
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-    app.use('/users', userRoute);
+    app.use('/adresses', adressRoute);
+    app.use('/persons', personRoute);
     app.use('/infos', infoRoute);
     app.use('/jobs', jobRoute);
     app.use('/newsletter', newsletterRoute);
