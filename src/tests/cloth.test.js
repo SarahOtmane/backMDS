@@ -7,11 +7,6 @@ const app = createServeur();
 
 describe('Cloth controller', () => {
 
-    beforeEach(async () => {
-        await Job.destroy({where: {}});
-        await Cloth.destroy({where: {}});
-    });
-
     afterEach(async () => {
         await Job.destroy({where: {}});
         await Cloth.destroy({where: {}});
