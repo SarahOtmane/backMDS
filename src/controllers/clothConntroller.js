@@ -147,9 +147,13 @@ exports.getAllClothes = async (req, res) => {
 */
 exports.getAllClothesOfJob = async (req, res) => {
     try {
+
+        const job = Job.findOne({where: {name: req.params.name_job}});
+        if(!job){
+            return res.status(400).json({error: "Job non trouvé"});
+        }
         
         const clothes = await Cloth.findAll({where: {name_job : req.params.name_job}});
-        
         if (!clothes) {
             return res.status(404).json({ message: 'Auncun cloth trouvé.' });
         }
