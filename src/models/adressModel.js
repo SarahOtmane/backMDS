@@ -5,13 +5,13 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
     dialect: "mysql"
 });
 
-const Adress = sequelize.define('Adress', {
+const Address = sequelize.define('Address', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
     },
-    streetAdress: {
+    streetAddress: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -24,14 +24,14 @@ const Adress = sequelize.define('Adress', {
         allowNull: true,
     },
     country: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.STRING,
         allowNull: true
     },
 }, {
-    tableName: 'adresses',
+    tableName: 'addresses',
     timestamps: true,
     underscored: true
 });
 
 
-module.exports = Adress;
+module.exports = Address;
