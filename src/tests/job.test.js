@@ -44,7 +44,7 @@ describe('Job controller', () => {
     });
     
     describe('DELETE /jobs/:name_job', () => {
-        it('should return 201 when deleting all the jobs', async () => {
+        it('should return 201 when deleting the job', async () => {
             await Job.create({name: 'Cordonnerie'});
 
             const { statusCode, body } = await supertest(app)
@@ -53,7 +53,7 @@ describe('Job controller', () => {
             expect(statusCode).toBe(201);
         });
 
-        it('should return 404 when no job is found', async () => {
+        it('should return 404 when the job is found', async () => {
             const { statusCode, body } = await supertest(app)
                 .delete('/jobs/test')
 
