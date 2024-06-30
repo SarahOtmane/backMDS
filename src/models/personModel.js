@@ -32,13 +32,12 @@ const Person = sequelize.define('Person', {
         allowNull: true,
     },
     mobile: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.STRING,
         allowNull: true
     },
     subscribeNewsletter: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: false,
         validate: {
             isIn: [[false, true]]
         }
