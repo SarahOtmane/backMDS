@@ -143,7 +143,7 @@ exports.getAllInfo = async (req, res) => {
     try {
         const infos = await Info.findAll();
         
-        if (!infos) {
+        if (infos.length === 0) {
             return res.status(404).json({ message: 'Auncune information trouvée.' });
         }
 
