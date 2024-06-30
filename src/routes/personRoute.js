@@ -4,9 +4,12 @@ const personController = require('../controllers/personController');
 const jwtMiddleware = require('../middlewares/jwtMiddleware');
 
 router
-    .route('/register')
+    .route('/user/register')
     .post(personController.registerAUser)
 
+router
+    .route('/artisan/register')
+    .post(personController.registerAnArtisan)
 
 
 
