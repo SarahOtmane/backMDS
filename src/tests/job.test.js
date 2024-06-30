@@ -11,7 +11,7 @@ describe('Job controller', () => {
             const { statusCode, body } = await supertest(app)
                 .post('/jobs')
                 .send({
-                    name: 'Cordonnerie'
+                    name: 'Test1'
                 });
             expect(statusCode).toBe(201);
         });
@@ -20,7 +20,7 @@ describe('Job controller', () => {
             const { statusCode, body } = await supertest(app)
                 .post('/jobs')
                 .send({
-                    name: 'Cordonnerie'
+                    name: 'Test1'
                 });
             expect(statusCode).toBe(401);
         });
@@ -45,10 +45,10 @@ describe('Job controller', () => {
     
     describe('DELETE /jobs/:name_job', () => {
         it('should return 201 when deleting the job', async () => {
-            await Job.create({name: 'Cordonnerie'});
+            await Job.create({name: 'Test1'});
 
             const { statusCode, body } = await supertest(app)
-                .delete('/jobs/Cordonnerie')
+                .delete('/jobs/Test1')
 
             expect(statusCode).toBe(201);
         });
