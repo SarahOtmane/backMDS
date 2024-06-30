@@ -11,11 +11,6 @@ router
 
 
 
-router
-    .route('/:name_job')
-    .get(jobController.getAJob)
-
-
 /**********************************************************
             ROUTES UNIQUEMENT POUR LES ADMINS
 **********************************************************/  
@@ -26,11 +21,9 @@ router
     .post( jobController.createAJob)
 
 
-
 router
     .route('/:name_job')
     // .all(jwtMiddleware.isAdmin)
-    .put(jobController.putAJob)
     .delete(jobController.deleteAJob);
 
 module.exports = router;
