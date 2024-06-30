@@ -5,6 +5,9 @@ const supertest = require('supertest');
 const app = createServeur();
 
 describe('Job controller', () => {
+    afterEach(async() =>{
+        await Job.destroy({where: {}});
+    })
 
     describe('POST /jobs', () => {
         it('should return 201 when creating a new job', async () => {
@@ -17,6 +20,7 @@ describe('Job controller', () => {
         });
 
         it('should return 401 when a job already exist', async () => {
+            await Job.create({name: 'Test1'});
             const { statusCode, body } = await supertest(app)
                 .post('/jobs')
                 .send({
@@ -28,6 +32,9 @@ describe('Job controller', () => {
 
     describe('GET /jobs', () => {
         it('should return 201 when getting all jobs', async () => {
+            await Job.create({name: 'Test1'});
+            await Job.create({name: 'Test2'});
+
             const { statusCode, body } = await supertest(app)
                 .get('/jobs')
 
@@ -35,7 +42,6 @@ describe('Job controller', () => {
         });
 
         it('should return 404 when no job is found', async () => {
-            await Job.destroy({where: {}});
             const { statusCode, body } = await supertest(app)
                 .get('/jobs')
 
