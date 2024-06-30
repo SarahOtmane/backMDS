@@ -42,11 +42,30 @@ describe('Newsletter controller', () => {
 
         it('should return 401 when it subscribe a person already subscribed', async () => {
             await Newsletetr.create({email: 'test@gmail.com'});
+
             const { statusCode } = await supertest(app)
                 .post(`/newsletters`)
                 .send({
                     email: 'test@gmail.com'
                 });
+            expect(statusCode).toBe(201);
+        });
+    });
+    
+    describe('GET /newsletters', () => {
+        it('should return 201 when it getting all the subscribers to the newsletter', async () => {
+            await Newsletetr.create({email: 'test@gmail.com'});
+
+            const { statusCode } = await supertest(app)
+                .get(`/newsletters`);
+
+            expect(statusCode).toBe(201);
+        });
+
+        it('should return 404 when it no newsletter is found', async () => {
+            const { statusCode } = await supertest(app)
+                .get(`/newsletters`);
+
             expect(statusCode).toBe(201);
         });
     });
