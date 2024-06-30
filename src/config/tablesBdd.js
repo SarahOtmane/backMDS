@@ -5,6 +5,7 @@ const Cloth = require('../models/clothModel.js');
 const Prestation = require('../models/prestationModel.js');
 const Address = require('../models/adressModel.js');
 const Person = require('../models/personModel.js');
+const Artisan = require('../models/artisanModel.js');
 
 
 async function createTablesInOrder() {
@@ -15,6 +16,7 @@ async function createTablesInOrder() {
         await Cloth.sync();
         await Prestation.sync();
         await Address.sync();
+        await Artisan.sync();
         await Person.sync();
 
         console.log('Tables crées');
