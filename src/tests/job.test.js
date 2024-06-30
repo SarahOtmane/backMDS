@@ -60,9 +60,5 @@ describe('Job controller', () => {
             expect(statusCode).toBe(404);
         });
     });
-
-    afterAll(async () => {
-        await Job.destroy({where: {}});
-    });
     
 });
