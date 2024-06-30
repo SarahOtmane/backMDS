@@ -1,5 +1,6 @@
 const createServeur = require('./config/serveur');
 const connect = require('./config/connectBdd');
+const createTablesInOrder = require('./config/tablesBdd');
 
 const port = 3004;
 
@@ -9,7 +10,7 @@ const app = createServeur();
 app.listen(port, async () => {
     try {
         await connect();
-        
+
         createTablesInOrder();
 
     } catch (error) {
