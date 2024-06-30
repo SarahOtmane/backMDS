@@ -49,14 +49,14 @@ exports.addInNewsletter = async (req, res) => {
 */
 exports.getAllInNewsletter = async (req, res) => {
     try {
-        const userInscrits = await User.findAll({where: {subscribeNewsletter: true}});
+        const personInscrits = await Person.findAll({where: {subscribeNewsletter: true}});
         const emailsInscrits = await Newsletter.findAll();
 
-        if(!userInscrits && !emailsInscrits){
+        if(!personInscrits && !emailsInscrits){
             return res.status(404).json({message: "Aucun email n'est inscrit à la newsletter"});
         }
 
-        res.status(201).json({userInscrits, emailsInscrits});
+        res.status(201).json({personInscrits, emailsInscrits});
     } 
     catch (error) {
         res.status(500).json({message: "Erreur lors du traitement des données."});
