@@ -112,7 +112,7 @@ exports.deleteAnInfo = async (req, res) => {
     try {
         
         const deletedInfo = await Info.destroy({
-            where: { id: req.params.name_info }
+            where: { name: req.params.name_info }
         });
         
         if (!deletedInfo) {
