@@ -20,7 +20,7 @@ const Adress = sequelize.define('Adress', {
         type: DataTypes.STRING,
         allowNull: true,
     },
-    Country: {
+    country: {
         type: DataTypes.NUMBER,
         allowNull: true
     },
