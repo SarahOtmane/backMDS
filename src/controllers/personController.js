@@ -29,41 +29,41 @@ exports.registerAUser = async (req, res) => {
         }
 
         const existingAdress = await Adress.findOne({where: {
-            streetAdress: req.body.streetAdress,
+            streetAddress: req.body.streetAddress,
             city: req.body.city,
             postalCode: req.body.postalCode,
             country: req.body.country,
         }});
+        let id_address = existingAdress.id;
 
         if (! existingAdress){
             const adress = await Adress.create({
-                streetAdress: req.body.streetAdress,
+                streetAddress: req.body.streetAddress,
                 city: req.body.city,
                 postalCode: req.body.postalCode,
                 country: req.body.country,
             });
 
-            console.log(adress)
+            id_address = adress.id;
         }
 
+        const password = await argon2.hash(req.body.password);
 
-        // const password = await argon2.hash(req.body.password);
-
-        // let newUser = await User.create({
-        //     firstname: req.body.firstname,
-        //     lastname: req.body.lastname,
-        //     email: req.body.email,
-        //     password: password,
-        //     role: 'user',
-        //     mobile: req.body.mobile,
-        //     subscribeNewsletter: false,
-        // });
-
-        res.status(201).json({ 
-            message: `Utilisateur créé avec succès. L'email :` 
+        let newUser = await Person.create({
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            email: req.body.email,
+            password: password,
+            role: 'user',
+            mobile: req.body.mobile,
+            subscribeNewsletter: false,
+            id_address : id_address
         });
+
+        res.status(201).json({ message: `Utilisateur créé avec succès.`});
     } 
     catch (error) {
             console.error('Erreur lors de la création de l\'utilisateur:', error);
     }
 };
+
