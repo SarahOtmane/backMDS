@@ -146,6 +146,23 @@ describe('Cloth controller', () => {
         });
     });
 
+    describe('GET /clothes/:id_cloth', () => {
+        it('should return 200 when updating a cloth', async () => {
+            await Job.create({name: 'test'});
+            const cloth = await Cloth.create({category: 'Haut', clothType: 'T-shirt', name_job: 'test'});
+
+            const { statusCode } = await supertest(app)
+                .get(`/clothes/${cloth.id}`)
+            expect(statusCode).toBe(200);
+        });
+
+        it('should return 404 when the cloth is not found', async () => {
+            const { statusCode } = await supertest(app)
+                .get('/clothes/9999')
+            expect(statusCode).toBe(404);
+        });
+    });
+
     describe('DELETE /clothes/:id_cloth', () => {
         it('should return 200 when deleting the cloth', async () => {
             await Job.create({name: 'test'});
