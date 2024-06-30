@@ -25,7 +25,7 @@ exports.createACloth = async (req, res) => {
             name_job: req.body.name_job
         } });
         if (existingCloth) {
-            return res.status(401).json({ message: 'Cet habit existe déjà.' });
+            return res.status(409).json({ message: 'Cet habit existe déjà.' });
         }
 
         const newCloth = await Cloth.create({ 
@@ -59,7 +59,7 @@ exports.putACloth = async (req, res) => {
     try {
         const existingCloth = await Cloth.findOne({ where: { id: req.params.id_cloth } });
         if (!existingCloth) {
-            return res.status(401).json({ message: 'Cet habit non trouvé.' });
+            return res.status(404).json({ message: 'Cet habit non trouvé.' });
         }
 
         const job = Job.findOne({where: {name: req.body.name_job}});
@@ -73,7 +73,7 @@ exports.putACloth = async (req, res) => {
             name_job: req.body.name_job
         });
 
-        res.status(201).json({ message: 'Cloth mis à jour avec succès.' });
+        res.status(200).json({ message: 'Cloth mis à jour avec succès.' });
     } 
     catch (error) {
         res.status(500).json({message: "Erreur lors du traitement des données."});
@@ -102,7 +102,7 @@ exports.deleteACloth = async (req, res) => {
             return res.status(404).json({ message: 'Habit non trouvé.' });
         }
 
-        res.status(201).json({ message: 'Habit supprimé avec succès.' });
+        res.status(200).json({ message: 'Habit supprimé avec succès.' });
 
     } catch (error) {
         res.status(500).json({message: "Erreur lors du traitement des données."});
@@ -129,7 +129,7 @@ exports.getAllClothes = async (req, res) => {
             return res.status(404).json({ message: 'Auncun cloth trouvé.' });
         }
 
-        res.status(201).json(clothes);
+        res.status(200).json(clothes);
 
     } catch (error) {
         res.status(500).json({message: "Erreur lors du traitement des données."});
@@ -154,7 +154,7 @@ exports.getAllClothesOfJob = async (req, res) => {
 
         const job = Job.findOne({where: {name: req.params.name_job}});
         if(!job){
-            return res.status(400).json({error: "Job non trouvé"});
+            return res.status(404).json({error: "Job non trouvé"});
         }
         
         const clothes = await Cloth.findAll({where: {name_job : req.params.name_job}});
@@ -162,7 +162,7 @@ exports.getAllClothesOfJob = async (req, res) => {
             return res.status(404).json({ message: 'Auncun cloth trouvé.' });
         }
 
-        res.status(201).json(clothes);
+        res.status(200).json(clothes);
 
     } catch (error) {
         res.status(500).json({message: "Erreur lors du traitement des données."});
@@ -188,7 +188,7 @@ exports.getACloth = async (req, res) => {
             return res.status(404).json({ message: 'Habit non trouvé.' });
         }
 
-        res.status(201).json(cloth);
+        res.status(200).json(cloth);
 
     } catch (error) {
         res.status(500).json({message: "Erreur lors du traitement des données."});
