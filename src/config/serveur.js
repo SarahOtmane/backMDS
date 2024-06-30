@@ -32,7 +32,7 @@ function createServeur() {
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
     // app.use('/adresses', adressRoute);
-    // app.use('/persons', personRoute);
+    app.use('/persons', personRoute);
     app.use('/infos', infoRoute);
     app.use('/jobs', jobRoute);
     app.use('/newsletter', newsletterRoute);
