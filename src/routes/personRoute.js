@@ -6,3 +6,8 @@ const jwtMiddleware = require('../middlewares/jwtMiddleware');
 router
     .route('/register')
     .post(personController.registerAUser)
+
+
+
+
+module.exports = router;
