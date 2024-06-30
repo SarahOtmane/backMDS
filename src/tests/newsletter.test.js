@@ -1,13 +1,14 @@
 const createServeur = require('../config/serveur');
-const Newsletetr = require('../models/newsletterModel');
+const Newsletter = require('../models/newsletterModel');
 const Person = require('../models/personModel');
 const supertest = require('supertest');
 
 const app = createServeur();
 
 describe('Newsletter controller', () => {
-    afterEach(async() =>{
-        await Newsletetr.destroy({});
+    afterEach(async () => {
+        await Newsletter.destroy({ where: {}, truncate: true });
+        await Person.destroy({ where: {}, truncate: true });
     });
 
     describe('POST /newsletters', () => {
@@ -41,7 +42,7 @@ describe('Newsletter controller', () => {
         });
 
         it('should return 401 when it subscribe a person already subscribed', async () => {
-            await Newsletetr.create({email: 'test@gmail.com'});
+            await Newsletter.create({email: 'test@gmail.com'});
 
             const { statusCode } = await supertest(app)
                 .post(`/newsletters`)
@@ -54,7 +55,7 @@ describe('Newsletter controller', () => {
     
     describe('GET /newsletters', () => {
         it('should return 201 when it getting all the subscribers to the newsletter', async () => {
-            await Newsletetr.create({email: 'test@gmail.com'});
+            await Newsletter.create({email: 'test@gmail.com'});
 
             const { statusCode } = await supertest(app)
                 .get(`/newsletters`);
@@ -62,11 +63,11 @@ describe('Newsletter controller', () => {
             expect(statusCode).toBe(201);
         });
 
-        it('should return 404 when it no newsletter is found', async () => {
+        it('should return 404 when no newsletter is found', async () => {
             const { statusCode } = await supertest(app)
                 .get(`/newsletters`);
 
-            expect(statusCode).toBe(201);
+            expect(statusCode).toBe(404);
         });
     });
     
