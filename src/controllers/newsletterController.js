@@ -52,7 +52,7 @@ exports.getAllInNewsletter = async (req, res) => {
         const personInscrits = await Person.findAll({where: {subscribeNewsletter: true}});
         const emailsInscrits = await Newsletter.findAll();
 
-        if(!personInscrits && !emailsInscrits){
+        if(personInscrits.length===0 && emailsInscrits.length===0){
             return res.status(404).json({message: "Aucun email n'est inscrit à la newsletter"});
         }
 
