@@ -1,5 +1,5 @@
 const Newsletter = require("../models/newsletterModel");
-const User = require('../models/userModel');
+const Person = require('../models/personModel');
 
 /**********************************************************
             MÉTHODE POUR SE CONNECTER A LA NEWSLETTER
@@ -14,9 +14,9 @@ const User = require('../models/userModel');
 */
 exports.addInNewsletter = async (req, res) => {
     try {
-        const user = await User.findOne({where: {email: req.body.email}});
-        if(user){
-            user.subscribeNewsletter = true;
+        const person = await Person.findOne({where: {email: req.body.email}});
+        if(person){
+            person.subscribeNewsletter = true;
             await user.save();
             return res.status(201).json({message: "Vous êtes inscrit à la newsletter"});
         }
