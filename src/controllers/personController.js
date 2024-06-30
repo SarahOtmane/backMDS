@@ -1,7 +1,6 @@
 const Person = require('../models/personModel.js');
 const Adress = require('../models/adressModel.js');
 const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
 const argon2 = require('argon2');
 
 

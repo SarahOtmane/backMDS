@@ -22,13 +22,14 @@ router
 
 router
     .route('/')
-    .post(jwtMiddleware.isAdmin, jobController.createAJob)
+    // .all(jwtMiddleware.isAdmin)
+    .post( jobController.createAJob)
 
 
 
 router
     .route('/:name_job')
-    .all(jwtMiddleware.isAdmin)
+    // .all(jwtMiddleware.isAdmin)
     .put(jobController.putAJob)
     .delete(jobController.deleteAJob);
 

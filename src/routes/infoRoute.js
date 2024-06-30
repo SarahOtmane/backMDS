@@ -23,11 +23,12 @@ router
 **********************************************************/
 router
     .route('/')
-    .post(jwtMiddleware.isAdmin, infoController.createAnInfo)
+    // .all(jwtMiddleware.isAdmin)
+    .post(infoController.createAnInfo)
 
 router
     .route('/:id_info')
-    .all(jwtMiddleware.isAdmin)
+    // .all(jwtMiddleware.isAdmin)
     .put(infoController.putAnInfo)
     .delete(infoController.deleteAnInfo);
 
