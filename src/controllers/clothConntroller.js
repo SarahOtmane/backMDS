@@ -20,9 +20,9 @@ exports.createACloth = async (req, res) => {
         }
 
         const existingCloth = await Cloth.findOne({ where: { 
-            categorie: req.body.categorie,
+            category: req.body.category,
             clothType: req.body.clothType,
-            name_job: req.body.name_job
+            name_job: job.name
         } });
         if (existingCloth) {
             return res.status(401).json({ message: 'Cet habit existe déjà.' });
@@ -64,7 +64,7 @@ exports.putACloth = async (req, res) => {
         }
 
         await existingCloth.update({ 
-            categorie: req.body.categorie,
+            category: req.body.category,
             clothType: req.body.clothType,
             name_job: req.body.name_job
         });
