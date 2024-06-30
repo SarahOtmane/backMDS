@@ -46,7 +46,7 @@ exports.createAnInfo = async (req, res) => {
 */
 exports.getAnInfo = async (req, res) => {
     try {
-        const info = await Info.findOne({ where: { id: req.params.id_info } });
+        const info = await Info.findOne({ where: { name: req.params.name_info } });
 
         if (!info) {
             return res.status(404).json({ message: 'Info non trouvé.' });
@@ -76,7 +76,7 @@ exports.getAnInfo = async (req, res) => {
 */
 exports.putAnInfo = async (req, res) => {
     try {
-        const info = await Info.findOne({ where: { id: req.params.id_info } });
+        const info = await Info.findOne({ where: { name: req.params.name_info } });
 
         if(!info){
             return res.status(404).json({ message: 'Information non trouvé.' });
@@ -112,7 +112,7 @@ exports.deleteAnInfo = async (req, res) => {
     try {
         
         const deletedInfo = await Info.destroy({
-            where: { id: req.params.id_info }
+            where: { id: req.params.name_info }
         });
         
         if (!deletedInfo) {
