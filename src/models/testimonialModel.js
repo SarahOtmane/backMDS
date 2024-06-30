@@ -5,7 +5,6 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
     dialect: "mysql"
 });
 
-
 const Testimonial = sequelize.define('Testimonial', {
     id: {
         type: DataTypes.INTEGER,
