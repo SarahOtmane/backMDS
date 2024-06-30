@@ -1,4 +1,5 @@
 const Cloth = require('../models/clothModel');
+const Job = require('../models/jobModel');
 
 
 /**********************************************************
@@ -13,6 +14,11 @@ const Cloth = require('../models/clothModel');
 */
 exports.createACloth = async (req, res) => {
     try {
+        const job = Job.findOne({where: {name: req.body.name_job}});
+        if(!job){
+            return res.status(400).json({error: "Job non trouvé"});
+        }
+
         const existingCloth = await Cloth.findOne({ where: { 
             categorie: req.body.categorie,
             clothType: req.body.clothType,
@@ -50,6 +56,11 @@ exports.putACloth = async (req, res) => {
         const existingCloth = await Cloth.findOne({ where: { id: req.params.id_cloth } });
         if (!existingCloth) {
             return res.status(401).json({ message: 'Cet habit non trouvé.' });
+        }
+
+        const job = Job.findOne({where: {name: req.body.name_job}});
+        if(!job){
+            return res.status(400).json({error: "Job non trouvé"});
         }
 
         await existingCloth.update({ 
