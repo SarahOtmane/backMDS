@@ -77,7 +77,7 @@ exports.getAllJobs = async (req, res) => {
         
         const jobs = await Job.findAll();
         
-        if (!jobs) {
+        if (jobs.length === 0) {
             return res.status(404).json({ message: 'Auncun job trouvé.' });
         }
 
