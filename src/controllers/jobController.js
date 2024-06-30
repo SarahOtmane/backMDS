@@ -29,65 +29,6 @@ exports.createAJob = async (req, res) => {
 
 
 
-/**********************************************************
-            MÉTHODE POUR RÉCUP L ID D UN JOB
-**********************************************************/
-/*
-    Fonction qui permet de lister un job
-
-    Les vérifications : 
-        - Vérifier que le job existe
-
-*/
-exports.getAJob = async (req, res) => {
-    try {
-        const job = await Job.findOne({ where: { name: req.params.name_job } });
-
-        if (!job) {
-            return res.status(404).json({ message: 'Job non trouvé.' });
-        }
-
-        res.status(201).json(job);
-
-    } catch (error) {
-        res.status(500).json({message: "Erreur lors du traitement des données."});
-    }
-};
-
-
-
-
-/**********************************************************
-            MÉTHODE POUR MODIFIER UN JOB (ADMIN)
-**********************************************************/
-/*
-    Fonction qui permet de modifier un job
-
-    Les vérifications : 
-        - Vérifier que le job existe
-
-*/
-exports.putAJob = async (req, res) => {
-    try {
-        const job = await Job.findOne({ where: { name: req.params.name_job } });
-
-        if(!job){
-            return res.status(404).json({ message: 'Job non trouvé.' });
-        }
-
-        await job.update({ 
-            name: req.body.name,
-        });
-
-        
-        res.status(201).json({ message: 'Job mis à jour avec succès.' });
-
-    } catch (error) {
-        res.status(500).json({message: "Erreur lors du traitement des données."});
-    }
-};
-
-
 
 /**********************************************************
             MÉTHODE POUR SUPPRIMER UN JOB (ADMIN)
