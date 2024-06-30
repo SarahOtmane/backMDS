@@ -1,8 +1,8 @@
-const Info = require('./models/infoModel.js');
-const Job = require('./models/jobModel.js');
-const Newsletter = require('./models/newsletterModel.js');
-const Cloth = require('./models/clothModel.js');
-const Prestation = require('./models/prestationModel.js');
+const Info = require('../models/infoModel.js');
+const Job = require('../models/jobModel.js');
+const Newsletter = require('../models/newsletterModel.js');
+const Cloth = require('../models/clothModel.js');
+const Prestation = require('../models/prestationModel.js');
 
 
 async function createTablesInOrder() {
