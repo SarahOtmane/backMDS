@@ -8,137 +8,161 @@ const app = createServeur();
 describe('Cloth controller', () => {
 
     beforeEach(async () => {
-        await Job.create({ name: 'Couture' });
-        await Job.create({ name: 'Maroquinnerie' });
+        await Job.destroy({where: {}});
+        await Cloth.destroy({where: {}});
+    });
+
+    afterEach(async () => {
+        await Job.destroy({where: {}});
+        await Cloth.destroy({where: {}});
     });
 
     describe('POST /clothes', () => {
         it('should return 201 when creating a new cloth', async () => {
-            const { statusCode, body } = await supertest(app)
+            await Job.create({name: 'testt'});
+
+            const { statusCode } = await supertest(app)
                 .post('/clothes')
                 .send({
-                    categorie: 'Haut',
+                    category: 'Haut',
                     clothType: 'T-shirt',
-                    name_job: 'Couture'
+                    name_job: 'testt'
                 });
             expect(statusCode).toBe(201);
         });
 
-        it('should return 401 when a cloth already exist', async () => {
-            const { statusCode, body } = await supertest(app)
+        it('should return 409 when a cloth already exists', async () => {
+            await Job.create({name: 'testt'});
+            await Cloth.create({category: 'Haut', clothType: 'T-shirt', name_job: 'testt'});
+
+            const { statusCode } = await supertest(app)
                 .post('/clothes')
                 .send({
-                    categorie: 'Haut',
+                    category: 'Haut',
                     clothType: 'T-shirt',
-                    name_job: 'Couture'
+                    name_job: 'testt'
                 });
-            expect(statusCode).toBe(401);
+            expect(statusCode).toBe(409);
         });
 
-        it('should return 400 when the job is found', async () => {
-            await Job.destroy({where: {}});
-            const { statusCode, body } = await supertest(app)
+        it('should return 400 when the job is not found', async () => {
+            const { statusCode } = await supertest(app)
                 .post('/clothes')
                 .send({
-                    categorie: 'Haut',
+                    category: 'Haut',
                     clothType: 'T-shirt',
-                    name_job: 'Couture'
+                    name_job: 'nonexistent'
                 });
             expect(statusCode).toBe(400);
         });
     });
 
-    describe('PUT /clothes/:id_cloth', () => { 
-        it('should return 201 when updating a cloth', async () => {
-            const { statusCode, body } = await supertest(app)
-                .post('/clothes/1')
+    describe('PUT /clothes/:id_cloth', () => {
+        it('should return 200 when updating a cloth', async () => {
+            await Job.create({name: 'test'});
+            const cloth = await Cloth.create({category: 'Haut', clothType: 'T-shirt', name_job: 'test'});
+
+            const { statusCode } = await supertest(app)
+                .put(`/clothes/${cloth.id}`)
                 .send({
-                    categorie: 'Haut',
+                    category: 'Haut',
                     clothType: 'Doudoune',
-                    name_job: 'Couture'
+                    name_job: 'test'
                 });
-            expect(statusCode).toBe(201);
+            expect(statusCode).toBe(200);
         });
 
-        it('should return 401 when the cloth is found', async () => {
-            const { statusCode, body } = await supertest(app)
-                .post('/clothes/10')
+        it('should return 404 when the cloth is not found', async () => {
+            const { statusCode } = await supertest(app)
+                .put('/clothes/9999')
                 .send({
-                    categorie: 'Haut',
+                    category: 'Haut',
                     clothType: 'Vestes',
-                    name_job: 'Couture'
+                    name_job: 'test'
                 });
-            expect(statusCode).toBe(401);
+            expect(statusCode).toBe(404);
         });
 
-        it('should return 400 when the job is found', async () => {
-            await Job.destroy({where: {}});
-            const { statusCode, body } = await supertest(app)
-                .post('/clothes/1')
+        it('should return 400 when the job is not found', async () => {
+            await Job.create({name: 'test'});
+            const cloth = await Cloth.create({category: 'Haut', clothType: 'T-shirt', name_job: 'test'});
+    
+            const { statusCode } = await supertest(app)
+                .put(`/clothes/${cloth.id}`)
                 .send({
-                    categorie: 'Haut',
+                    category: 'Haut',
                     clothType: 'T-shirt',
-                    name_job: 'Cordonnerie'
+                    name_job: 'nonexistent'
                 });
             expect(statusCode).toBe(400);
         });
     });
 
     describe('GET /clothes', () => {
-        it('should return 201 when getting all clothes', async () => {
-            const { statusCode, body } = await supertest(app)
-                .get('/clothes')
+        it('should return 200 when getting all clothes', async () => {
+            await Job.create({name: 'test'});
+            Cloth.create({category: 'Haut', clothType: 'T-shirt', name_job: 'test'});
 
-            expect(statusCode).toBe(201);
+            const { statusCode, body } = await supertest(app)
+                .get('/clothes');
+
+            expect(statusCode).toBe(200);
         });
 
         it('should return 404 when no cloth is found', async () => {
-            await Job.destroy({where: {}});
+            await Cloth.destroy({where: {}});
             const { statusCode, body } = await supertest(app)
-                .get('/clothes')
+                .get('/clothes');
 
             expect(statusCode).toBe(404);
         });
     });
 
     describe('GET /clothes/job/:name_job', () => {
-        it('should return 201 when getting all clothes of a job', async () => {
-            const { statusCode, body } = await supertest(app)
-                .get('/clothes/job/couture')
+        it('should return 200 when getting all clothes of a job', async () => {
+            await Job.create({name: 'test'});
+            Cloth.create({category: 'Haut', clothType: 'T-shirt', name_job: 'test'});
 
-            expect(statusCode).toBe(201);
+            const { statusCode, body } = await supertest(app)
+                .get('/clothes/job/test');
+
+            expect(statusCode).toBe(200);
         });
 
         it('should return 404 when no cloth is found', async () => {
+            await Cloth.destroy({where: {}});
+
             const { statusCode, body } = await supertest(app)
-                .get('/clothes/maroquinnerie')
+                .get('/clothes/job/test');
 
             expect(statusCode).toBe(404);
         });
 
-        it('should return 400 when the job is not found', async () => {
+        it('should return 404 when the job is not found', async () => {
             const { statusCode, body } = await supertest(app)
-                .get('/clothes/test')
+                .get('/clothes/job/teeeeest');
 
             expect(statusCode).toBe(404);
         });
     });
-    
+
     describe('DELETE /clothes/:id_cloth', () => {
-        it('should return 201 when deleting the cloth', async () => {
+        it('should return 200 when deleting the cloth', async () => {
+            await Job.create({name: 'test'});
+            const cloth = await Cloth.create({category: 'Haut', clothType: 'T-shirt', name_job: 'test'});
 
-            const { statusCode, body } = await supertest(app)
-                .delete('/clothes/1')
+            const { statusCode } = await supertest(app)
+                .delete(`/clothes/${cloth.id}`)
 
-            expect(statusCode).toBe(201);
+            expect(statusCode).toBe(200);
         });
 
-        it('should return 404 when the cloth is found', async () => {
+        it('should return 404 when the cloth is not found', async () => {
             const { statusCode, body } = await supertest(app)
-                .delete('/clothes/20')
+                .delete('/clothes/9999');
 
             expect(statusCode).toBe(404);
         });
     });
-    
+
 });
