@@ -28,7 +28,7 @@ exports.createACloth = async (req, res) => {
             return res.status(409).json({ message: 'Cet habit existe déjà.' });
         }
 
-        const newCloth = await Cloth.create({ 
+        await Cloth.create({ 
             category: req.body.category,
             clothType: req.body.clothType,
             name_job: req.body.name_job
@@ -62,7 +62,7 @@ exports.putACloth = async (req, res) => {
             return res.status(404).json({ message: 'Cet habit non trouvé.' });
         }
 
-        const job = Job.findOne({where: {name: req.body.name_job}});
+        const job = await Job.findOne({where: {name: req.body.name_job}});
         if(!job){
             return res.status(400).json({error: "Job non trouvé"});
         }
@@ -152,7 +152,7 @@ exports.getAllClothes = async (req, res) => {
 exports.getAllClothesOfJob = async (req, res) => {
     try {
 
-        const job = Job.findOne({where: {name: req.params.name_job}});
+        const job = await Job.findOne({where: {name: req.params.name_job}});
         if(!job){
             return res.status(404).json({error: "Job non trouvé"});
         }
