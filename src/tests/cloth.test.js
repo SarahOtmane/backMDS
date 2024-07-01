@@ -33,7 +33,7 @@ describe('Cloth controller', () => {
             const { statusCode } = await supertest(app)
                 .post('/clothes')
                 .send({
-                    category: 'Haut',
+                    category: 'Test1',
                     clothType: 'T-shirt',
                     name_job: 'testt'
                 });
