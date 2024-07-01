@@ -7,8 +7,8 @@ const app = createServeur();
 
 describe('Newsletter controller', () => {
     afterEach(async () => {
-        await Newsletter.destroy({ where: {}, truncate: true });
-        await Person.destroy({ where: {}, truncate: true });
+        await Newsletter.destroy({ where: {email: 'test@gmail.com'} });
+        await Person.destroy({ where: {email: 'test@gmail.com'} });
     });
 
     describe('POST /newsletters', () => {
