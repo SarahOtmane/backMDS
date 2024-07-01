@@ -8,8 +8,8 @@ const app = createServeur();
 describe('Cloth controller', () => {
 
     afterEach(async () => {
-        await Job.destroy({where: {}});
-        await Cloth.destroy({where: {}});
+        await Job.destroy({where: {name: 'testt'}});
+        await Cloth.destroy({where: {name_job: 'testt'}});
     });
 
     describe('POST /clothes', () => {
@@ -19,7 +19,7 @@ describe('Cloth controller', () => {
             const { statusCode } = await supertest(app)
                 .post('/clothes')
                 .send({
-                    category: 'Haut',
+                    category: 'Test1',
                     clothType: 'T-shirt',
                     name_job: 'testt'
                 });
@@ -28,7 +28,7 @@ describe('Cloth controller', () => {
 
         it('should return 409 when a cloth already exists', async () => {
             await Job.create({name: 'testt'});
-            await Cloth.create({category: 'Haut', clothType: 'T-shirt', name_job: 'testt'});
+            await Cloth.create({category: 'Test1', clothType: 'T-shirt', name_job: 'testt'});
 
             const { statusCode } = await supertest(app)
                 .post('/clothes')
@@ -54,15 +54,15 @@ describe('Cloth controller', () => {
 
     describe('PUT /clothes/:id_cloth', () => {
         it('should return 200 when updating a cloth', async () => {
-            await Job.create({name: 'test'});
-            const cloth = await Cloth.create({category: 'Haut', clothType: 'T-shirt', name_job: 'test'});
+            await Job.create({name: 'testt'});
+            const cloth = await Cloth.create({category: 'Haut', clothType: 'T-shirt', name_job: 'testt'});
 
             const { statusCode } = await supertest(app)
                 .put(`/clothes/${cloth.id}`)
                 .send({
                     category: 'Haut',
                     clothType: 'Doudoune',
-                    name_job: 'test'
+                    name_job: 'testt'
                 });
             expect(statusCode).toBe(200);
         });
@@ -73,14 +73,14 @@ describe('Cloth controller', () => {
                 .send({
                     category: 'Haut',
                     clothType: 'Vestes',
-                    name_job: 'test'
+                    name_job: 'testt'
                 });
             expect(statusCode).toBe(404);
         });
 
         it('should return 400 when the job is not found', async () => {
-            await Job.create({name: 'test'});
-            const cloth = await Cloth.create({category: 'Haut', clothType: 'T-shirt', name_job: 'test'});
+            await Job.create({name: 'testt'});
+            const cloth = await Cloth.create({category: 'Haut', clothType: 'T-shirt', name_job: 'testt'});
     
             const { statusCode } = await supertest(app)
                 .put(`/clothes/${cloth.id}`)
@@ -95,8 +95,8 @@ describe('Cloth controller', () => {
 
     describe('GET /clothes', () => {
         it('should return 200 when getting all clothes', async () => {
-            await Job.create({name: 'test'});
-            Cloth.create({category: 'Haut', clothType: 'T-shirt', name_job: 'test'});
+            await Job.create({name: 'testt'});
+            await Cloth.create({category: 'Haut', clothType: 'T-shirt', name_job: 'testt'});
 
             const { statusCode, body } = await supertest(app)
                 .get('/clothes');
@@ -115,18 +115,16 @@ describe('Cloth controller', () => {
 
     describe('GET /clothes/job/:name_job', () => {
         it('should return 200 when getting all clothes of a job', async () => {
-            await Job.create({name: 'test'});
-            Cloth.create({category: 'Haut', clothType: 'T-shirt', name_job: 'test'});
+            await Job.create({name: 'testt'});
+            await Cloth.create({category: 'Haut', clothType: 'T-shirt', name_job: 'testt'});
 
             const { statusCode, body } = await supertest(app)
-                .get('/clothes/job/test');
+                .get('/clothes/job/testt');
 
             expect(statusCode).toBe(200);
         });
 
         it('should return 404 when no cloth is found', async () => {
-            await Cloth.destroy({where: {}});
-
             const { statusCode, body } = await supertest(app)
                 .get('/clothes/job/test');
 
@@ -142,9 +140,9 @@ describe('Cloth controller', () => {
     });
 
     describe('GET /clothes/:id_cloth', () => {
-        it('should return 200 when updating a cloth', async () => {
-            await Job.create({name: 'test'});
-            const cloth = await Cloth.create({category: 'Haut', clothType: 'T-shirt', name_job: 'test'});
+        it('should return 200 when getting the details of a cloth', async () => {
+            await Job.create({name: 'testt'});
+            const cloth = await Cloth.create({category: 'Haut', clothType: 'T-shirt', name_job: 'testt'});
 
             const { statusCode } = await supertest(app)
                 .get(`/clothes/${cloth.id}`)
@@ -160,8 +158,8 @@ describe('Cloth controller', () => {
 
     describe('DELETE /clothes/:id_cloth', () => {
         it('should return 200 when deleting the cloth', async () => {
-            await Job.create({name: 'test'});
-            const cloth = await Cloth.create({category: 'Haut', clothType: 'T-shirt', name_job: 'test'});
+            await Job.create({name: 'testt'});
+            const cloth = await Cloth.create({category: 'Haut', clothType: 'T-shirt', name_job: 'testt'});
 
             const { statusCode } = await supertest(app)
                 .delete(`/clothes/${cloth.id}`)
