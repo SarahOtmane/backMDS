@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-//fonction pour vérifier les token d'un utilisateur
+//fonction pour vérifier le token d'un utilisateur
 exports.verifyTokenUser = async(req, res, next) =>{
     try {
         let token = req.headers['authorization'];
@@ -17,7 +17,7 @@ exports.verifyTokenUser = async(req, res, next) =>{
                 })
             })
 
-            req.user = payload;
+            req.person = payload;
             next();
         }else{
             res.status(403).json({message: "Accès interdit: token manquant"});
