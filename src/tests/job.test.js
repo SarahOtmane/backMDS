@@ -6,7 +6,8 @@ const app = createServeur();
 
 describe('Job controller', () => {
     afterEach(async() =>{
-        await Job.destroy({where: {}});
+        await Job.destroy({where: {name: 'Test1'}});
+        await Job.destroy({where: {name: 'Test2'}});
     })
 
     describe('POST /jobs', () => {
