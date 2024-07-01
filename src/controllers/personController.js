@@ -36,7 +36,7 @@ exports.registerAUser = async (req, res) => {
             postalCode: req.body.postalCode,
             country: req.body.country,
         }});
-        let id_address = existingAdress.id;
+        let id_address = -1;
 
         if (! existingAdress){
             const adress = await Adress.create({
@@ -47,6 +47,8 @@ exports.registerAUser = async (req, res) => {
             });
 
             id_address = adress.id;
+        }else{
+            id_address = existingAdress.id;
         }
 
         const password = await argon2.hash(req.body.password);
