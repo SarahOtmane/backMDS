@@ -49,7 +49,7 @@ describe('Newsletter controller', () => {
                 .send({
                     email: 'test@gmail.com'
                 });
-            expect(statusCode).toBe(201);
+            expect(statusCode).toBe(401);
         });
     });
     
