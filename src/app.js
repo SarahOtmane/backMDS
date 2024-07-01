@@ -1,6 +1,6 @@
-const createServeur = require('./config/serveur');
-const connect = require('./config/connectBdd');
-const createTablesInOrder = require('./config/tablesBdd');
+const createServeur = require('./services/serveur');
+const connect = require('./services/connectBdd');
+const createTablesInOrder = require('./services/tablesBdd');
 
 const port = 3004;
 

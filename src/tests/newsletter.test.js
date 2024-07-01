@@ -1,4 +1,4 @@
-const createServeur = require('../config/serveur');
+const createServeur = require('../services/serveur');
 const Newsletter = require('../models/newsletterModel');
 const Person = require('../models/personModel');
 const supertest = require('supertest');

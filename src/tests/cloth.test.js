@@ -1,4 +1,4 @@
-const createServeur = require('../config/serveur');
+const createServeur = require('../services/serveur');
 const Job = require('../models/jobModel');
 const Cloth = require('../models/clothModel');
 const supertest = require('supertest');
