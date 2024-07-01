@@ -7,7 +7,7 @@ const app = createServeur();
 
 describe('Info controller', () => {
     afterEach(async() =>{
-        await Info.destroy({where: {}});
+        await Info.destroy({where: {name: 'Test1'}});
     })
 
     describe('POST /infos', () => {
