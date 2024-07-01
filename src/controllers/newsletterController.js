@@ -17,7 +17,7 @@ exports.addInNewsletter = async (req, res) => {
         const person = await Person.findOne({where: {email: req.body.email}});
         if(person){
             person.subscribeNewsletter = true;
-            await user.save();
+            await person.save();
             return res.status(201).json({message: "Vous êtes inscrit à la newsletter"});
         }
 
