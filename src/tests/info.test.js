@@ -45,7 +45,6 @@ describe('Info controller', () => {
         });
 
         it('should return 404 when no info is found', async () => {
-            await Info.destroy({where: {}});
             const { statusCode, body } = await supertest(app)
                 .get('/infos')
 
