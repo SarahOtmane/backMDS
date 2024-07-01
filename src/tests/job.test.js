@@ -43,6 +43,7 @@ describe('Job controller', () => {
         });
 
         it('should return 404 when no job is found', async () => {
+            await Job.destroy({where: {}});
             const { statusCode, body } = await supertest(app)
                 .get('/jobs')
 
