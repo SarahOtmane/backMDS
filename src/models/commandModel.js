@@ -20,10 +20,6 @@ const Command = sequelize.define('Command', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    comment: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
     dateFinished: {
         type: DataTypes.DATE,
         allowNull: true,
