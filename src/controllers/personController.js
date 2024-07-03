@@ -253,3 +253,36 @@ exports.getAUser = async (req, res) => {
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 };
+
+
+
+/**********************************************************************
+            MÉTHODE POUR LISTER LES INFORMATIONS D'UN ARTISAN
+**********************************************************************/
+/*
+    Fonction qui permet de lister les informations d'un utilisateur
+
+    Les vérifications : 
+        - Vérifier que l'utilisateur existe
+
+*/
+exports.getAnArtisan = async (req, res) => {
+    try {
+        const artisan = await Person.findOne({ where: { email: req.artisan.email } });
+
+        if (!artisan) {
+            return res.status(404).json({ message: 'Utilisateur non trouvé.' });
+        }
+            
+        const address = await Address.findOne({ where: { id: artisan.id_address } });
+        artisan.push(address);
+
+        const details = await Artisan.findOne({where: {id: artisan.id}});
+        artisan.push(details);
+
+        res.status(200).json(artisan);
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
