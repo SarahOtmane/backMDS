@@ -18,7 +18,13 @@ exports.verifyTokenUser = async(req, res, next) =>{
             })
 
             req.person = payload;
-            next();
+
+            // Vérification du rôle user
+            if (payload && payload.role === 'user') {
+                next(); 
+            } else {
+                res.status(403).json({ message: "Accès interdit: rôle user requis" });
+            }
         }else{
             res.status(403).json({message: "Accès interdit: token manquant"});
         }
@@ -47,7 +53,13 @@ exports.verifyTokenArtisan = async(req, res, next) =>{
             })
 
             req.artisan = payload;
-            next();
+
+            // Vérification du rôle artisan
+            if (payload && payload.role === 'artisan') {
+                next(); 
+            } else {
+                res.status(403).json({ message: "Accès interdit: rôle artisan requis" });
+            }
         }else{
             res.status(403).json({message: "Accès interdit: token manquant"});
         }
@@ -78,8 +90,8 @@ exports.isAdmin = async (req, res, next) => {
 
             req.user = payload;
             // Vérification du rôle admin
-            if (payload && payload.role && payload.role === 'admin') {
-                next(); // Si l'utilisateur est admin, continuer
+            if (payload && payload.role === 'admin') {
+                next(); 
             } else {
                 res.status(403).json({ message: "Accès interdit: rôle administrateur requis" });
             }
