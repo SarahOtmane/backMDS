@@ -1,6 +1,9 @@
 const Person = require('../models/personModel.js');
-const Adress = require('../models/adressModel.js');
+const Address = require('../models/adressModel.js');
 const Artisan = require('../models/artisanModel.js');
+const Job = require('../models/jobModel.js');
+const Prestation = require('../models/prestationModel.js');
+const Product = require('../models/productModel.js');
 
 const jwt = require('jsonwebtoken');
 const argon2 = require('argon2');
@@ -17,65 +20,57 @@ const argon2 = require('argon2');
         - Vérifier que le role != admin
 
 */
-
-
 exports.registerAUser = async (req, res) => {
     try {
-        const existingEmail = await Person.findOne({ where: { email: req.body.email } });
+
+        const { email, role, streetAddress, city, postalCode, country, password, firstname, lastname, mobile } = req.body;
+
+        // Vérification de l'existence de l'email
+        const existingEmail = await Person.findOne({ where: { email } });
         if (existingEmail) {
             return res.status(409).json({ message: 'Cet email existe déjà.' });
         }
 
-        if (req.body.role === 'admin') {
-            return res.status(401).json({ message: 'Vous ne pouvez pas créer un utilisateur avec le rôle admin.'});
-        }
-
-        if (req.body.role === 'artisan') {
-            return res.status(401).json({ message: 'Vous ne pouvez pas créer un utilisateur avec le rôle artisan.'});
+        // Vérification du rôle
+        if (role === 'admin' || role === 'artisan') {
+            return res.status(401).json({ message: 'Vous ne pouvez pas créer un utilisateur avec ce rôle.' });
         }
 
         let id_address = null;
 
-        //si l'utilisateur a renseigner son adresse
-        if( req.body.city && req.body.city && req.body.postalCodé && req.body.country){
-            const existingAdress = await Adress.findOne({where: {
-                streetAddress: req.body.streetAddress,
-                city: req.body.city,
-                postalCode: req.body.postalCode,
-                country: req.body.country,
-            }});
+        // Si l'utilisateur a renseigné son adresse
+        if (streetAddress && city && postalCode && country) {
+            const existingAddress = await Address.findOne({
+                where: { streetAddress, city, postalCode, country }
+            });
 
-            if (! existingAdress){
-                const adress = await Adress.create({
-                    streetAddress: req.body.streetAddress,
-                    city: req.body.city,
-                    postalCode: req.body.postalCode,
-                    country: req.body.country,
-                });
-    
-                id_address = adress.id;
-            }else{
-                id_address = existingAdress.id;
+            if (!existingAddress) {
+                const newAddress = await Address.create({ streetAddress, city, postalCode, country });
+                id_address = newAddress.id;
+            } else {
+                id_address = existingAddress.id;
             }
         }
 
-        const password = await argon2.hash(req.body.password);
+        // Hachage du mot de passe
+        const hashedPassword = await argon2.hash(password);
 
+        // Création de l'utilisateur
         await Person.create({
-            firstname: req.body.firstname,
-            lastname: req.body.lastname,
-            email: req.body.email,
-            password: password,
+            firstname,
+            lastname,
+            email,
+            password: hashedPassword,
             role: 'user',
-            mobile: req.body.mobile,
+            mobile,
             subscribeNewsletter: false,
-            id_address : id_address
+            id_address
         });
 
         res.status(201).json({ message: `Utilisateur créé avec succès.`});
     } 
     catch (error) {
-            console.error('Erreur lors de la création de l\'utilisateur:', error);
+        res.status(500).json({ message: 'Erreur lors de la création de l\'utilisateur.' });
     }
 };
 
@@ -93,67 +88,94 @@ exports.registerAUser = async (req, res) => {
         - Vérifier que le role != admin
 
 */
-
-
 exports.registerAnArtisan = async (req, res) => {
     try {
-        const existingEmail = await Person.findOne({ where: { email: req.body.email } });
+        const { 
+            email, role, streetAddress, city, postalCode, 
+            country, password, firstname, lastname, mobile, 
+            siret, tva, name_job, prestations
+        } = req.body;
+
+        // Vérification de l'existence de l'email
+        const existingEmail = await Person.findOne({ where: { email } });
         if (existingEmail) {
             return res.status(409).json({ message: 'Cet email existe déjà.' });
         }
 
-        if (req.body.role === 'admin') {
-            return res.status(401).json({ message: 'Vous ne pouvez pas créer un artisan avec le rôle admin.'});
+        // Vérification du rôle
+        if (role === 'admin' || role === 'user') {
+            return res.status(401).json({ message: `Vous ne pouvez pas créer un artisan avec le rôle ${role}.` });
         }
 
-        if (req.body.role === 'user') {
-            return res.status(401).json({ message: 'Vous ne pouvez pas créer un artisan avec le rôle user.'});
+        // Vérification de l'existence du métier
+        const existingJob = await Job.findOne({ where: { name: name_job  } });
+        if (!existingJob) {
+            return res.status(401).json({ message: 'Ce métier n\'existe pas' });
         }
 
-        const existingAdress = await Adress.findOne({where: {
-            streetAddress: req.body.streetAddress,
-            city: req.body.city,
-            postalCode: req.body.postalCode,
-            country: req.body.country,
-        }});
-        let id_address = existingAdress.id;
-
-        if (! existingAdress){
-            const adress = await Adress.create({
-                streetAddress: req.body.streetAddress,
-                city: req.body.city,
-                postalCode: req.body.postalCode,
-                country: req.body.country,
-            });
-
-            id_address = adress.id;
+        if (!prestations || prestations.length === 0) {
+            return res.status(404).json({ message: 'Aucune prestation enregistrée' });
         }
 
-        const password = await argon2.hash(req.body.password);
+        // Vérification de l'adresse existante
+        let id_address = null;
+        const existingAddress = await Address.findOne({
+            where: { streetAddress, city, postalCode, country }
+        });
 
-        let newArtisanDetails = await Artisan.create({
+        if (existingAddress) {
+            id_address = existingAddress.id;
+        } else {
+            const newAddress = await Address.create({ streetAddress, city, postalCode, country });
+            id_address = newAddress.id;
+        }
+
+        // Hachage du mot de passe
+        const hashedPassword = await argon2.hash(password);
+
+        // Création des détails de l'artisan
+        const newArtisanDetails = await Artisan.create({
             acceptNewOrder: true,
-            siret: req.body.siret,
-            tva: req.body.tva,
-            name_job: name_job
+            siret,
+            tva,
+            name_job
         });
 
-        let newArtisan = await Person.create({
-            firstname: req.body.firstname,
-            lastname: req.body.lastname,
-            email: req.body.email,
-            password: password,
-            role: 'user',
-            mobile: req.body.mobile,
+        // Création de l'utilisateur artisan
+        const newArtisan = await Person.create({
+            firstname,
+            lastname,
+            email,
+            password: hashedPassword,
+            role: 'artisan',
+            mobile,
             subscribeNewsletter: false,
-            id_address : id_address,
-            id_artisan : newArtisanDetails.id,
+            id_address,
+            id_artisan: newArtisanDetails.id
         });
+
+        // Création des produits associés aux prestations
+        let products = [];
+        for (let index = 0; index < prestations.length; index++) {
+            const prestaType = prestations[index];
+
+            const existingPresta = await Prestation.findOne({ where: { reparationType: prestaType } });
+            if (existingPresta) {
+                let newProduct = await Product.create({
+                    price: existingPresta.priceSuggested,
+                    id_prestation: existingPresta.id,
+                    id_artisan: newArtisan.id
+                });
+                products.push(newProduct);
+            } else {
+                return res.status(404).json({ message: `La prestation ${prestaType} n'existe pas` });
+            }
+        }
 
         res.status(201).json({ message: `Artisan créé avec succès.`});
     } 
     catch (error) {
-            console.error('Erreur lors de la création de l\'artisan:', error);
+        res.status(500).json({ message: 'Erreur lors de la création de l\'artisan.' });
     }
 };
 
@@ -195,6 +217,37 @@ exports.loginAPerson = async (req, res) => {
         } else {
             res.status(401).json({ message: 'Email ou mot de passe incorrect.' });
         }
+
+    } catch (error) {
+        res.status(500).json({ message: 'Erreur lors du chargement des données.' });
+    }
+};
+
+
+/**********************************************************************
+            MÉTHODE POUR LISTER LES INFORMATIONS D'UN UTILISATEUR
+**********************************************************************/
+/*
+    Fonction qui permet de lister les informations d'un utilisateur
+
+    Les vérifications : 
+        - Vérifier que l'utilisateur existe
+
+*/
+exports.getAUser = async (req, res) => {
+    try {
+        const user = await Person.findOne({ where: { email: req.user.email } });
+
+        if (!user) {
+            return res.status(404).json({ message: 'Utilisateur non trouvé.' });
+        }
+
+        if(user.id_address){
+            const address = await Address.findOne({ where: { id: user.id_address } });
+            user.push(address);
+        }
+
+        res.status(200).json(user);
 
     } catch (error) {
         res.status(500).json({message: "Erreur lors du traitement des données."});
