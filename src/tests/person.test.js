@@ -11,11 +11,19 @@ const app = createServeur();
 
 describe('Person controller ', () => {
     
+    beforeAll(async () => {
+        await Job.create({ name: 'Couture' });
+    });
+
     afterEach(async () => {
-        await Person.destroy({where: {email: 'test@gmail.com'}});
-        await Address.destroy({where: {postalCode: '92100'}});
-        await Job.destroy({where: {name: 'Couture'}});
-        await Artisan.destroy({where: {siret: '123456789', tva: '123456789'}})
+        await Person.destroy({ where: { email: 'test@gmail.com' } });
+        await Address.destroy({ where: { postalCode: '92100' } });
+        await Job.destroy({ where: { name: 'Couture' } });
+        await Artisan.destroy({ where: { siret: '123456789', tva: '123456789' } });
+    });
+
+    afterAll(async () => {
+        await Job.destroy({ where: { name: 'Couture' } });
     });
 
     describe('POST /persons', () => {
@@ -126,6 +134,60 @@ describe('Person controller ', () => {
                     role: 'artisan'
                 });
             expect(statusCode).toBe(401);
+        });
+    });
+
+    describe('POST /persons', () => {
+
+        it('should return 201 when a new artisan is registred with adress already in bdd', async() => {
+            await Job.create({name: 'Couture'});
+
+            const { statusCode } = await supertest(app)
+                .post('/persons/artisan/register')
+                .send({
+                    firstname: 'Sarah',
+                    lastname: 'Otmane',
+                    email: 'test@gmail.com',
+                    password: 'test',
+                    mobile: '0603285298',
+                    streetAddress: '23 rue de solférino',
+                    city: 'boulogne-billancourt',
+                    postalCode: '92100',
+                    country: 'France',
+                    siret: '123456789',
+                    tva: '123456789',
+                    name_job: 'Couture',
+                });
+            expect(statusCode).toBe(201);
+        });
+
+        it('should return 201 when a new artisan is registred with adress already exist in bdd', async() => {
+            await Address.create({
+                streetAddress: '23 rue de solférino',
+                city: 'boulogne-billancourt',
+                postalCode: '92100',
+                country: 'France'
+            });
+
+            await Job.create({name: 'Couture'});
+    
+            const { statusCode } = await supertest(app)
+                .post('/persons/user/register')
+                .send({
+                    firstname: 'Sarah',
+                    lastname: 'Otmane',
+                    email: 'test@gmail.com',
+                    password: 'test',
+                    mobile: '0603285298',
+                    streetAddress: '23 rue de solférino',
+                    city: 'boulogne-billancourt',
+                    postalCode: '92100',
+                    country: 'France',
+                    siret: '123456789',
+                    tva: '123456789',
+                    name_job: 'Couture',
+                });
+            expect(statusCode).toBe(201);
         });
     });
 
