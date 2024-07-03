@@ -8,8 +8,8 @@ const app = createServeur();
 describe('Cloth controller', () => {
 
     afterEach(async () => {
-        await Job.destroy({where: {name: 'testt'}});
         await Cloth.destroy({where: {name_job: 'testt'}});
+        await Job.destroy({where: {name: 'testt'}});
     });
 
     describe('POST /clothes', () => {
