@@ -30,30 +30,34 @@ exports.registerAUser = async (req, res) => {
             return res.status(401).json({ message: 'Vous ne pouvez pas créer un utilisateur avec le rôle admin.'});
         }
 
-        const existingAdress = await Adress.findOne({where: {
-            streetAddress: req.body.streetAddress,
-            city: req.body.city,
-            postalCode: req.body.postalCode,
-            country: req.body.country,
-        }});
-        let id_address = -1;
+        let id_address = null;
 
-        if (! existingAdress){
-            const adress = await Adress.create({
+        //si l'utilisateur a renseigner son adresse
+        if( req.body.city && req.body.city && req.body.postalCodé && req.body.country){
+            const existingAdress = await Adress.findOne({where: {
                 streetAddress: req.body.streetAddress,
                 city: req.body.city,
                 postalCode: req.body.postalCode,
                 country: req.body.country,
-            });
+            }});
 
-            id_address = adress.id;
-        }else{
-            id_address = existingAdress.id;
+            if (! existingAdress){
+                const adress = await Adress.create({
+                    streetAddress: req.body.streetAddress,
+                    city: req.body.city,
+                    postalCode: req.body.postalCode,
+                    country: req.body.country,
+                });
+    
+                id_address = adress.id;
+            }else{
+                id_address = existingAdress.id;
+            }
         }
 
         const password = await argon2.hash(req.body.password);
 
-        let newUser = await Person.create({
+        await Person.create({
             firstname: req.body.firstname,
             lastname: req.body.lastname,
             email: req.body.email,
