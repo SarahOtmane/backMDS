@@ -17,13 +17,13 @@ router
 
 router
     .route('/')
-    // .all(jwtMiddleware.isAdmin)
+    .all(jwtMiddleware.isAdmin)
     .post( jobController.createAJob)
 
 
 router
     .route('/:name_job')
-    // .all(jwtMiddleware.isAdmin)
+    .all(jwtMiddleware.isAdmin)
     .delete(jobController.deleteAJob);
 
 module.exports = router;
