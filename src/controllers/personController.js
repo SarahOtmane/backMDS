@@ -106,6 +106,10 @@ exports.registerAnArtisan = async (req, res) => {
             return res.status(401).json({ message: 'Vous ne pouvez pas créer un artisan avec le rôle admin.'});
         }
 
+        if (req.body.role === 'user') {
+            return res.status(401).json({ message: 'Vous ne pouvez pas créer un artisan avec le rôle user.'});
+        }
+
         const existingAdress = await Adress.findOne({where: {
             streetAddress: req.body.streetAddress,
             city: req.body.city,
@@ -142,7 +146,8 @@ exports.registerAnArtisan = async (req, res) => {
             role: 'user',
             mobile: req.body.mobile,
             subscribeNewsletter: false,
-            id_address : id_address
+            id_address : id_address,
+            id_artisan : newArtisanDetails.id,
         });
 
         res.status(201).json({ message: `Artisan créé avec succès.`});
