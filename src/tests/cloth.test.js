@@ -21,7 +21,7 @@ describe('Cloth controller', () => {
                 .send({
                     category: 'Test1',
                     clothType: 'T-shirt',
-                    name_job: 'testt'
+                    name_job: 'testt',
                 });
             expect(statusCode).toBe(201);
         });
@@ -35,7 +35,7 @@ describe('Cloth controller', () => {
                 .send({
                     category: 'Test1',
                     clothType: 'T-shirt',
-                    name_job: 'testt'
+                    name_job: 'testt',
                 });
             expect(statusCode).toBe(409);
         });
@@ -46,7 +46,7 @@ describe('Cloth controller', () => {
                 .send({
                     category: 'Haut',
                     clothType: 'T-shirt',
-                    name_job: 'nonexistent'
+                    name_job: 'nonexistent',
                 });
             expect(statusCode).toBe(400);
         });
@@ -62,7 +62,7 @@ describe('Cloth controller', () => {
                 .send({
                     category: 'Haut',
                     clothType: 'Doudoune',
-                    name_job: 'testt'
+                    name_job: 'testt',
                 });
             expect(statusCode).toBe(200);
         });
@@ -73,7 +73,7 @@ describe('Cloth controller', () => {
                 .send({
                     category: 'Haut',
                     clothType: 'Vestes',
-                    name_job: 'testt'
+                    name_job: 'testt',
                 });
             expect(statusCode).toBe(404);
         });
@@ -87,7 +87,7 @@ describe('Cloth controller', () => {
                 .send({
                     category: 'Haut',
                     clothType: 'T-shirt',
-                    name_job: 'nonexistent'
+                    name_job: 'nonexistent',
                 });
             expect(statusCode).toBe(400);
         });
