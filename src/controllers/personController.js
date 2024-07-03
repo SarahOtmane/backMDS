@@ -30,6 +30,10 @@ exports.registerAUser = async (req, res) => {
             return res.status(401).json({ message: 'Vous ne pouvez pas créer un utilisateur avec le rôle admin.'});
         }
 
+        if (req.body.role === 'artisan') {
+            return res.status(401).json({ message: 'Vous ne pouvez pas créer un utilisateur avec le rôle artisan.'});
+        }
+
         let id_address = null;
 
         //si l'utilisateur a renseigner son adresse
