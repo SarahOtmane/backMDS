@@ -11,6 +11,11 @@ router
     .get(commandController.getCommandOfUser)
 
 
+router
+    .route('/:id_artisan')
+    .all(jwtMiddleware.verifyTokenUser)
+    .post(commandController.createACommand)
+    
 /**********************************************************
             ROUTES UNIQUEMENT POUR LES ADMINS
 **********************************************************/  
