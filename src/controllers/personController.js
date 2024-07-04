@@ -292,12 +292,29 @@ exports.getAnArtisan = async (req, res) => {
 exports.updateDetailsUser = async (req, res) => {
     try {
         const user = await Person.findOne({ where: { email: req.user.email } });
-
         if (!user) {
             return res.status(404).json({ message: 'Utilisateur non trouvé.' });
         }
             
+        const { firstname, lastname, mobile, streetAddress, postalCode, country, city } = req.body;
+        
+        let id_address = null;
+        if(streetAddress && postalCode && country && city){
+            const existingAddress = await Address.findOne({
+                where: { streetAddress, city, postalCode, country }
+            });
+            if (existingAddress) {
+                id_address = existingAddress.id;
+            } else {
+                const newAddress = await Address.create({ streetAddress, city, postalCode, country });
+                id_address = newAddress.id;
+            }
+        }
 
+        await user.update({
+            lastname, firstname,
+            mobile, id_address
+        })
 
         res.status(200).json(user);
 
