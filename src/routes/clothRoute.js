@@ -27,12 +27,12 @@ router
 
 router
     .route('/')
-    // .all(jwtMiddleware.isAdmin)
+    .all(jwtMiddleware.isAdmin)
     .post(clothController.createACloth)
 
 router
     .route('/:id_cloth')
-    // .all(jwtMiddleware.isAdmin)
+    .all(jwtMiddleware.isAdmin)
     .put(clothController.putACloth)
     .delete(clothController.deleteACloth);
 
