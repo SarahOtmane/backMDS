@@ -8,4 +8,8 @@ router
     .route('/:name_job/:postalcode')
     .get(artisanController.getAllArtisansWithFiltre)
 
+router
+    .route('/:id_artisan')
+    .get(artisanController.getDetailArtisan)
+
 module.exports = router;
