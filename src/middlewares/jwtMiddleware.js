@@ -17,7 +17,7 @@ exports.verifyTokenUser = async(req, res, next) =>{
                 })
             })
 
-            req.person = payload;
+            req.user = payload;
 
             // Vérification du rôle user
             if (payload && payload.role === 'user') {
