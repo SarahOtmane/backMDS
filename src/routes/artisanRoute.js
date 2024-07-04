@@ -7,3 +7,5 @@ const jwtMiddleware = require('../middlewares/jwtMiddleware');
 router
     .route('/:name_job/:postalcode')
     .get(artisanController.getAllArtisansWithFiltre)
+
+module.exports = router;
