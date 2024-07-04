@@ -200,3 +200,41 @@ exports.getAllProductsArtisan = async (req, res) => {
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 };
+
+
+/***************************************************************************
+            MÉTHODE POUR LISTER UN PRODUCT LIÉ A UNE PRESTA ET UN ARTISAN
+***************************************************************************/
+/*
+    Fonction qui permet de lister les products
+
+    Les vérifications : 
+        - l existance de l artisan
+        - l existance de la prestation
+
+*/
+
+exports.getPrestaProduct = async (req, res) => {
+    try {
+        const artisan = await Artisan.findOne({where: {id: req.params.id_artisan}});
+        if(!artisan){
+            return res.status(404).json({ message: 'Artisan non trouvé.' })
+        }
+
+        const presta = await Prestation.findOne({where: {id: req.params.id_prestation}});
+        if(!presta) return res.status(404).json({message: 'La prestation n\'existe plus en base de donnés'})
+
+        const product = await Product.findOne({where: {
+            id_artisan : artisan.id,
+            id_prestation: presta.id
+        }});
+        if(!product){
+            return res.status(404).json({ message: 'Produit non trouvé.' })
+        }
+
+        res.status(201).json(product);
+    } 
+    catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
