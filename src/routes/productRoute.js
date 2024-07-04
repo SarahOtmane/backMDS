@@ -20,4 +20,8 @@ router
     .get(productController.getAllProductsArtisan)
     .post(productController.createAProduct)
 
+router 
+    .route('/:id_artisan/:id_prestation')
+    .get(productController.getPrestaProduct)
+
 module.exports = router;
