@@ -74,11 +74,15 @@ exports.registerAUser = async (req, res) => {
 */
 exports.registerAnArtisan = async (req, res) => {
     try {
+        console.log('Début de la fonction registerAnArtisan');
+
         const { 
             email, role, streetAddress, city, postalCode, 
             country, password, firstname, lastname, mobile, 
-            siret, tva, name_job, prestations
+            siret, tva, job, prestations
         } = req.body;
+
+        console.log('Données reçues:', req.body);
 
         // Vérification de l'existence de l'email
         const existingEmail = await Person.findOne({ where: { email } });
@@ -86,26 +90,36 @@ exports.registerAnArtisan = async (req, res) => {
             return res.status(409).json({ message: 'Cet email existe déjà.' });
         }
 
+        console.log('Email vérifié, non existant:', email);
+
         // Vérification du rôle
-        if (role === 'admin' || role === 'user') {
+        if (role !== undefined && (role === 'admin' || role === 'user')) {
             return res.status(401).json({ message: `Vous ne pouvez pas créer un artisan avec le rôle ${role}.` });
         }
 
+        console.log('Rôle vérifié:', role);
+
         // Vérification de l'existence du métier
-        const existingJob = await Job.findOne({ where: { name: name_job  } });
+        const existingJob = await Job.findOne({ where: { name: job } });
         if (!existingJob) {
             return res.status(401).json({ message: 'Ce métier n\'existe pas' });
         }
 
+        console.log('Métier vérifié:', job);
+
         if (!prestations || prestations.length === 0) {
             return res.status(404).json({ message: 'Aucune prestation enregistrée' });
         }
+
+        console.log('Prestations vérifiées:', prestations);
 
         // Vérification de l'adresse existante
         let id_address = null;
         const existingAddress = await Address.findOne({
             where: { streetAddress, city, postalCode, country }
         });
+
+        console.log('Adresse existante vérifiée:', existingAddress);
 
         if (existingAddress) {
             id_address = existingAddress.id;
@@ -114,16 +128,23 @@ exports.registerAnArtisan = async (req, res) => {
             id_address = newAddress.id;
         }
 
+        console.log('Adresse ID:', id_address);
+
         // Hachage du mot de passe
         const hashedPassword = await argon2.hash(password);
+        console.log('Mot de passe haché.');
 
         // Création des détails de l'artisan
         const newArtisanDetails = await Artisan.create({
             acceptNewOrder: true,
             siret,
             tva,
-            name_job
+            name_job : job,
+            description : '',
+            picture : ''
         });
+
+        console.log('Détails de l\'artisan créés:', newArtisanDetails);
 
         // Création de l'utilisateur artisan
         const newArtisan = await Person.create({
@@ -138,10 +159,13 @@ exports.registerAnArtisan = async (req, res) => {
             id_artisan: newArtisanDetails.id
         });
 
+        console.log('Artisan créé:', newArtisan);
+
         // Création des produits associés aux prestations
         let products = [];
         for (let index = 0; index < prestations.length; index++) {
             const prestaType = prestations[index];
+            console.log('Traitement de la prestation:', prestaType);
 
             const existingPresta = await Prestation.findOne({ where: { reparationType: prestaType } });
             if (existingPresta) {
@@ -151,17 +175,20 @@ exports.registerAnArtisan = async (req, res) => {
                     id_artisan: newArtisan.id
                 });
                 products.push(newProduct);
+                console.log('Produit créé:', newProduct);
             } else {
                 return res.status(404).json({ message: `La prestation ${prestaType} n'existe pas` });
             }
         }
 
-        res.status(201).json({ message: `Artisan créé avec succès.`});
+        res.status(201).json({ message: `Artisan créé avec succès.` });
     } 
     catch (error) {
+        console.error('Erreur lors de la création de l\'artisan:', error);
         res.status(500).json({ message: 'Erreur lors de la création de l\'artisan.' });
     }
 };
+
 
 
 
