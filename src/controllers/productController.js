@@ -48,6 +48,52 @@ exports.createAProduct = async (req, res) => {
 
 
 /**********************************************************
+            MÉTHODE POUR MODIFIER UNE PRESTA_ARTISAN
+**********************************************************/
+/*
+    Fonction qui permet d'update le price d une presta dun artisan
+
+    Les vérifications : 
+        - l existance de l artisan
+        - l existance de la prestation
+
+*/
+exports.updateAProduct = async (req, res) => {
+    try {
+        const product = await Product.findOne({where: {id: req.params.id_product}});
+        if(!product){
+            return res.status(404).json({ message: 'Produit non trouvé.' });
+        }
+
+        const artisan = await Artisan.findOne({ where: { id: req.artisan.id} });
+        if(!artisan){
+            return res.status(404).json({ message: 'Artisan non trouvé.' });
+        }
+
+        const existingPresta = await Prestation.findOne({where: {
+            id: req.body.id_prestation
+        }})
+        if(!existingPresta) return res.status(404).json({message: 'La prestation n\'existe plus en base de donnés'})
+
+        await product.update({
+            price: req.body.price,
+            id_artisan: artisan.id,
+            id_prestation: existingPresta.id,
+        });
+
+        res.status(201).json({ 
+            message: `Product update avec succès.` 
+        });
+    } 
+    catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
+
+
+
+
+/**********************************************************
             MÉTHODE POUR LISTER UN PRODUCT
 **********************************************************/
 /*
