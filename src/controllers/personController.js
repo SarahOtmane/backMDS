@@ -243,17 +243,21 @@ exports.getAUser = async (req, res) => {
             return res.status(404).json({ message: 'Utilisateur non trouvé.' });
         }
 
-        if(user.id_address){
+        let userResponse = user.toJSON(); 
+
+        if(user.id_address !== null){
             const address = await Address.findOne({ where: { id: user.id_address } });
-            user.push(address);
+            userResponse.address = address;
         }
 
-        res.status(200).json(user);
+        res.status(200).json(userResponse);
 
     } catch (error) {
+        console.error('Erreur lors du traitement des données:', error);
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 };
+
 
 
 
