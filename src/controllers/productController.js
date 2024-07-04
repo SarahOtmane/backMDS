@@ -2,6 +2,51 @@ const Product = require('../models/productModel');
 const Artisan = require('../models/artisanModel');
 const Prestation = require('../models/prestationModel');
 
+
+
+
+
+/**********************************************************
+            MÉTHODE POUR CREER UN PRODUCT
+**********************************************************/
+/*
+    Fonction qui permet de creer une presta d un artisan
+
+    Les vérifications : 
+        - l existance de l artisan
+        - l existance de la prestation
+
+*/
+exports.createAProduct = async (req, res) => {
+    try {
+        const artisan = await Artisan.findOne({ where: { id: req.artisan.id} });
+        if(!artisan){
+            return res.status(404).json({ message: 'Artisan non trouvé.' });
+        }
+
+        const existingPresta = await Prestation.findOne({where: {
+            reparationType: req.body.reparationType
+        }})
+        if(!existingPresta) return res.status(404).json({message: 'La prestation n\'existe plus en base de donnés'})
+
+        await Product.create({
+            price: req.body.price,
+            id_artisan: artisan.id,
+            id_prestation: existingPresta.id,
+        });
+
+        res.status(201).json({ 
+            message: `Product créée avec succès.` 
+        });
+    } 
+    catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
+
+
+
+
 /**********************************************************
             MÉTHODE POUR LISTER UN PRODUCT
 **********************************************************/
