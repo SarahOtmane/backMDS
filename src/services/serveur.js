@@ -31,7 +31,7 @@ function createServeur() {
     // Configuration de Swagger
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-    // app.use('/addresses', adressRoute);
+    app.use('/addresses', adressRoute);
     app.use('/persons', personRoute);
     app.use('/infos', infoRoute);
     app.use('/jobs', jobRoute);
