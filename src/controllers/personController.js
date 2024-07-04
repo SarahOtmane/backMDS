@@ -276,14 +276,43 @@ exports.getAnArtisan = async (req, res) => {
         const artisan = await Person.findOne({ where: { email: req.artisan.email } });
 
         if (!artisan) {
+            return res.status(404).json({ message: 'Artisan non trouvé.' });
+        }
+            
+        let artisanResponse = artisan.toJSON();
+        const address = await Address.findOne({ where: { id: artisan.id_address } });
+        artisanResponse.address = address;
+
+        const details = await Artisan.findOne({where: {id: artisan.id}});
+        artisanResponse.details = details;
+
+        res.status(200).json(artisanResponse);
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
+
+
+
+/**********************************************************************
+            MÉTHODE POUR MODIFIER LES INFORMATIONS D'UN USER
+**********************************************************************/
+/*
+    Fonction qui permet de lister les informations d'un utilisateur
+
+    Les vérifications : 
+        - Vérifier que l'utilisateur existe
+
+*/
+exports.updateDetailsUser = async (req, res) => {
+    try {
+        const user = await Person.findOne({ where: { email: req.user.email } });
+
+        if (!user) {
             return res.status(404).json({ message: 'Utilisateur non trouvé.' });
         }
             
-        const address = await Address.findOne({ where: { id: artisan.id_address } });
-        artisan.push(address);
-
-        const details = await Artisan.findOne({where: {id: artisan.id}});
-        artisan.push(details);
 
 
         res.status(200).json(artisan);
