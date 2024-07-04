@@ -8,7 +8,9 @@ router
     .route('/:id_product')
     .get(productController.getAProduct)
 
-
+router
+    .route('/artisan/:id_artisan')
+    .get(productController.getAllProductsArtisan)
 
 
 
