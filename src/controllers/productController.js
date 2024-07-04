@@ -183,7 +183,6 @@ exports.getAllProductsArtisan = async (req, res) => {
         if(!artisan){
             return res.status(404).json({ message: 'Artisan non trouvé.' });
         }
-
         const products = await Product.findAll({where: {id_artisan: artisan.id}});
         if(!products){
             return res.status(404).json({ message: 'Auncun product trouvé.' });
