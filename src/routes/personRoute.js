@@ -22,9 +22,15 @@ router
     .put(personController.updateDetailsUser)
 
 router 
+    .route('/user/password')
+    .all(jwtMiddleware.verifyTokenUser)
+    .put(personController.updatePassword)
+
+router 
     .route('/artisan')
     .all(jwtMiddleware.verifyTokenArtisan)
     .get(personController.getAnArtisan)
+
 
 
 module.exports = router;
