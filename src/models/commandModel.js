@@ -32,14 +32,14 @@ const Command = sequelize.define('Command', {
 
 
 
-const User = require('./userModel');
+const Person = require('./personModel');
 const Product = require('./productModel');
 const Cloth = require('./clothModel')
     
-    User.hasMany(Command, {
+    Person.hasMany(Command, {
         foreignKey: 'email_user',
     });
-    Command.belongsTo(User, {
+    Command.belongsTo(Person, {
         foreignKey: 'email_user',
     });
     
