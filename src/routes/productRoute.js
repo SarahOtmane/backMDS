@@ -10,8 +10,8 @@ router
 
 router
     .route('/artisan/:id_artisan')
+    .all(jwtMiddleware.verifyTokenArtisan)
     .get(productController.getAllProductsArtisan)
-
-
+    .post(productController.createAProduct)
 
 module.exports = router;
