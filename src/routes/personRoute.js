@@ -19,6 +19,7 @@ router
     .route('/user')
     .all(jwtMiddleware.verifyTokenUser)
     .get(personController.getAUser)
+    .put(personController.updateDetailsUser)
 
 router 
     .route('/artisan')
