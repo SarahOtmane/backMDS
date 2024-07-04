@@ -29,11 +29,11 @@ const Artisan = sequelize.define('Artisan', {
     },
     description: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     picture: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     }
 
 }, {
