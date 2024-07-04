@@ -1,4 +1,6 @@
+const Artisan = require('../models/artisanModel');
 const Command = require('../models/commandModel');
+const Product = require('../models/productModel');
 
 
 /*****************************************************************
@@ -49,5 +51,40 @@ exports.getCommandOfUser = async (req, res) => {
 
     } catch (error) {
         res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
+
+
+
+/*****************************************************************
+            MÉTHODE POUR LISTER TOUTES LES COMMANDES ARTISAN
+*****************************************************************/
+/*
+    Fonction qui permet de lister toutes les commandes d'un artisan
+
+    Les vérifications : 
+        - Vérifier que les commandes existent
+
+*/
+exports.getCommandOfArtisan = async (req, res) => {
+    try {
+        const artisan = await Artisan.findOne({where: {email: req.artisan.email}});
+        const products = await Product.findAll({ where: { id_artisan: artisan.id } });
+        if (!products.length) {
+            return res.status(404).json({ message: 'Aucun produit pour cet artisan.' });
+        }
+
+        let commands = [];
+
+        for (let product of products) {
+            const productCommands = await Command.findAll({ where: { id_product: product.id } });
+            if (productCommands.length) {
+                commands = commands.concat(productCommands);
+            }
+        }
+
+        res.status(200).json(commands);
+    } catch (error) {
+        res.status(500).json({ message: "Erreur lors du traitement des données." });
     }
 };
