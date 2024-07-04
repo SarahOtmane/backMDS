@@ -1,7 +1,8 @@
 const Job = require('../models/jobModel');
 
 
-/**********************************************************
+class JobController{
+    /**********************************************************
             MÉTHODE POUR CREER UN JOB (ADMIN)
 **********************************************************/
 /*
@@ -11,7 +12,7 @@ const Job = require('../models/jobModel');
         - l existance du job
 
 */
-exports.createAJob = async (req, res) => {
+static async createAJob(req, res){
     try {
         const existingJob = await Job.findOne({ where: { name: req.body.name } });
         if (existingJob) {
@@ -40,7 +41,7 @@ exports.createAJob = async (req, res) => {
         - Vérifier que le job existe
 
 */
-exports.deleteAJob = async (req, res) => {
+static async deleteAJob(req, res){
     try {
 
         const deleteJob = await Job.destroy({
@@ -72,7 +73,7 @@ exports.deleteAJob = async (req, res) => {
         - Vérifier que les jobs existent
 
 */
-exports.getAllJobs = async (req, res) => {
+static async getAllJobs(req, res){
     try {
         
         const jobs = await Job.findAll();
@@ -87,3 +88,6 @@ exports.getAllJobs = async (req, res) => {
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 };
+}
+
+module.exports = JobController;
