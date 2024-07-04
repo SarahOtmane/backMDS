@@ -94,6 +94,38 @@ exports.updateAProduct = async (req, res) => {
 
 
 /**********************************************************
+            MÉTHODE POUR SUPRIMER UN PRODUCT 
+**********************************************************/
+/*
+    Fonction qui permet de supprimer un product
+
+    Les vérifications : 
+        - l existance de l artisan
+        - l existance de la prestation
+
+*/
+exports.deleteAProduct = async (req, res) => {
+    try {
+        const deleteProduct = await Product.destroy({where: { 
+            id: req.params.id_product
+        }});
+        
+        if (!deleteProduct) {
+            return res.status(404).json({ message: 'Product non trouvé.' });
+        }
+
+        res.status(201).json({ message: 'Product supprimé avec succès.' });
+    } 
+    catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+};
+
+
+
+
+
+/**********************************************************
             MÉTHODE POUR LISTER UN PRODUCT
 **********************************************************/
 /*
