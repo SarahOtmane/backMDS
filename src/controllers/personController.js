@@ -262,7 +262,6 @@ exports.getAUser = async (req, res) => {
 exports.getAnArtisan = async (req, res) => {
     try {
         const artisan = await Person.findOne({ where: { email: req.artisan.email } });
-
         if (!artisan) {
             return res.status(404).json({ message: 'Artisan non trouvé.' });
         }
@@ -271,7 +270,7 @@ exports.getAnArtisan = async (req, res) => {
         const address = await Address.findOne({ where: { id: artisan.id_address } });
         artisanResponse.address = address;
 
-        const details = await Artisan.findOne({where: {id: artisan.id}});
+        const details = await Artisan.findOne({where: {id: artisan.id_artisan}});
         artisanResponse.details = details;
 
         res.status(200).json(artisanResponse);
