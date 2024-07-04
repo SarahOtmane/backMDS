@@ -2,8 +2,6 @@ const Artisan = require("../models/artisanModel");
 const Address = require("../models/adressModel");
 const Person = require("../models/personModel");
 
-
-
 /************************************************************************
             MÉTHODE POUR LISTER TOUS LES ARTISANS (id_job, postalCode)
 ************************************************************************/
@@ -15,7 +13,6 @@ const Person = require("../models/personModel");
         - Vérifier que les artisans existent
         - Vérifier que les adresses existent
         - Vérifier que les personnes existent
-
 */
 exports.getAllArtisansWithFiltre = async (req, res) => {
     try {
@@ -29,23 +26,36 @@ exports.getAllArtisansWithFiltre = async (req, res) => {
             return res.status(404).json('Aucun artisan trouvé');
         }
 
-        // Récupérer toutes les adresses avec le code postal renseigné
-        const addresses = await Address.findAll({ where: { postalCode: req.params.postalCode } });
-        if (!addresses.length) {
-            return res.status(404).json('Aucune adresse pour ce code postal');
-        }
-
-        // Extraire les IDs des adresses et des artisans
-        const addressIds = addresses.map(address => address.id);
+        // Extraire les IDs des artisans
         const artisanIds = artisans.map(artisan => artisan.id);
 
-        // Récupérer toutes les personnes avec id_artisan et id_address
-        const persons = await Person.findAll({
-            where: {
-                id_artisan: artisanIds,
-                id_address: addressIds
+        let persons = [];
+
+        if(req.params.postalcode !== '-1'){
+            // Récupérer toutes les adresses avec le code postal renseigné
+            const addresses = await Address.findAll({ where: { postalCode: req.params.postalcode } });
+            if (!addresses.length) {
+                return res.status(404).json('Aucune adresse pour ce code postal');
             }
-        });
+
+            // Extraire les IDs des adresses
+            const addressIds = addresses.map(address => address.id);
+
+            // Récupérer toutes les personnes avec id_artisan et id_address
+            persons = await Person.findAll({
+                where: {
+                    id_artisan: artisanIds,
+                    id_address: addressIds
+                }
+            });
+        }else{
+            // Récupérer toutes les personnes avec id_artisan
+            persons = await Person.findAll({
+                where: {
+                    id_artisan: artisanIds
+                }
+            });
+        }
 
         if (!persons.length) {
             return res.status(404).json('Aucune personne trouvée');
