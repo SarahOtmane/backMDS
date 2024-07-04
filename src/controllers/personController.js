@@ -296,10 +296,10 @@ exports.updateDetailsUser = async (req, res) => {
             return res.status(404).json({ message: 'Utilisateur non trouvé.' });
         }
 
-        const { firstname, lastname, mobile, streetAddress, postalCode, country, city } = req.body;
+        const { firstname, lastname, mobile, streetAddress, postalCode, country, city, id_address } = req.body;
 
-        let newIdAdress = null;
-        if(streetAddress!=='' && postalCode!=='' && country!=='' && city!==''){
+        let newIdAdress = id_address;
+        if(streetAddress!==undefined && postalCode!==undefined && country!==undefined && city!==undefined){
             const existingAddress = await Address.findOne({
                 where: { 
                     streetAddress : streetAddress, 
