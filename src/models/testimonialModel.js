@@ -41,10 +41,10 @@ Testimonial.belongsTo(Person, {
 });
 
 Artisan.hasMany(Testimonial, {
-    foreignKey: 'email_artisan',
+    foreignKey: 'id_artisan',
 });
 Testimonial.belongsTo(Artisan, {
-    foreignKey: 'email_artisan',
+    foreignKey: 'id_artisan',
 });
 
 
