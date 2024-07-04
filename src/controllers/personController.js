@@ -202,15 +202,15 @@ exports.loginAPerson = async (req, res) => {
             return res.status(404).json({ message: 'Utilisateur non trouvé.' });
         }
 
-        const validPassword = await argon2.compare(req.body.password, user.password);
-
+        const validPassword = await argon2.compare(req.body.password, person.password);
+        
         if (validPassword) {
-            const userData = {
+            const personData = {
                 email: user.email,
                 role: user.role
             };
           
-            const token = jwt.sign(userData, process.env.JWT_KEY, { expiresIn: "30d" });
+            const token = jwt.sign(personData, process.env.JWT_KEY, { expiresIn: "30d" });
 
             res.status(201).json({ token });
 
@@ -279,6 +279,7 @@ exports.getAnArtisan = async (req, res) => {
 
         const details = await Artisan.findOne({where: {id: artisan.id}});
         artisan.push(details);
+
 
         res.status(200).json(artisan);
 
