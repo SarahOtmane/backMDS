@@ -9,6 +9,12 @@ router
     .get(productController.getAProduct)
 
 router
+    .route('/:id_product')
+    .all(jwtMiddleware.verifyTokenArtisan)
+    .put(productController.updateAProduct)
+    .delete(productController.deleteAProduct)
+
+router
     .route('/artisan/:id_artisan')
     .all(jwtMiddleware.verifyTokenArtisan)
     .get(productController.getAllProductsArtisan)
