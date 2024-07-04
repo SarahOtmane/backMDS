@@ -41,7 +41,7 @@ function createServeur() {
     app.use('/products', productRoute);
     app.use('/clothes', clothRoute);
     // app.use('/testimonials', testimonialRoute);
-    // app.use('/commands', commandRoute);
+    app.use('/commands', commandRoute);
 
     return app;
 }
