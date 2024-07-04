@@ -328,3 +328,44 @@ exports.updateDetailsUser = async (req, res) => {
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 };
+
+
+
+/**********************************************************************
+            MÉTHODE POUR MODIFIER LES INFORMATIONS D'UN USER
+**********************************************************************/
+/*
+    Fonction qui permet de lister les informations d'un utilisateur
+
+    Les vérifications : 
+        - Vérifier que l'utilisateur existe
+
+*/
+exports.updatePassword = async(req,res) =>{
+    try {
+        let person; 
+
+        if(req.user === undefined) person = req.artisan;
+        else person = req.user
+
+        const userUpdate = await Person.findOne({ where: { email: person.email } });
+        if(!userUpdate){
+            return res.status(404).json({ message: 'Personne non trouvé.' });
+        }
+
+        const validPassword = await argon2.verify(person.password, req.body.password);
+        if(!validPassword){
+            return res.status(400).json({ message: 'Mot de passe incorrect.' });
+        }
+
+        const hashedPassword = await argon2.hash(password);
+
+        await userUpdate.update({ 
+            password: hashedPassword,
+        });
+        res.status(201).json({ message: 'Personne mis à jour avec succès.' });
+
+    } catch (error) {
+        res.status(500).json({message: "Erreur lors du traitement des données."});
+    }
+}
