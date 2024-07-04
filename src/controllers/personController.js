@@ -295,26 +295,32 @@ exports.updateDetailsUser = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: 'Utilisateur non trouvé.' });
         }
-            
+
         const { firstname, lastname, mobile, streetAddress, postalCode, country, city } = req.body;
-        
-        let id_address = null;
-        if(streetAddress && postalCode && country && city){
+
+        let newIdAdress = null;
+        if(streetAddress!=='' && postalCode!=='' && country!=='' && city!==''){
             const existingAddress = await Address.findOne({
-                where: { streetAddress, city, postalCode, country }
+                where: { 
+                    streetAddress : streetAddress, 
+                    city : city, 
+                    postalCode : postalCode, 
+                    country : country 
+                }
             });
+
             if (existingAddress) {
-                id_address = existingAddress.id;
+                newIdAdress = existingAddress.id;
             } else {
                 const newAddress = await Address.create({ streetAddress, city, postalCode, country });
-                id_address = newAddress.id;
+                newIdAdress = newAddress.id;
             }
         }
 
         await user.update({
             lastname, firstname,
-            mobile, id_address
-        })
+            mobile, id_address : newIdAdress
+        });
 
         res.status(200).json(user);
 
