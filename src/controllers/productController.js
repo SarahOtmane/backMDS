@@ -19,7 +19,7 @@ const Prestation = require('../models/prestationModel');
 */
 exports.createAProduct = async (req, res) => {
     try {
-        const artisan = await Artisan.findOne({ where: { id: req.artisan.id} });
+        const artisan = await Artisan.findOne({ where: { id: req.params.id_artisan} });
         if(!artisan){
             return res.status(404).json({ message: 'Artisan non trouvé.' });
         }
