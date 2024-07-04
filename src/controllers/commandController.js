@@ -1,6 +1,8 @@
 const Artisan = require('../models/artisanModel');
 const Command = require('../models/commandModel');
 const Product = require('../models/productModel');
+const Cloth = require('../models/clothModel');
+const Prestation = require('../models/prestationModel');
 
 
 
@@ -21,13 +23,14 @@ exports.createACommand = async (req, res) => {
         if (!existingArtisan) {
             return res.status(404).json({ message: 'L\'artisan n\'existe plus en base de données.' });
         }
-
+    
         const existingCloth = await Cloth.findOne({where: {
             category: req.body.category,
             clothType: req.body.clothType,
-            id_job: req.body.id_job
+            name_job: req.body.name_job
         }})
         if(!existingCloth) return res.status(404).json({message: 'L\'habit n\'existe plus en base de donnés'});
+
 
         const existingPresta = await Prestation.findOne({where: {reparationType: req.body.reparationType}});
         if(!existingPresta) return res.status(404).json({message: 'La prestation n\'existe plus en base de donnés'});
@@ -42,7 +45,7 @@ exports.createACommand = async (req, res) => {
             name: req.body.name,
             picture: req.body.picture,
             dateFinished: null,
-            id_user: req.user.id,
+            email_user: req.user.email,
             id_product: existingProduct.id,
             id_cloth: existingCloth.id,
             comment: req.body.comment
