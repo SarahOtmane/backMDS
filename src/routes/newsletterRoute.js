@@ -12,7 +12,7 @@ router
 
 router
     .route('/')
-    // .all(jwtMiddleware.isAdmin)
+    .all(jwtMiddleware.isAdmin)
     .get(newsletterController.getAllInNewsletter)
 
 
