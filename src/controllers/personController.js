@@ -202,24 +202,25 @@ exports.loginAPerson = async (req, res) => {
             return res.status(404).json({ message: 'Utilisateur non trouvé.' });
         }
 
-        const validPassword = await argon2.compare(req.body.password, person.password);
-        
+        const validPassword = await argon2.verify(person.password, req.body.password);
+
         if (validPassword) {
             const personData = {
-                email: user.email,
-                role: user.role
+                email: person.email,
+                role: person.role
             };
-          
+
             const token = jwt.sign(personData, process.env.JWT_KEY, { expiresIn: "30d" });
 
-            res.status(201).json({ token });
+            return res.status(200).json({ token });
 
         } else {
-            res.status(401).json({ message: 'Email ou mot de passe incorrect.' });
+            return res.status(401).json({ message: 'Email ou mot de passe incorrect.' });
         }
 
     } catch (error) {
-        res.status(500).json({ message: 'Erreur lors du chargement des données.' });
+        console.error('Erreur lors du chargement des données:', error);
+        return res.status(500).json({ message: 'Erreur lors du chargement des données.' });
     }
 };
 
