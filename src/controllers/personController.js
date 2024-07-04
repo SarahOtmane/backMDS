@@ -353,12 +353,12 @@ exports.updatePassword = async(req,res) =>{
             return res.status(404).json({ message: 'Personne non trouvé.' });
         }
 
-        const validPassword = await argon2.verify(person.password, req.body.password);
+        const validPassword = await argon2.verify(userUpdate.password, req.body.oldPassword);
         if(!validPassword){
             return res.status(400).json({ message: 'Mot de passe incorrect.' });
         }
 
-        const hashedPassword = await argon2.hash(password);
+        const hashedPassword = await argon2.hash(req.body.password);
 
         await userUpdate.update({ 
             password: hashedPassword,
