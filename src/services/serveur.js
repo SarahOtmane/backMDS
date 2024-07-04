@@ -38,7 +38,7 @@ function createServeur() {
     app.use('/newsletters', newsletterRoute);
     app.use('/artisans', artisanRoute);
     app.use('/prestations', prestationRoute);
-    // app.use('/products', productRoute);
+    app.use('/products', productRoute);
     app.use('/clothes', clothRoute);
     // app.use('/testimonials', testimonialRoute);
     // app.use('/commands', commandRoute);
