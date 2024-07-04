@@ -1,0 +1,60 @@
+const Artisan = require("../models/artisanModel");
+const Address = require("../models/adressModel");
+const Person = require("../models/personModel");
+
+
+
+/************************************************************************
+            MÉTHODE POUR LISTER TOUS LES ARTISANS (id_job, postalCode)
+************************************************************************/
+/*
+    Fonction qui permet de lister tous les artisans
+
+    Les vérifications : 
+        - Vérifier que le métier est renseigné
+        - Vérifier que les artisans existent
+        - Vérifier que les adresses existent
+        - Vérifier que les personnes existent
+
+*/
+exports.getAllArtisansWithFiltre = async (req, res) => {
+    try {
+        if (!req.params.name_job || req.params.name_job.trim() === '') {
+            return res.status(400).json('Métier non renseigné');
+        }
+
+        // Récupérer tous les artisans avec le name_job
+        const artisans = await Artisan.findAll({ where: { name_job: req.params.name_job } });
+        if (!artisans.length) {
+            return res.status(404).json('Aucun artisan trouvé');
+        }
+
+        // Récupérer toutes les adresses avec le code postal renseigné
+        const addresses = await Address.findAll({ where: { postalCode: req.params.postalCode } });
+        if (!addresses.length) {
+            return res.status(404).json('Aucune adresse pour ce code postal');
+        }
+
+        // Extraire les IDs des adresses et des artisans
+        const addressIds = addresses.map(address => address.id);
+        const artisanIds = artisans.map(artisan => artisan.id);
+
+        // Récupérer toutes les personnes avec id_artisan et id_address
+        const persons = await Person.findAll({
+            where: {
+                id_artisan: artisanIds,
+                id_address: addressIds
+            }
+        });
+
+        if (!persons.length) {
+            return res.status(404).json('Aucune personne trouvée');
+        }
+
+        return res.status(200).json(persons);
+
+    } catch (error) {
+        console.error('Erreur lors du traitement des données:', error);
+        return res.status(500).json({ message: "Erreur lors du traitement des données." });
+    }
+}
