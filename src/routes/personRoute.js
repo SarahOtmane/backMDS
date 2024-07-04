@@ -19,7 +19,7 @@ router
     .route('/user')
     .all(jwtMiddleware.verifyTokenUser)
     .get(personController.getAUser)
-    .put(personController.updateDetailsUser)
+    .put(personController.updateDetailsPerson)
 
 router 
     .route('/user/password')
@@ -30,6 +30,7 @@ router
     .route('/artisan')
     .all(jwtMiddleware.verifyTokenArtisan)
     .get(personController.getAnArtisan)
+    .put(personController.updateDetailsPerson)
 
 
 
