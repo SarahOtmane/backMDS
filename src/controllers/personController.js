@@ -23,7 +23,7 @@ const argon2 = require('argon2');
 exports.registerAUser = async (req, res) => {
     try {
 
-        const { email, role, streetAddress, city, postalCode, country, password, firstname, lastname, mobile } = req.body;
+        const { email, role, password, firstname, lastname, mobile } = req.body;
 
         // Vérification de l'existence de l'email
         const existingEmail = await Person.findOne({ where: { email } });
@@ -34,22 +34,6 @@ exports.registerAUser = async (req, res) => {
         // Vérification du rôle
         if (role === 'admin' || role === 'artisan') {
             return res.status(401).json({ message: 'Vous ne pouvez pas créer un utilisateur avec ce rôle.' });
-        }
-
-        let id_address = null;
-
-        // Si l'utilisateur a renseigné son adresse
-        if (streetAddress && city && postalCode && country) {
-            const existingAddress = await Address.findOne({
-                where: { streetAddress, city, postalCode, country }
-            });
-
-            if (!existingAddress) {
-                const newAddress = await Address.create({ streetAddress, city, postalCode, country });
-                id_address = newAddress.id;
-            } else {
-                id_address = existingAddress.id;
-            }
         }
 
         // Hachage du mot de passe
@@ -64,7 +48,7 @@ exports.registerAUser = async (req, res) => {
             role: 'user',
             mobile,
             subscribeNewsletter: false,
-            id_address
+            id_address : null
         });
 
         res.status(201).json({ message: `Utilisateur créé avec succès.`});
@@ -315,7 +299,7 @@ exports.updateDetailsUser = async (req, res) => {
             
 
 
-        res.status(200).json(artisan);
+        res.status(200).json(user);
 
     } catch (error) {
         res.status(500).json({message: "Erreur lors du traitement des données."});
