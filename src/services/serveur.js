@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('../docs/swagger/config.js');
 
@@ -16,34 +15,46 @@ const clothRoute = require('../routes/clothRoute.js');
 const testimonialRoute = require('../routes/testimonialRoute.js'); 
 const commandRoute = require('../routes/commandRoute.js');
 
-function createServeur() {
-    const app = express();
-    
-    app.use(cors({
-        origin: ['http://localhost:3000', 'http://renowear.fr'],
-        methods: 'GET,PUT,POST,DELETE',
-        credentials: true,
-    }));
+class Server {
+    constructor() {
+        this.app = express();
+        this.config();
+        this.routes();
+    }
 
-    app.use(express.urlencoded({ extended: true }));
-    app.use(express.json());
+    config() {
+        this.app.use(cors({
+            origin: ['http://localhost:3000', 'http://renowear.fr'],
+            methods: 'GET,PUT,POST,DELETE',
+            credentials: true,
+        }));
 
-    // Configuration de Swagger
-    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+        this.app.use(express.urlencoded({ extended: true }));
+        this.app.use(express.json());
 
-    app.use('/addresses', adressRoute);
-    app.use('/persons', personRoute);
-    app.use('/infos', infoRoute);
-    app.use('/jobs', jobRoute);
-    app.use('/newsletters', newsletterRoute);
-    app.use('/artisans', artisanRoute);
-    app.use('/prestations', prestationRoute);
-    app.use('/products', productRoute);
-    app.use('/clothes', clothRoute);
-    // app.use('/testimonials', testimonialRoute);
-    app.use('/commands', commandRoute);
+        // Configuration de Swagger
+        this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+    }
 
-    return app;
+    routes() {
+        this.app.use('/addresses', adressRoute);
+        this.app.use('/persons', personRoute);
+        this.app.use('/infos', infoRoute);
+        this.app.use('/jobs', jobRoute);
+        this.app.use('/newsletters', newsletterRoute);
+        this.app.use('/artisans', artisanRoute);
+        this.app.use('/prestations', prestationRoute);
+        this.app.use('/products', productRoute);
+        this.app.use('/clothes', clothRoute);
+        // this.app.use('/testimonials', testimonialRoute);
+        this.app.use('/commands', commandRoute);
+    }
+
+    start(port) {
+        this.app.listen(port, async () => {
+            console.log(`Serveur démarré sur le port ${port}`);
+        });
+    }
 }
 
-module.exports = createServeur;
+module.exports = Server;

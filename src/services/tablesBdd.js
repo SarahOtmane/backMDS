@@ -10,25 +10,26 @@ const Product = require('../models/productModel.js');
 const Command = require('../models/commandModel.js');
 const Testimonial = require('../models/testimonialModel.js');
 
+class TablesManager {
+    async createTablesInOrder() {
+        try {
+            await Info.sync();
+            await Job.sync();
+            await Newsletter.sync();
+            await Cloth.sync();
+            await Prestation.sync();
+            await Address.sync();
+            await Artisan.sync();
+            await Person.sync();
+            await Product.sync();
+            await Command.sync();
+            await Testimonial.sync();
 
-async function createTablesInOrder() {
-    try {
-        await Info.sync();
-        await Job.sync();
-        await Newsletter.sync();
-        await Cloth.sync();
-        await Prestation.sync();
-        await Address.sync();
-        await Artisan.sync();
-        await Person.sync();
-        await Product.sync();
-        await Command.sync();
-        await Testimonial.sync();
-
-        console.log('Tables crées');
-    } catch (error) {
-        console.error("Erreur lors de la création des tables :", error);
+            console.log('Tables crées');
+        } catch (error) {
+            console.error("Erreur lors de la création des tables :", error);
+        }
     }
 }
 
-module.exports = createTablesInOrder;
+module.exports = new TablesManager();
