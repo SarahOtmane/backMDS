@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const newsletterController = require('../controllers/newsletterController');
-const jwtMiddleware = require('../middlewares/jwtMiddleware');
+
+const JwtMiddlare = require('../middlewares/jwtMiddleware');
+const jwtMiddleware =  new JwtMiddlare()
 
 
 

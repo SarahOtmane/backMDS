@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const jwtMiddleware = require('../middlewares/jwtMiddleware');
 const productController = require('../controllers/productController');
-
+const JwtMiddlare = require('../middlewares/jwtMiddleware');
+const jwtMiddleware =  new JwtMiddlare()
 
 router 
     .route('/:id_product')
