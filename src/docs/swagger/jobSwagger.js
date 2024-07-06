@@ -1,5 +1,3 @@
-// swagger/config.js
-
 /**
  * @swagger
  * components:
