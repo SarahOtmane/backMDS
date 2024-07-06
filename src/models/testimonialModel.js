@@ -5,7 +5,6 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
     dialect: "mysql"
 });
 
-
 const Testimonial = sequelize.define('Testimonial', {
     id: {
         type: DataTypes.INTEGER,
@@ -31,14 +30,14 @@ const Testimonial = sequelize.define('Testimonial', {
 });
 
 
-const User = require('./userModel');
+const Person = require('./personModel');
 const Artisan = require('./artisanModel');
 
-User.hasMany(Testimonial, {
-    foreignKey: 'id_user',
+Person.hasMany(Testimonial, {
+    foreignKey: 'email_user',
 });
-Testimonial.belongsTo(User, {
-    foreignKey: 'id_user',
+Testimonial.belongsTo(Person, {
+    foreignKey: 'email_user',
 });
 
 Artisan.hasMany(Testimonial, {

@@ -5,32 +5,33 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
     dialect: "mysql"
 });
 
-const Cloth = sequelize.define('Cloth', {
+const Address = sequelize.define('Address', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
     },
-    category: {
+    streetAddress: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    clothType: {
+    city: {
         type: DataTypes.STRING,
-        allowNull: false
-    }
+        allowNull: true,
+    },
+    postalCode: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+    country: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
 }, {
-    tableName: 'clothes',
+    tableName: 'addresses',
     timestamps: true,
     underscored: true
 });
 
-const Job = require('./jobModel');
-    Job.hasMany(Cloth, {
-        foreignKey: 'name_job',
-    });
-    Cloth.belongsTo(Job, {
-        foreignKey: 'name_job',
-    });
 
-module.exports = Cloth;
+module.exports = Address;

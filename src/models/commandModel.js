@@ -20,10 +20,6 @@ const Command = sequelize.define('Command', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    comment: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
     dateFinished: {
         type: DataTypes.DATE,
         allowNull: true,
@@ -36,15 +32,15 @@ const Command = sequelize.define('Command', {
 
 
 
-const User = require('./userModel');
-    const Product = require('./productModel');
-    const Cloth = require('./clothModel')
+const Person = require('./personModel');
+const Product = require('./productModel');
+const Cloth = require('./clothModel')
     
-    User.hasMany(Command, {
-        foreignKey: 'id_user',
+    Person.hasMany(Command, {
+        foreignKey: 'email_user',
     });
-    Command.belongsTo(User, {
-        foreignKey: 'id_user',
+    Command.belongsTo(Person, {
+        foreignKey: 'email_user',
     });
     
     Product.hasMany(Command, {

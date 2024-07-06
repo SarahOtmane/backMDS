@@ -11,26 +11,6 @@ const Artisan = sequelize.define('Artisan', {
         autoIncrement: true,
         primaryKey: true,
     },
-    email: {
-        type: DataTypes.STRING,
-        unique: true,
-    },
-    firstname: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    lastname: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    password: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    mobile: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
     acceptNewOrder: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
@@ -39,30 +19,23 @@ const Artisan = sequelize.define('Artisan', {
             isIn: [[false, true]]
         }
     },
-    streetAdress: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
-    city: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
-    country: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
-    postalCode: {
-        type: DataTypes.INTEGER,
-        allowNull: true
-    },
     siret: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    numeroTVA: {
+    tva: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    description: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    picture: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
+
 }, {
     tableName: 'artisans',
     timestamps: true,
@@ -71,10 +44,10 @@ const Artisan = sequelize.define('Artisan', {
 
 const Job = require('./jobModel');
     Job.hasMany(Artisan, {
-        foreignKey: 'id_job',
+        foreignKey: 'name_job',
     });
     Artisan.belongsTo(Job, {
-        foreignKey: 'id_job',
+        foreignKey: 'name_job',
     });
 
 module.exports = Artisan;

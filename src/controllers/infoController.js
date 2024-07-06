@@ -1,5 +1,6 @@
 const Info = require('../models/infoModel.js');
 
+class InfoController{
 
 /**********************************************************
             MÉTHODE POUR CREER UNE INFO (ADMIN)
@@ -11,7 +12,7 @@ const Info = require('../models/infoModel.js');
         - l existance de l info
 
 */
-exports.createAnInfo = async (req, res) => {
+static async createAnInfo(req, res){
     try {
         const existingInfo = await Info.findOne({ where: { name: req.body.name } });
         if (existingInfo) {
@@ -44,9 +45,9 @@ exports.createAnInfo = async (req, res) => {
         - Vérifier que l'info existe
 
 */
-exports.getAnInfo = async (req, res) => {
+static async getAnInfo(req, res){
     try {
-        const info = await Info.findOne({ where: { id: req.params.id_info } });
+        const info = await Info.findOne({ where: { name: req.params.name_info } });
 
         if (!info) {
             return res.status(404).json({ message: 'Info non trouvé.' });
@@ -74,9 +75,9 @@ exports.getAnInfo = async (req, res) => {
         - Vérifier que l'info existe
 
 */
-exports.putAnInfo = async (req, res) => {
+static async putAnInfo(req, res){
     try {
-        const info = await Info.findOne({ where: { id: req.params.id_info } });
+        const info = await Info.findOne({ where: { name: req.params.name_info } });
 
         if(!info){
             return res.status(404).json({ message: 'Information non trouvé.' });
@@ -108,11 +109,11 @@ exports.putAnInfo = async (req, res) => {
         - Vérifier que l'info existe
 
 */
-exports.deleteAnInfo = async (req, res) => {
+static async deleteAnInfo(req, res){
     try {
         
         const deletedInfo = await Info.destroy({
-            where: { id: req.params.id_info }
+            where: { name: req.params.name_info }
         });
         
         if (!deletedInfo) {
@@ -139,11 +140,11 @@ exports.deleteAnInfo = async (req, res) => {
         - Vérifier que les info existent
 
 */
-exports.getAllInfo = async (req, res) => {
+static async getAllInfo(req, res){
     try {
         const infos = await Info.findAll();
         
-        if (!infos) {
+        if (infos.length === 0) {
             return res.status(404).json({ message: 'Auncune information trouvée.' });
         }
 
@@ -153,3 +154,7 @@ exports.getAllInfo = async (req, res) => {
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 };
+}
+
+
+module.exports = InfoController;

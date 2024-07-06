@@ -5,17 +5,12 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
     dialect: "mysql"
 });
 
-
 const Info = sequelize.define('Info', {
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-    },
     name: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
+        primaryKey: true,
     },
     content: {
         type: DataTypes.STRING,

@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const jwtMiddleware = require('../middlewares/jwtMiddleware');
 const prestationController = require('../controllers/prestationController.js');
-
 
 router
     .route('/')
@@ -13,7 +11,7 @@ router
     .get(prestationController.getAPrestation)
 
 router
-    .route('/job/:id_job')
+    .route('/job/:name_job')
     .get(prestationController.getAllPrestaOfJob)
 
 
@@ -23,12 +21,12 @@ router
 **********************************************************/
 router
     .route('/')
-    .all(jwtMiddleware.isAdmin)
+    // .all(jwtMiddleware.isAdmin)
     .post(prestationController.createAPrestation)
 
 router
     .route('/:id_prestation')
-    .all(jwtMiddleware.isAdmin)
+    // .all(jwtMiddleware.isAdmin)
     .put(prestationController.putAPresta)
     .delete(prestationController.deleteAPresta)
 

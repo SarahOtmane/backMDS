@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const jobController = require('../controllers/jobController');
-const jwtMiddleware = require('../middlewares/jwtMiddleware');
+
+const JwtMiddlare = require('../middlewares/jwtMiddleware');
+const jwtMiddleware =  new JwtMiddlare()
 
 
 
@@ -11,29 +13,19 @@ router
 
 
 
-router
-    .route('/:name_job')
-    .get(jobController.getAJob)
-
-router 
-    .route('/id/:id_job')
-    .get(jobController.getNameJob)
-
-
 /**********************************************************
             ROUTES UNIQUEMENT POUR LES ADMINS
 **********************************************************/  
 
 router
     .route('/')
-    .post(jwtMiddleware.isAdmin, jobController.createAJob)
-
+    .all(jwtMiddleware.isAdmin)
+    .post( jobController.createAJob)
 
 
 router
-    .route('/:id_job')
+    .route('/:name_job')
     .all(jwtMiddleware.isAdmin)
-    .put(jobController.putAJob)
     .delete(jobController.deleteAJob);
 
 module.exports = router;

@@ -24,7 +24,7 @@ const Product = sequelize.define('Product', {
 
 
 const Prestation = require('./prestationModel');
-    const Artisan = require('./artisanModel');
+const Artisan = require('./artisanModel');
 
     Prestation.hasMany(Product, {
         foreignKey: "id_prestation",

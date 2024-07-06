@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const infoController = require('../controllers/infoController.js');
-const jwtMiddleware = require('../middlewares/jwtMiddleware');
+
+const JwtMiddlare = require('../middlewares/jwtMiddleware');
+const jwtMiddleware =  new JwtMiddlare()
 
 
 
@@ -12,7 +14,7 @@ router
     
 
 router
-    .route('/:id_info')
+    .route('/:name_info')
     .get(infoController.getAnInfo)
 
 
@@ -23,11 +25,12 @@ router
 **********************************************************/
 router
     .route('/')
-    .post(jwtMiddleware.isAdmin, infoController.createAnInfo)
+    // .all(jwtMiddleware.isAdmin)
+    .post(infoController.createAnInfo)
 
 router
-    .route('/:id_info')
-    .all(jwtMiddleware.isAdmin)
+    .route('/:name_info')
+    // .all(jwtMiddleware.isAdmin)
     .put(infoController.putAnInfo)
     .delete(infoController.deleteAnInfo);
 

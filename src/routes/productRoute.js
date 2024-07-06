@@ -1,22 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const jwtMiddleware = require('../middlewares/jwtMiddleware');
 const productController = require('../controllers/productController');
-
-
-
-router
-    .route('/')
-    .all(jwtMiddleware.verifyTokenArtisan)
-    .post(productController.createAProduct)
-
-router
-    .route('/artisan/:id_artisan')
-    .get(productController.getAllProductsArtisan)
-    
-router 
-    .route('/:id_artisan/:id_prestation')
-    .get(productController.getPrestaProduct)
+const JwtMiddlare = require('../middlewares/jwtMiddleware');
+const jwtMiddleware =  new JwtMiddlare()
 
 router 
     .route('/:id_product')
@@ -28,8 +14,14 @@ router
     .put(productController.updateAProduct)
     .delete(productController.deleteAProduct)
 
+router
+    .route('/artisan/:id_artisan')
+    .all(jwtMiddleware.verifyTokenArtisan)
+    .get(productController.getAllProductsArtisan)
+    .post(productController.createAProduct)
 
-
+router 
+    .route('/:id_artisan/:id_prestation')
+    .get(productController.getPrestaProduct)
 
 module.exports = router;
-

@@ -1,8 +1,8 @@
 const express = require('express');
-const router = express.Router();
-const jwtMiddleware = require('../middlewares/jwtMiddleware');
+const router = express.Router(); 
 const clothController = require('../controllers/clothConntroller');
-
+const JwtMiddlare = require('../middlewares/jwtMiddleware');
+const jwtMiddleware =  new JwtMiddlare()
 
 
 
@@ -15,7 +15,7 @@ router
     .get(clothController.getACloth)
 
 router 
-    .route('/job/:id_job')
+    .route('/job/:name_job')
     .get(clothController.getAllClothesOfJob)
 
 

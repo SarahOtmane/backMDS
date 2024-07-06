@@ -1,24 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const commandController = require('../controllers/commandController');
-const jwtMiddleware = require('../middlewares/jwtMiddleware');
+const JwtMiddlare = require('../middlewares/jwtMiddleware');
+const jwtMiddleware =  new JwtMiddlare()
 
-
-router
-    .route('/:id_artisan')
-    .all(jwtMiddleware.verifyTokenUser)
-    .post(commandController.createACommand)
-
-
-router
-    .route('/:id_command')
-    .all(jwtMiddleware.verifyTokenArtisan)
-    .put(commandController.putACommand)
-
-router
-    .route('/artisans')
-    .all(jwtMiddleware.verifyTokenArtisan)
-    .get(commandController.getCommandOfArtisan)
 
 router
     .route('/users')
@@ -26,6 +11,11 @@ router
     .get(commandController.getCommandOfUser)
 
 
+router
+    .route('/:id_artisan')
+    .all(jwtMiddleware.verifyTokenUser)
+    .post(commandController.createACommand)
+    
 /**********************************************************
             ROUTES UNIQUEMENT POUR LES ADMINS
 **********************************************************/  
@@ -33,11 +23,6 @@ router
     .route('/')
     .get(commandController.getAllCommand)
 
-
-// router
-//     .route('/:id_command')
-//     .all(jwtMiddleware.isAdmin)
-//     .put(commandController.putACommand)
 
 
 

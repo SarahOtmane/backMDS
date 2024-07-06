@@ -29,10 +29,10 @@ const Prestation = sequelize.define('Prestation', {
 
 const Job = require('./jobModel');
     Job.hasMany(Prestation, {
-        foreignKey: 'id_job',
+        foreignKey: 'name_job',
     });
     Prestation.belongsTo(Job, {
-        foreignKey: 'id_job',
+        foreignKey: 'name_job',
     });
 
 

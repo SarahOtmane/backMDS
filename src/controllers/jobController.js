@@ -1,7 +1,8 @@
 const Job = require('../models/jobModel');
 
 
-/**********************************************************
+class JobController{
+    /**********************************************************
             MÉTHODE POUR CREER UN JOB (ADMIN)
 **********************************************************/
 /*
@@ -11,7 +12,7 @@ const Job = require('../models/jobModel');
         - l existance du job
 
 */
-exports.createAJob = async (req, res) => {
+static async createAJob(req, res){
     try {
         const existingJob = await Job.findOne({ where: { name: req.body.name } });
         if (existingJob) {
@@ -29,93 +30,6 @@ exports.createAJob = async (req, res) => {
 
 
 
-/**********************************************************
-            MÉTHODE POUR RÉCUP L ID D UN JOB
-**********************************************************/
-/*
-    Fonction qui permet de lister un job
-
-    Les vérifications : 
-        - Vérifier que le job existe
-
-*/
-exports.getAJob = async (req, res) => {
-    try {
-        const job = await Job.findOne({ where: { name: req.params.name_job } });
-
-        if (!job) {
-            return res.status(404).json({ message: 'Job non trouvé.' });
-        }
-
-        res.status(201).json(job);
-
-    } catch (error) {
-        res.status(500).json({message: "Erreur lors du traitement des données."});
-    }
-};
-
-
-
-
-/**********************************************************
-            MÉTHODE POUR RÉCUP LE NOM D UN JOB
-**********************************************************/
-/*
-    Fonction qui permet de lister un job
-
-    Les vérifications : 
-        - Vérifier que le job existe
-
-*/
-exports.getNameJob = async (req, res) => {
-    try {
-        const job = await Job.findOne({ where: { id: req.params.id_job } });
-
-        if (!job) {
-            return res.status(404).json({ message: 'Job non trouvé.' });
-        }
-
-        res.status(201).json(job);
-
-    } catch (error) {
-        res.status(500).json({message: "Erreur lors du traitement des données."});
-    }
-};
-
-
-
-
-/**********************************************************
-            MÉTHODE POUR MODIFIER UN JOB (ADMIN)
-**********************************************************/
-/*
-    Fonction qui permet de modifier un job
-
-    Les vérifications : 
-        - Vérifier que le job existe
-
-*/
-exports.putAJob = async (req, res) => {
-    try {
-        const job = await Job.findOne({ where: { id: req.params.id_job } });
-
-        if(!job){
-            return res.status(404).json({ message: 'Job non trouvé.' });
-        }
-
-        await job.update({ 
-            name: req.body.name,
-        });
-
-        
-        res.status(201).json({ message: 'Job mis à jour avec succès.' });
-
-    } catch (error) {
-        res.status(500).json({message: "Erreur lors du traitement des données."});
-    }
-};
-
-
 
 /**********************************************************
             MÉTHODE POUR SUPPRIMER UN JOB (ADMIN)
@@ -127,11 +41,11 @@ exports.putAJob = async (req, res) => {
         - Vérifier que le job existe
 
 */
-exports.deleteAJob = async (req, res) => {
+static async deleteAJob(req, res){
     try {
 
         const deleteJob = await Job.destroy({
-            where: { id: req.params.id_job }
+            where: { name: req.params.name_job }
         });
         
         if (!deleteJob) {
@@ -159,12 +73,12 @@ exports.deleteAJob = async (req, res) => {
         - Vérifier que les jobs existent
 
 */
-exports.getAllJobs = async (req, res) => {
+static async getAllJobs(req, res){
     try {
         
         const jobs = await Job.findAll();
         
-        if (!jobs) {
+        if (jobs.length === 0) {
             return res.status(404).json({ message: 'Auncun job trouvé.' });
         }
 
@@ -174,3 +88,6 @@ exports.getAllJobs = async (req, res) => {
         res.status(500).json({message: "Erreur lors du traitement des données."});
     }
 };
+}
+
+module.exports = JobController;

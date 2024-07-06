@@ -6,15 +6,11 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
 });
 
 
-const User = sequelize.define('User', {
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-    },
+const Person = sequelize.define('Person', {
     email: {
         type: DataTypes.STRING,
         unique: true,
+        primaryKey: true,
     },
     password: {
         type: DataTypes.STRING,
@@ -23,9 +19,8 @@ const User = sequelize.define('User', {
     role:{
         type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: 'user',
         validate: {
-            isIn: [['user', 'admin']]
+            isIn: [['user', 'admin', 'artisan']]
         }
     },
     firstname: {
@@ -43,32 +38,32 @@ const User = sequelize.define('User', {
     subscribeNewsletter: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: false,
         validate: {
             isIn: [[false, true]]
         }
     },
-    streetAdress: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
-    city: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
-    country: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
-    postalCode: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
 }, {
-    tableName: 'users',
+    tableName: 'persons',
     timestamps: true,
     underscored: true
 });
 
+const Address = require('./adressModel');
+const Artisan = require('./artisanModel');
 
-module.exports = User;
+    Address.hasMany(Person, {
+        foreignKey: 'id_address',
+    });
+    Person.belongsTo(Address, {
+        foreignKey: 'id_address',
+    });
+
+    Artisan.hasMany(Person, {
+        foreignKey: 'id_artisan',
+    });
+    Person.belongsTo(Artisan, {
+        foreignKey: 'id_artisan',
+    });
+
+
+module.exports = Person;
