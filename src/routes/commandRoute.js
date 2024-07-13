@@ -21,6 +21,7 @@ router
 **********************************************************/  
 router
     .route('/')
+    .all(jwtMiddleware.isAdmin)
     .get(commandController.getAllCommand)
 
 
