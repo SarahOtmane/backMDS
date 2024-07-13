@@ -5,7 +5,19 @@ const supertest = require('supertest');
 
 const app = new Server().app;
 
+let token;
+
 describe('Cloth controller', () => {
+    beforeAll(async() =>{
+        const response = await supertest(app)
+            .post(`/persons/login`)
+            .send({
+                email: 'sarahotmane02@gmail.com',
+                password: 'S@rah2024'
+            });
+        
+            token = response.body.token;
+    });
 
     afterEach(async () => {
         await Cloth.destroy({where: {name_job: 'testt'}});
@@ -22,7 +34,9 @@ describe('Cloth controller', () => {
                     category: 'Test1',
                     clothType: 'T-shirt',
                     name_job: 'testt',
-                });
+                })
+                .set('Authorization', `Bearer ${token}`);
+
             expect(statusCode).toBe(201);
         });
 
@@ -36,7 +50,9 @@ describe('Cloth controller', () => {
                     category: 'Test1',
                     clothType: 'T-shirt',
                     name_job: 'testt',
-                });
+                })
+                .set('Authorization', `Bearer ${token}`);
+
             expect(statusCode).toBe(409);
         });
 
@@ -47,7 +63,9 @@ describe('Cloth controller', () => {
                     category: 'Haut',
                     clothType: 'T-shirt',
                     name_job: 'nonexistent',
-                });
+                })
+                .set('Authorization', `Bearer ${token}`);
+
             expect(statusCode).toBe(400);
         });
     });
@@ -63,7 +81,9 @@ describe('Cloth controller', () => {
                     category: 'Haut',
                     clothType: 'Doudoune',
                     name_job: 'testt',
-                });
+                })
+                .set('Authorization', `Bearer ${token}`);
+
             expect(statusCode).toBe(200);
         });
 
@@ -74,7 +94,9 @@ describe('Cloth controller', () => {
                     category: 'Haut',
                     clothType: 'Vestes',
                     name_job: 'testt',
-                });
+                })
+                .set('Authorization', `Bearer ${token}`);
+                
             expect(statusCode).toBe(404);
         });
 
@@ -88,7 +110,9 @@ describe('Cloth controller', () => {
                     category: 'Haut',
                     clothType: 'T-shirt',
                     name_job: 'nonexistent',
-                });
+                })
+                .set('Authorization', `Bearer ${token}`);
+
             expect(statusCode).toBe(400);
         });
     });
@@ -163,13 +187,15 @@ describe('Cloth controller', () => {
 
             const { statusCode } = await supertest(app)
                 .delete(`/clothes/${cloth.id}`)
+                .set('Authorization', `Bearer ${token}`);
 
             expect(statusCode).toBe(200);
         });
 
         it('should return 404 when the cloth is not found', async () => {
             const { statusCode, body } = await supertest(app)
-                .delete('/clothes/9999');
+                .delete('/clothes/9999')
+                .set('Authorization', `Bearer ${token}`);
 
             expect(statusCode).toBe(404);
         });
