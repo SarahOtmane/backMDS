@@ -1,4 +1,4 @@
-const createServeur = require('../services/serveur');
+const Server = require('./services/serveur');
 
 const Person = require('../models/personModel');
 const Address = require('../models/adressModel');
@@ -7,7 +7,7 @@ const Artisan = require('../models/artisanModel');
 
 const supertest = require('supertest');
 
-const app = createServeur();
+const app = new Server().app;
 
 describe('Person controller ', () => {
     

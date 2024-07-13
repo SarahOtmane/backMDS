@@ -1,9 +1,9 @@
-const createServeur = require('../services/serveur');
+const Server = require('./services/serveur');
 const Newsletter = require('../models/newsletterModel');
 const Person = require('../models/personModel');
 const supertest = require('supertest');
 
-const app = createServeur();
+const app = new Server().app;
 
 describe('Newsletter controller', () => {
     afterEach(async () => {

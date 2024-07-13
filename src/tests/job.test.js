@@ -1,8 +1,8 @@
-const createServeur = require('../services/serveur');
+const Server = require('./services/serveur');
 const Job = require('../models/jobModel');
 const supertest = require('supertest');
 
-const app = createServeur();
+const app = new Server().app;
 
 describe('Job controller', () => {
     afterEach(async() => {
