@@ -25,12 +25,12 @@ router
 **********************************************************/
 router
     .route('/')
-    // .all(jwtMiddleware.isAdmin)
+    .all(jwtMiddleware.isAdmin)
     .post(infoController.createAnInfo)
 
 router
     .route('/:name_info')
-    // .all(jwtMiddleware.isAdmin)
+    .all(jwtMiddleware.isAdmin)
     .put(infoController.putAnInfo)
     .delete(infoController.deleteAnInfo);
 
