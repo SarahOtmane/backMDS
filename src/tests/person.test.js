@@ -3,6 +3,7 @@ const Person = require('../models/personModel');
 const Address = require('../models/adressModel');
 const Job = require('../models/jobModel');
 const Artisan = require('../models/artisanModel');
+const Prestation = require('../models/prestationModel');
 const supertest = require('supertest');
 
 const app = new Server().app;
@@ -132,7 +133,23 @@ describe('Person controller', () => {
 
     describe('POST /persons/artisan/register', () => {
         beforeEach(async() =>{
+            await Prestation.create({
+                reparationType : 'Reparation',
+                priceSuggested : '20',
+                name_job: 'testt'
+            });
 
+            await Prestation.create({
+                reparationType : 'Confection',
+                priceSuggested : '20',
+                name_job: 'testt'
+            });
+        });
+
+        afterEach(async() =>{
+            await Prestation.destroy({
+                where: { name_job: 'testt'}
+            });
         })
 
         it('should return 201 when a new artisan is registered with address already in DB', async() => {
@@ -161,7 +178,6 @@ describe('Person controller', () => {
                     prestations: ['Reparation', 'Confection']
                 });
 
-            console.log(response.body);
             expect(response.statusCode).toBe(201);
         });
 
@@ -184,7 +200,6 @@ describe('Person controller', () => {
                     prestations: ['Reparation', 'Confection']
                 });
 
-            console.log(response.body);
             expect(response.statusCode).toBe(201);
         });
 
@@ -219,7 +234,6 @@ describe('Person controller', () => {
                     prestations: ['Reparation', 'Confection']
                 });
 
-            console.log(response.body);
             expect(response.statusCode).toBe(409);
         });
 
@@ -243,7 +257,6 @@ describe('Person controller', () => {
                     prestations: ['Reparation', 'Confection']
                 });
 
-            console.log(response.body);
             expect(response.statusCode).toBe(401);
         });
 
@@ -267,7 +280,6 @@ describe('Person controller', () => {
                     prestations: ['Reparation', 'Confection']
                 });
 
-            console.log(response.body);
             expect(response.statusCode).toBe(401);
         });
     });
