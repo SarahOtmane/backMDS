@@ -1,4 +1,4 @@
-const Server = require('./services/serveur');
+const Server = require('../services/serveur');
 const Job = require('../models/jobModel');
 const supertest = require('supertest');
 

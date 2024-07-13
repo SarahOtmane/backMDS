@@ -1,4 +1,4 @@
-const Server = require('./services/serveur');
+const Server = require('../services/serveur');
 
 const Person = require('../models/personModel');
 const Address = require('../models/adressModel');
