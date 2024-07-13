@@ -79,7 +79,7 @@ static async getAllJobs(req, res){
         const jobs = await Job.findAll();
         
         if (jobs.length === 0) {
-            return res.status(404).json({ message: 'Auncun job trouvé.' });
+            return res.status(404).json({ message: 'Aucun job trouvé.' });
         }
 
         res.status(201).json(jobs);
