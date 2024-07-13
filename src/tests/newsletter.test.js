@@ -5,7 +5,20 @@ const supertest = require('supertest');
 
 const app = new Server().app;
 
+let token;
+
 describe('Newsletter controller', () => {
+    beforeAll(async() =>{
+        const response = await supertest(app)
+            .post(`/persons/login`)
+            .send({
+                email: 'sarahotmane02@gmail.com',
+                password: 'S@rah2024'
+            });
+        
+            token = response.body.token;
+    });
+
     afterEach(async () => {
         await Newsletter.destroy({ where: {email: 'test@gmail.com'} });
         await Person.destroy({ where: {email: 'test@gmail.com'} });
@@ -58,14 +71,16 @@ describe('Newsletter controller', () => {
             await Newsletter.create({email: 'test@gmail.com'});
 
             const { statusCode } = await supertest(app)
-                .get(`/newsletters`);
+                .get(`/newsletters`)
+                .set('Authorization', `Bearer ${token}`);
 
             expect(statusCode).toBe(201);
         });
 
         it('should return 404 when no newsletter is found', async () => {
             const { statusCode } = await supertest(app)
-                .get(`/newsletters`);
+                .get(`/newsletters`)
+                .set('Authorization', `Bearer ${token}`);
 
             expect(statusCode).toBe(404);
         });
