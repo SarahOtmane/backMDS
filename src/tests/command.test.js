@@ -38,12 +38,12 @@ describe('Command controller', () => {
         await Artisan.destroy({where : {siret: '123456789'}});
         await Cloth.destroy({where: {name_job: 'Test'}});
         await Prestation.destroy({where: {name_job: 'Test'}});
-        await Product.destroy({where : {price : '100'}});
+        await Product.destroy({where : {price : 100}});
         await Command.destroy({where : {picture: 'sarah'}});
     });
 
     describe('GET /commands', () => {
-        it('should return 201 when getting all the commands', async() => {
+        it('should return 200 when getting all the commands', async() => {
             const job = await Job.create({
                 name: 'Test'
             });
@@ -65,12 +65,12 @@ describe('Command controller', () => {
 
             const prestation = await Prestation.create({
                 reparationType: 'testNettoyer',
-                priceSuggested : '20',
+                priceSuggested : 20,
                 name_job: job.name,
             });
 
             const product = await Product.create({
-                price : '100',
+                price : 100,
                 id_prestation : prestation.id,
                 id_artisan : artisan.id
             });
@@ -85,16 +85,16 @@ describe('Command controller', () => {
             });
 
             const { statusCode } = await supertest(app)
-                .post('/commands')
+                .get('/commands')
                 .set('Authorization', `Bearer ${tokenAdmin}`);
 
-            expect(statusCode).toBe(201);
+            expect(statusCode).toBe(200);
         });
 
         it('should return 404 when no command is found', async() => {
 
             const { statusCode } = await supertest(app)
-                .post('/commands')
+                .get('/commands')
                 .set('Authorization', `Bearer ${tokenAdmin}`);
 
             expect(statusCode).toBe(404);
@@ -102,8 +102,8 @@ describe('Command controller', () => {
         
     });
 
-    describe('GET /commands/:id_artisan', () => {
-        it('should return 201 when getting all the commands of users', async() => {
+    describe('GET /commands/users', () => {
+        it('should return 200 when getting all the commands of users', async() => {
             const job = await Job.create({
                 name: 'Test'
             });
@@ -125,12 +125,12 @@ describe('Command controller', () => {
 
             const prestation = await Prestation.create({
                 reparationType: 'testNettoyer',
-                priceSuggested : '20',
+                priceSuggested : 20,
                 name_job: job.name,
             });
 
             const product = await Product.create({
-                price : '24',
+                price : 100,
                 id_prestation : prestation.id,
                 id_artisan : artisan.id
             });
@@ -145,11 +145,20 @@ describe('Command controller', () => {
             });
 
             const { statusCode } = await supertest(app)
-            .post(`/commands/${artisan.id}`)
+            .get(`/commands/users`)
             .set('Authorization', `Bearer ${tokenUser}`);
 
-            expect(statusCode).toBe(404);
+            expect(statusCode).toBe(200);
 
+        });
+
+        it('should return 404 when no command is found', async() => {
+
+            const { statusCode } = await supertest(app)
+                .get('/commands/user')
+                .set('Authorization', `Bearer ${tokenUser}`);
+
+            expect(statusCode).toBe(404);
         });
         
     });
