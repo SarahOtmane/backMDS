@@ -50,7 +50,7 @@ class PrestationController{
         try {
             const presta = await Prestation.findOne({ where: { id: req.params.id_prestation } });
 
-            if (prestas.length === O) {
+            if (presta.length === 0) {
                 return res.status(404).json({ message: 'Prestation non trouvé.' });
             }
 
@@ -78,7 +78,7 @@ class PrestationController{
         try {
             const presta = await Prestation.findOne({ where: { id: req.params.id_prestation } });
 
-            if(!presta){
+            if(presta.length === 0){
                 return res.status(404).json({ message: 'Prestation non trouvé.' });
             }
 
@@ -143,7 +143,7 @@ class PrestationController{
         try {
             const prestas = await Prestation.findAll({where: {name_job: req.params.name_job}});
 
-            if (prestas.length === O) {
+            if (prestas.length === 0) {
                 return res.status(404).json({ message: 'Auncune prestation trouvée.' });
             }
 
