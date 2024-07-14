@@ -1,9 +1,10 @@
 const Server = require('../services/serveur');
 const Artisan = require('../models/artisanModel');
 const Job = require('../models/jobModel');
-const Person = require('../models/personModel');
-const Address = require('../models/adressModel');
-const Command = require('../models/commandModel')
+const Command = require('../models/commandModel');
+const Product = require('../models/productModel');
+const Cloth = require('../models/clothModel');
+const Prestation = require('../models/prestationModel');
 const supertest = require('supertest');
 
 const app = new Server().app;
@@ -30,10 +31,58 @@ describe('Command controller', () => {
             });
         
             tokenUser = responseUser.body.token;
-    })
+    });
+
+    afterEach(async() =>{
+        await Job.destroy({where : {name: 'Test'}});
+        await Artisan.destroy({where : {siret: '123456789'}});
+        await Cloth.destroy({where: {name_job: 'Test'}});
+        await Prestation.destroy({where: {name_job: 'Test'}});
+        await Product.destroy({where : {price : '100'}});
+        await Command.destroy({where : {picture: 'sarah'}});
+    });
 
     describe('GET /commands', () => {
         it('should return 201 when getting all the commands', async() => {
+            const job = await Job.create({
+                name: 'Test'
+            });
+
+            const artisan = await Artisan.create({
+                acceptNewOrder: 1,
+                siret: '123456789',
+                tva: 'FR123456789',
+                description : 'test',
+                picture: 'test',
+                name_job : job.name
+            });
+
+            const cloth = await Cloth.create({
+                category: 'Haut',
+                clothType: 'T-shirt',
+                name_job: job.name,
+            });
+
+            const prestation = await Prestation.create({
+                reparationType: 'testNettoyer',
+                priceSuggested : '20',
+                name_job: job.name,
+            });
+
+            const product = await Product.create({
+                price : '100',
+                id_prestation : prestation.id,
+                id_artisan : artisan.id
+            });
+
+            await Command.create({
+                name: '123456',
+                picture: 'sarah',
+                dateFinished: null,
+                email_user: 'sarah1@user.com',
+                id_product: product.id,
+                id_cloth: cloth.id
+            });
 
             const { statusCode } = await supertest(app)
                 .post('/commands')
@@ -52,5 +101,58 @@ describe('Command controller', () => {
         });
         
     });
+
+    describe('GET /commands/:id_artisan', () => {
+        it('should return 201 when getting all the commands of users', async() => {
+            const job = await Job.create({
+                name: 'Test'
+            });
+
+            const artisan = await Artisan.create({
+                acceptNewOrder: 1,
+                siret: '123456789',
+                tva: 'FR123456789',
+                description : 'test',
+                picture: 'test',
+                name_job : job.name
+            });
+
+            const cloth = await Cloth.create({
+                category: 'Haut',
+                clothType: 'T-shirt',
+                name_job: job.name,
+            });
+
+            const prestation = await Prestation.create({
+                reparationType: 'testNettoyer',
+                priceSuggested : '20',
+                name_job: job.name,
+            });
+
+            const product = await Product.create({
+                price : '24',
+                id_prestation : prestation.id,
+                id_artisan : artisan.id
+            });
+
+            await Command.create({
+                name: '123456',
+                picture: 'sarah',
+                dateFinished: null,
+                email_user: 'sarah1@user.com',
+                id_product: product.id,
+                id_cloth: cloth.id
+            });
+
+            const { statusCode } = await supertest(app)
+            .post(`/commands/${artisan.id}`)
+            .set('Authorization', `Bearer ${tokenUser}`);
+
+            expect(statusCode).toBe(404);
+
+        });
+        
+    });
+    
     
 });
