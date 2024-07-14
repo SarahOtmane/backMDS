@@ -50,7 +50,7 @@ class PrestationController{
         try {
             const presta = await Prestation.findOne({ where: { id: req.params.id_prestation } });
 
-            if (presta.length === 0) {
+            if (!presta) {
                 return res.status(404).json({ message: 'Prestation non trouvé.' });
             }
 
