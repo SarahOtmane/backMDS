@@ -3,6 +3,7 @@ const Command = require('../models/commandModel');
 const Product = require('../models/productModel');
 const Cloth = require('../models/clothModel');
 const Prestation = require('../models/prestationModel');
+const Person = require('../models/personModel');
 
 
 class CommandController{
@@ -127,7 +128,11 @@ class CommandController{
     */
     static async getCommandOfArtisan(req, res){
         try {
-            const artisan = await Artisan.findOne({where: {email: req.artisan.email}});
+            const person = await Person.findOne({where: {email: req.artisan.email}});
+            
+            const artisan = await Artisan.findOne({where: {id: person.id_artisan}});
+            if(!artisan) res.status(404).json({message: "Artisan non trouvé"});
+
             const products = await Product.findAll({ where: { id_artisan: artisan.id } });
             if (!products.length) {
                 return res.status(404).json({ message: 'Aucun produit pour cet artisan.' });
