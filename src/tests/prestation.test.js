@@ -1,4 +1,6 @@
 const Server = require('../services/serveur');
+const Job = require('../models/jobModel');
+const Prestation = require('../models/prestationModel');
 const supertest = require('supertest');
 
 const app = new Server().app;
@@ -10,6 +12,10 @@ let dataPrestation = {
 };
 
 describe('Prestation controller', () => {
+    afterEach(async()=>{
+        await Prestation.destroy({where : {name_job: 'Test'}});
+        await Job.destroy({where: {name : 'Test'}});
+    })
     
     describe('GET /prestations', () => {
         it('should return 201 when getting all the prestations', async() => {
