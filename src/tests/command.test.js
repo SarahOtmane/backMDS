@@ -13,15 +13,15 @@ let tokenUser;
 let tokenAdmin;
 
 describe('Command controller', () => {
-    beforeAll(async() =>{
+    beforeAll(async () => {
         const responseAdmin = await supertest(app)
             .post(`/persons/login`)
             .send({
                 email: 'sarahotmane02@gmail.com',
                 password: 'S@rah2024'
             });
-        
-            tokenAdmin = responseAdmin.body.token;
+
+        tokenAdmin = responseAdmin.body.token;
 
         const responseUser = await supertest(app)
             .post(`/persons/login`)
@@ -29,21 +29,22 @@ describe('Command controller', () => {
                 email: 'sarah1@user.com',
                 password: 'sarah1'
             });
-        
-            tokenUser = responseUser.body.token;
+
+        tokenUser = responseUser.body.token;
     });
 
-    afterEach(async() =>{
-        await Job.destroy({where : {name: 'Test'}});
-        await Artisan.destroy({where : {siret: '123456789'}});
-        await Cloth.destroy({where: {name_job: 'Test'}});
-        await Prestation.destroy({where: {name_job: 'Test'}});
-        await Product.destroy({where : {price : 100}});
-        await Command.destroy({where : {picture: 'sarah'}});
+    afterEach(async () => {
+        await Artisan.destroy({ where: { siret: '123456789' } });
+        await Cloth.destroy({ where: { name_job: 'Test' } });
+        await Prestation.destroy({ where: { name_job: 'Test' } });
+        await Product.destroy({ where: { price: 100 } });
+        await Command.destroy({ where: { picture: 'sarah' } });
+        await Job.destroy({ where: { name: 'Test' } });
     });
 
     describe('GET /commands', () => {
-        it('should return 200 when getting all the commands', async() => {
+        it('should return 200 when getting all the commands', async () => {
+
             const job = await Job.create({
                 name: 'Test'
             });
@@ -52,9 +53,9 @@ describe('Command controller', () => {
                 acceptNewOrder: 1,
                 siret: '123456789',
                 tva: 'FR123456789',
-                description : 'test',
+                description: 'test',
                 picture: 'test',
-                name_job : job.name
+                name_job: job.name
             });
 
             const cloth = await Cloth.create({
@@ -65,14 +66,14 @@ describe('Command controller', () => {
 
             const prestation = await Prestation.create({
                 reparationType: 'testNettoyer',
-                priceSuggested : 20,
+                priceSuggested: 20,
                 name_job: job.name,
             });
 
             const product = await Product.create({
-                price : 100,
-                id_prestation : prestation.id,
-                id_artisan : artisan.id
+                price: 100,
+                id_prestation: prestation.id,
+                id_artisan: artisan.id
             });
 
             await Command.create({
@@ -91,30 +92,30 @@ describe('Command controller', () => {
             expect(statusCode).toBe(200);
         });
 
-        it('should return 404 when no command is found', async() => {
-
+        it('should return 404 when no command is found', async () => {
             const { statusCode } = await supertest(app)
                 .get('/commands')
                 .set('Authorization', `Bearer ${tokenAdmin}`);
 
             expect(statusCode).toBe(404);
         });
-        
     });
 
     describe('GET /commands/users', () => {
-        it('should return 200 when getting all the commands of users', async() => {
+        it('should return 200 when getting all the commands of users', async () => {
+
             const job = await Job.create({
                 name: 'Test'
             });
 
+            console.log('Creating Artisan');
             const artisan = await Artisan.create({
                 acceptNewOrder: 1,
                 siret: '123456789',
                 tva: 'FR123456789',
-                description : 'test',
+                description: 'test',
                 picture: 'test',
-                name_job : job.name
+                name_job: job.name
             });
 
             const cloth = await Cloth.create({
@@ -125,14 +126,14 @@ describe('Command controller', () => {
 
             const prestation = await Prestation.create({
                 reparationType: 'testNettoyer',
-                priceSuggested : 20,
+                priceSuggested: 20,
                 name_job: job.name,
             });
 
             const product = await Product.create({
-                price : 100,
-                id_prestation : prestation.id,
-                id_artisan : artisan.id
+                price: 100,
+                id_prestation: prestation.id,
+                id_artisan: artisan.id
             });
 
             await Command.create({
@@ -145,23 +146,20 @@ describe('Command controller', () => {
             });
 
             const { statusCode } = await supertest(app)
-            .get(`/commands/users`)
-            .set('Authorization', `Bearer ${tokenUser}`);
+                .get(`/commands/users`)
+                .set('Authorization', `Bearer ${tokenUser}`);
 
             expect(statusCode).toBe(200);
-
         });
 
-        it('should return 404 when no command is found', async() => {
-
+        it('should return 404 when no command is found', async () => {
             const { statusCode } = await supertest(app)
                 .get('/commands/user')
                 .set('Authorization', `Bearer ${tokenUser}`);
 
             expect(statusCode).toBe(404);
         });
-        
     });
-    
+
     
 });
