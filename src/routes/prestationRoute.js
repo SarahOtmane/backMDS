@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const prestationController = require('../controllers/prestationController.js');
 
+const JwtMiddlare = require('../middlewares/jwtMiddleware');
+const jwtMiddleware =  new JwtMiddlare()
+
 router
     .route('/')
     .get(prestationController.getAllPresta)
