@@ -10,6 +10,10 @@ router
     .all(jwtMiddleware.verifyTokenUser)
     .get(commandController.getCommandOfUser)
 
+router
+    .route('/artisans')
+    .all(jwtMiddleware.verifyTokenArtisan)
+    .get(commandController.getCommandOfArtisan)
 
 router
     .route('/:id_artisan')
