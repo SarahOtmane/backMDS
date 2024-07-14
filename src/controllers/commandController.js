@@ -76,11 +76,11 @@ class CommandController{
         try {
             const commands = await Command.findAll();
 
-            if (!commands) {
+            if (commands.length===0) {
                 return res.status(404).json({ message: 'Auncune commande trouvée.' });
             }
 
-            res.status(201).json(commands);
+            res.status(200).json(commands);
 
         } catch (error) {
             res.status(500).json({message: "Erreur lors du traitement des données."});
@@ -102,11 +102,11 @@ class CommandController{
         try {
             const commands = await Command.findAll({where: {email_user: req.user.email}});
 
-            if (!commands) {
+            if (commands.length===0) {
                 return res.status(404).json({ message: 'Auncune commande trouvée.' });
             }
 
-            res.status(201).json(commands);
+            res.status(200).json(commands);
 
         } catch (error) {
             res.status(500).json({message: "Erreur lors du traitement des données."});
