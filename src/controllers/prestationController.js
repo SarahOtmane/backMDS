@@ -171,7 +171,7 @@ class PrestationController{
         try {
             const prestas = await Prestation.findAll();
 
-            if (prestas.length === O) {
+            if (prestas.length === 0) {
                 return res.status(404).json({ message: 'Auncune prestation trouvée.' });
             }
 
