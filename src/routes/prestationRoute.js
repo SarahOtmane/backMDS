@@ -21,12 +21,12 @@ router
 **********************************************************/
 router
     .route('/')
-    // .all(jwtMiddleware.isAdmin)
+    .all(jwtMiddleware.isAdmin)
     .post(prestationController.createAPrestation)
 
 router
     .route('/:id_prestation')
-    // .all(jwtMiddleware.isAdmin)
+    .all(jwtMiddleware.isAdmin)
     .put(prestationController.putAPresta)
     .delete(prestationController.deleteAPresta)
 
