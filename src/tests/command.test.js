@@ -49,7 +49,7 @@ describe('Command controller', () => {
             .post(`/persons/login`)
             .send({
                 email: 'sarah1@user.com',
-                password: 'sarah1'
+                password: 'S@rah2024'
             });
 
         tokenUser = responseUser.body.token;
