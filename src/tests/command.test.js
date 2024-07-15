@@ -35,7 +35,6 @@ describe('Command controller', () => {
         await require('../services/connectBdd').connect();
         await require('../services/tablesBdd').createTablesInOrder();
     });
-    
     beforeAll(async () => {
         const responseAdmin = await supertest(app)
             .post(`/persons/login`)
