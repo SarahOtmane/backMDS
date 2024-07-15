@@ -6,6 +6,7 @@ const Address = require('../models/adressModel');
 const Job = require('../models/jobModel');
 const Artisan = require('../models/artisanModel');
 const Prestation = require('../models/prestationModel');
+const Product = require('../models/productModel');
 
 const app = new Server().app;
 
@@ -55,7 +56,9 @@ describe('Person controller', () => {
     afterEach(async () => {
         await Person.destroy({ where: { email: 'test@gmail.com' } });
         await Address.destroy({ where: { postalCode: '92100' } });
+        await Address.destroy({where: {streetAddress: '45 Rue de Rivoli'}});
         await Artisan.destroy({ where: { siret: '123456789', tva: '123456789' } });
+        await Product.destroy({where: {price: 20}});
         await Job.destroy({ where: { name: 'testt' } });
     });
 
