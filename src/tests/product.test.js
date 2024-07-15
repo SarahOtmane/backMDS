@@ -45,7 +45,7 @@ describe('Product controller', () => {
         };
 
         const response = await supertest(app)
-            .post(`/persons/login`)
+            .post('/persons/login')
             .send({
                 email: 'otmanesarah02@gmail.com',
                 password: 'SARAHtest@2024'
@@ -58,15 +58,15 @@ describe('Product controller', () => {
         await Product.destroy({ where: { price: 100 } });
         await Artisan.destroy({ where: { siret: '123456789' } });
         await Prestation.destroy({ where: { name_job: 'Test' } });
-        await Prestation.destroy({where: {reparationType: 'testNettoyer3'}})
+        await Prestation.destroy({ where: { reparationType: 'testNettoyer3' } });
         await Job.destroy({ where: { name: 'Test' } });
         await Person.destroy({ where: { email: 'test@artisan.com' } });
     });
 
     describe('GET /products/:id_artisan/:id_prestation', () => {
         it('should return 404 if no artisan is found', async () => {
-            const { statusCode, body } = await supertest(app)
-                .get(`/products/9999/9999`);
+            const { statusCode } = await supertest(app)
+                .get('/products/9999/9999');
 
             expect(statusCode).toBe(404);
         });
@@ -75,7 +75,7 @@ describe('Product controller', () => {
             await Job.create({ name: 'Test' });
             const artisan = await Artisan.create(dataArtisan);
 
-            const { statusCode, body } = await supertest(app)
+            const { statusCode } = await supertest(app)
                 .get(`/products/${artisan.id}/9999`);
 
             expect(statusCode).toBe(404);
@@ -86,7 +86,7 @@ describe('Product controller', () => {
             const artisan = await Artisan.create(dataArtisan);
             const presta = await Prestation.create(dataPrestation);
 
-            const { statusCode, body } = await supertest(app)
+            const { statusCode } = await supertest(app)
                 .get(`/products/${artisan.id}/${presta.id}`);
 
             expect(statusCode).toBe(404);
@@ -102,7 +102,7 @@ describe('Product controller', () => {
                 price: 100
             });
 
-            const { statusCode, body } = await supertest(app)
+            const { statusCode } = await supertest(app)
                 .get(`/products/${artisan.id}/${presta.id}`);
 
             expect(statusCode).toBe(201);
@@ -111,8 +111,8 @@ describe('Product controller', () => {
 
     describe('GET /products/:id_product', () => {
         it('should return 404 if no product is found', async () => {
-            const { statusCode, body } = await supertest(app)
-                .get(`/products/9999`);
+            const { statusCode } = await supertest(app)
+                .get('/products/9999');
 
             expect(statusCode).toBe(404);
         });
@@ -124,7 +124,7 @@ describe('Product controller', () => {
                 price: 100
             });
 
-            const { statusCode, body } = await supertest(app)
+            const { statusCode } = await supertest(app)
                 .get(`/products/${product.id}`);
 
             expect(statusCode).toBe(404);
@@ -139,7 +139,7 @@ describe('Product controller', () => {
                 price: 100
             });
 
-            const { statusCode, body } = await supertest(app)
+            const { statusCode } = await supertest(app)
                 .get(`/products/${product.id}`);
 
             expect(statusCode).toBe(404);
@@ -155,7 +155,7 @@ describe('Product controller', () => {
                 price: 100
             });
 
-            const { statusCode, body } = await supertest(app)
+            const { statusCode } = await supertest(app)
                 .get(`/products/${product.id}`);
 
             expect(statusCode).toBe(201);
@@ -165,8 +165,8 @@ describe('Product controller', () => {
 
     describe('GET /products/artisan/:id_artisan', () => {
         it('should return 404 if no artisan is found', async () => {
-            const { statusCode, body } = await supertest(app)
-                .get(`/products/artisan/9999`)
+            const { statusCode } = await supertest(app)
+                .get('/products/artisan/9999')
                 .set('Authorization', 'Bearer ' + token);
 
             expect(statusCode).toBe(404);
@@ -176,7 +176,7 @@ describe('Product controller', () => {
             await Job.create({ name: 'Test' });
             const artisan = await Artisan.create(dataArtisan);
 
-            const { statusCode, body } = await supertest(app)
+            const { statusCode } = await supertest(app)
                 .get(`/products/artisan/${artisan.id}`)
                 .set('Authorization', 'Bearer ' + token);
 
@@ -193,7 +193,7 @@ describe('Product controller', () => {
                 price: 100
             });
 
-            const { statusCode, body } = await supertest(app)
+            const { statusCode } = await supertest(app)
                 .get(`/products/artisan/${artisan.id}`)
                 .set('Authorization', 'Bearer ' + token);
 
@@ -204,7 +204,7 @@ describe('Product controller', () => {
     describe('POST /products/artisan/:id_artisan', () => {
         it('should return 404 if the artisan is not found', async () => {
             const { statusCode } = await supertest(app)
-                .post(`/products/artisan/9999`)
+                .post('/products/artisan/9999')
                 .send({
                     reparationType: 'testNettoyer',
                     price: 100
@@ -249,7 +249,7 @@ describe('Product controller', () => {
     describe('PUT /products/:id_product', () => {
         it('should return 404 if the product is not found', async () => {
             const { statusCode } = await supertest(app)
-                .put(`/products/9999`)
+                .put('/products/9999')
                 .send({
                     reparationType: 'testNettoyer',
                     price: 100
@@ -269,7 +269,7 @@ describe('Product controller', () => {
             });
 
             const response = await supertest(app)
-                .post(`/persons/login`)
+                .post('/persons/login')
                 .send({
                     email: 'test@artisan.com',
                     password: 'test'
@@ -307,7 +307,37 @@ describe('Product controller', () => {
         });
         
         it('should return 201 when updating a product', async() => {
-            await Job.create({name: 'Test'});
+            await Job.create({ name: 'Test' });
+            const artisan = await Artisan.create({
+                acceptNewOrder: 1,
+                siret: '123456789',
+                tva: 'FR123456789',
+                description: 'test',
+                picture: 'test',
+                name_job: 'Test'
+            });
+        
+            const person = await Person.create({
+                firstname: 'Sarah',
+                lastname: 'Otmane',
+                email: 'test@artisan.com',
+                password: await argon2.hash('test'),
+                mobile: '0603285298',
+                role: 'artisan',
+                subscribeNewsletter: false,
+                id_address: null,
+                id_artisan: artisan.id
+            });
+        
+            const loginResponse = await supertest(app)
+                .post('/persons/login')
+                .send({
+                    email: person.email,
+                    password: 'test' 
+                });
+        
+            const token = loginResponse.body.token;
+        
             const product = await Product.create({
                 id_prestation: null,
                 id_artisan: null,
@@ -318,7 +348,7 @@ describe('Product controller', () => {
                 priceSuggested: 100,
                 name_job: 'Test'
             });
-
+        
             const { statusCode } = await supertest(app)
                 .put(`/products/${product.id}`)
                 .send({
@@ -326,15 +356,16 @@ describe('Product controller', () => {
                     price: 100
                 })
                 .set('Authorization', 'Bearer ' + token);
-
+        
             expect(statusCode).toBe(201);
         });
+        
     });
 
     describe('DELETE /products/:id_product', () => {
         it('should return 404 if the product is not found', async () => {
             const { statusCode } = await supertest(app)
-                .delete(`/products/9999`)
+                .delete('/products/9999')
                 .set('Authorization', 'Bearer ' + token);
 
             expect(statusCode).toBe(404);
@@ -354,5 +385,4 @@ describe('Product controller', () => {
             expect(statusCode).toBe(201);
         });
     });
-    
 });
