@@ -2,9 +2,8 @@
  * @swagger
  * tags:
  *   name: Newsletter
- *   description: Gestion des inscriptions à la newsletter
+ *   description: CRUD operations for managing newsletter subscriptions
  */
-
 
 /**
  * @swagger
@@ -17,66 +16,58 @@
  *       properties:
  *         email:
  *           type: string
- *           description: Adresse email de l'utilisateur inscrit à la newsletter
+ *           description: The email address subscribed to the newsletter
  */
-
 
 /**
  * @swagger
  * /newsletters:
  *   post:
- *     summary: Inscrire un utilisateur à la newsletter
+ *     summary: Add an email to the newsletter
  *     tags: [Newsletter]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               email:
- *                 type: string
- *             required:
- *               - email
+ *             $ref: '#/components/schemas/Newsletter'
  *     responses:
  *       201:
- *         description: Utilisateur inscrit à la newsletter avec succès
+ *         description: Successfully subscribed to the newsletter
  *       401:
- *         description: Cet email est déjà inscrit à la newsletter
+ *         description: Email already subscribed to the newsletter
  *       500:
- *         description: Erreur interne du serveur
+ *         description: Internal server error
  */
-
 
 /**
  * @swagger
  * /newsletters:
  *   get:
- *     summary: Récupérer tous les emails inscrits à la newsletter (Admin seulement)
+ *     summary: Retrieve all newsletter subscriptions
  *     tags: [Newsletter]
  *     security:
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: Liste des emails inscrits récupérée avec succès
+ *         description: Successfully retrieved all newsletter subscriptions
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 userInscrits:
+ *                 personInscrits:
  *                   type: array
  *                   items:
- *                     type: object
- *                     properties:
- *                       email:
- *                         type: string
+ *                     type: string
+ *                   description: List of emails from persons subscribed to the newsletter
  *                 emailsInscrits:
  *                   type: array
  *                   items:
  *                     $ref: '#/components/schemas/Newsletter'
+ *                   description: List of emails directly subscribed to the newsletter
  *       404:
- *         description: Aucun email n'est inscrit à la newsletter
+ *         description: No subscriptions found
  *       500:
- *         description: Erreur interne du serveur
+ *         description: Internal server error
  */
