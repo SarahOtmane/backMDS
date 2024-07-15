@@ -2,6 +2,7 @@ const Server = require('../services/serveur');
 const Job = require('../models/jobModel');
 const Prestation = require('../models/prestationModel');
 const supertest = require('supertest');
+const Product = require('../models/productModel');
 
 const app = new Server().app;
 
@@ -27,6 +28,7 @@ describe('Prestation controller', () => {
 
     afterEach(async()=>{
         await Prestation.destroy({where : {priceSuggested: 100}});
+        await Product.destroy({where: { price: 100}});
         await Job.destroy({where: {name : 'Test'}});
     })
     

@@ -20,7 +20,7 @@ let dataArtisan = {
 
 let dataPrestation = {
     reparationType: 'testNettoyer',
-    priceSuggested: 20,
+    priceSuggested: 100,
     name_job: 'Test'
 };
 
@@ -52,7 +52,7 @@ describe('Product controller', () => {
     });
 
     afterEach(async () => {
-        await Product.destroy({ where: { price: 20 } });
+        await Product.destroy({ where: { price: 100 } });
         await Artisan.destroy({ where: { siret: '123456789' } });
         await Prestation.destroy({ where: { name_job: 'Test' } });
         await Prestation.destroy({where: {reparationType: 'testNettoyer3'}})
@@ -96,7 +96,7 @@ describe('Product controller', () => {
             await Product.create({
                 id_artisan: artisan.id,
                 id_prestation: presta.id,
-                price: 20
+                price: 100
             });
 
             const { statusCode, body } = await supertest(app)
@@ -118,7 +118,7 @@ describe('Product controller', () => {
             const product = await Product.create({
                 id_artisan: null,
                 id_prestation: null,
-                price: 20
+                price: 100
             });
 
             const { statusCode, body } = await supertest(app)
@@ -133,7 +133,7 @@ describe('Product controller', () => {
             const product = await Product.create({
                 id_artisan: artisan.id,
                 id_prestation: null,
-                price: 20
+                price: 100
             });
 
             const { statusCode, body } = await supertest(app)
@@ -149,7 +149,7 @@ describe('Product controller', () => {
             const product = await Product.create({
                 id_artisan: artisan.id,
                 id_prestation: presta.id,
-                price: 20
+                price: 100
             });
 
             const { statusCode, body } = await supertest(app)
@@ -187,7 +187,7 @@ describe('Product controller', () => {
             await Product.create({
                 id_artisan: artisan.id,
                 id_prestation: presta.id,
-                price: 20
+                price: 100
             });
 
             const { statusCode, body } = await supertest(app)
@@ -204,7 +204,7 @@ describe('Product controller', () => {
                 .post(`/products/artisan/9999`)
                 .send({
                     reparationType: 'testNettoyer',
-                    price: 20
+                    price: 100
                 })
                 .set('Authorization', 'Bearer ' + token);
 
@@ -219,7 +219,7 @@ describe('Product controller', () => {
                 .post(`/products/artisan/${artisan.id}`)
                 .send({
                     reparationType: 'testNettoyer',
-                    price: 20
+                    price: 100
                 })
                 .set('Authorization', 'Bearer ' + token);
 
@@ -235,7 +235,7 @@ describe('Product controller', () => {
                 .post(`/products/artisan/${artisan.id}`)
                 .send({
                     reparationType: 'testNettoyer',
-                    price: 20
+                    price: 100
                 })
                 .set('Authorization', 'Bearer ' + token);
 
@@ -249,7 +249,7 @@ describe('Product controller', () => {
                 .put(`/products/9999`)
                 .send({
                     reparationType: 'testNettoyer',
-                    price: 20
+                    price: 100
                 })
                 .set('Authorization', 'Bearer ' + token);
 
@@ -262,7 +262,7 @@ describe('Product controller', () => {
             const product = await Product.create({
                 id_prestation: null,
                 id_artisan: null,
-                price: 20
+                price: 100
             });
 
             const response = await supertest(app)
@@ -278,7 +278,7 @@ describe('Product controller', () => {
                 .put(`/products/${product.id}`)
                 .send({
                     reparationType: 'testNettoyer',
-                    price: 20
+                    price: 100
                 })
                 .set('Authorization', 'Bearer ' + tokenArtisan);
 
@@ -289,14 +289,14 @@ describe('Product controller', () => {
             const product = await Product.create({
                 id_prestation: null,
                 id_artisan: null,
-                price: 20
+                price: 100
             });
 
             const { statusCode } = await supertest(app)
                 .put(`/products/${product.id}`)
                 .send({
                     id_prestation: 999,
-                    price: 20
+                    price: 100
                 })
                 .set('Authorization', 'Bearer ' + token);
 
@@ -308,11 +308,11 @@ describe('Product controller', () => {
             const product = await Product.create({
                 id_prestation: null,
                 id_artisan: null,
-                price: 20
+                price: 100
             });
             const presta = await Prestation.create({
                 reparationType: 'testNettoyer3',
-                priceSuggested: 20,
+                priceSuggested: 100,
                 name_job: 'Test'
             });
 
@@ -320,7 +320,7 @@ describe('Product controller', () => {
                 .put(`/products/${product.id}`)
                 .send({
                     id_prestation: presta.id,
-                    price: 20
+                    price: 100
                 })
                 .set('Authorization', 'Bearer ' + token);
 
@@ -341,7 +341,7 @@ describe('Product controller', () => {
             const product = await Product.create({
                 id_prestation: null,
                 id_artisan: null,
-                price: 20
+                price: 100
             });
 
             const { statusCode } = await supertest(app)
