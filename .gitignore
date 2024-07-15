@@ -10,6 +10,8 @@ lerna-debug.log*
 /db
 /db_test
 
+init.sql
+
 .env 
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
