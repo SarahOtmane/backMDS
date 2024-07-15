@@ -11,6 +11,7 @@ lerna-debug.log*
 /db_test
 
 init.sql
+test.sql
 
 .env 
 

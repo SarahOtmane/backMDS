@@ -61,7 +61,7 @@ services:
       MYSQL_RANDOM_ROOT_PASSWORD: yes
     volumes:
       - ./db_test:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./test.sql:/docker-entrypoint-initdb.d/init.sql
 
   pma:
     image: phpmyadmin/phpmyadmin
