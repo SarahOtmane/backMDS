@@ -344,7 +344,7 @@ class PersonController{
         }
     }
 
-    
+
 
     /**********************************************************************
                 MÉTHODE POUR MODIFIER LES INFORMATIONS D'UN USER
@@ -356,34 +356,47 @@ class PersonController{
             - Vérifier que l'utilisateur existe
 
     */
-    static async updatePassword(req,res){
+    static async updatePassword(req, res){
         try {
             let person; 
-
+        
             if(req.user === undefined) person = req.artisan;
-            else person = req.user
-
+            else person = req.user;
+        
             const userUpdate = await Person.findOne({ where: { email: person.email } });
             if(!userUpdate){
-                return res.status(404).json({ message: 'Personne non trouvé.' });
+                return res.status(404).json({ message: 'Personne non trouvée.' });
             }
-
-            const validPassword = await argon2.verify(userUpdate.password, req.body.oldPassword);
+        
+            const { oldPassword, password } = req.body;
+        
+            // Check for missing fields
+            if (!oldPassword || !password) {
+                return res.status(400).json({ message: 'Tous les champs sont requis.' });
+            }
+        
+            // Check if old and new passwords are the same
+            if (oldPassword === password) {
+                return res.status(400).json({ message: 'Le nouveau mot de passe ne peut pas être identique à l\'ancien mot de passe.' });
+            }
+        
+            const validPassword = await argon2.verify(userUpdate.password, oldPassword);
             if(!validPassword){
                 return res.status(400).json({ message: 'Mot de passe incorrect.' });
             }
-
-            const hashedPassword = await argon2.hash(req.body.password);
-
+        
+            const hashedPassword = await argon2.hash(password);
+        
             await userUpdate.update({ 
                 password: hashedPassword,
             });
-            res.status(201).json({ message: 'Personne mis à jour avec succès.' });
-
+            res.status(201).json({ message: 'Personne mise à jour avec succès.' });
+        
         } catch (error) {
-            res.status(500).json({message: "Erreur lors du traitement des données."});
+            res.status(500).json({ message: "Erreur lors du traitement des données." });
         }
-    }
+}
+
 }
 
 module.exports = PersonController;
