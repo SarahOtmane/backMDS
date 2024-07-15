@@ -25,6 +25,10 @@
  *           type: string
  *           description: The city of the address
  *         postalCode:
+ *           type: string
+ *           description: The postal code
+ */
+
 /**
  * @swagger
  * tags:
