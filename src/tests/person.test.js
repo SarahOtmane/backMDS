@@ -44,6 +44,8 @@ let dataAddress = {
     country: 'France'
 }
 
+let tokenUser;
+
 describe('Person controller', () => {
 
     beforeEach(async () => {
@@ -349,6 +351,204 @@ describe('Person controller', () => {
                 });
 
             expect(response.statusCode).toBe(200);
+        });
+    });
+
+    describe('GET /persons/user', () => {
+        it('should return 200 when getting details of user without address', async() => {
+            await Person.create(dataPerson = {
+                firstname: 'Sarah',
+                lastname: 'Otmane',
+                email: 'test@gmail.com',
+                password: await argon2.hash('test'),
+                mobile: '0603285298',
+                role: 'user',
+                subscribeNewsletter: false,
+                id_address: null,
+                id_artisan: null
+            });
+
+            const responseToken = await supertest(app).post('/persons/login').send({
+                email: 'test@gmail.com',
+                password: 'test',
+            });
+            tokenUser = responseToken.body.token;
+
+            const response = await supertest(app)
+                .get('/persons/user')
+                .set('Authorization', `Bearer ${tokenUser}`);
+
+            expect(response.statusCode).toBe(200);
+        });
+
+        it('should return 200 when getting details of user with address', async() => {
+            const address = await Address.create({
+                streetAddress: '23 rue de solférino',
+                city: 'boulogne-billancourt',
+                postalCode: '92100',
+                country: 'France'
+            });
+
+            await Person.create({
+                firstname: 'Sarah',
+                lastname: 'Otmane',
+                email: 'test@gmail.com',
+                password: await argon2.hash('test'),
+                mobile: '0603285298',
+                role: 'user',
+                subscribeNewsletter: false,
+                id_address: address.id,
+                id_artisan: null
+            });
+
+            const responseToken = await supertest(app).post('/persons/login').send({
+                email: 'test@gmail.com',
+                password: 'test',
+            });
+            tokenUser = responseToken.body.token;
+
+            const response = await supertest(app)
+                .get('/persons/user')
+                .set('Authorization', `Bearer ${tokenUser}`);
+
+            expect(response.statusCode).toBe(200);
+        });
+        
+    });
+    
+    describe('PUT /persons/user', () => {
+        beforeEach(async () => {
+            await Person.create({
+                firstname: 'Sarah',
+                lastname: 'Otmane',
+                email: 'test@gmail.com',
+                password: await argon2.hash('test'),
+                mobile: '0603285298',
+                role: 'user',
+                subscribeNewsletter: false,
+                id_address: null,
+                id_artisan: null
+            });
+    
+            const responseToken = await supertest(app).post('/persons/login').send({
+                email: 'test@gmail.com',
+                password: 'test',
+            });
+            tokenUser = responseToken.body.token;
+        });
+    
+        it('should return 200 when updating user details without changing the address', async () => {
+            const response = await supertest(app)
+                .put('/persons/user')
+                .set('Authorization', `Bearer ${tokenUser}`)
+                .send({
+                    firstname: 'Sarah',
+                    lastname: 'Updated',
+                    mobile: '0612345678'
+                });
+    
+            expect(response.statusCode).toBe(200);
+        });
+    
+        it('should return 200 when updating user details with an existing address', async () => {
+            const address = await Address.create({
+                streetAddress: '23 rue de solférino',
+                city: 'boulogne-billancourt',
+                postalCode: '92100',
+                country: 'France'
+            });
+    
+            const response = await supertest(app)
+                .put('/persons/user')
+                .set('Authorization', `Bearer ${tokenUser}`)
+                .send({
+                    firstname: 'Sarah',
+                    lastname: 'Updated',
+                    mobile: '0612345678',
+                    streetAddress: '23 rue de solférino',
+                    city: 'boulogne-billancourt',
+                    postalCode: '92100',
+                    country: 'France'
+                });
+    
+            expect(response.statusCode).toBe(200);
+        });
+    
+        it('should return 200 when updating user details with a new address', async () => {
+            const response = await supertest(app)
+                .put('/persons/user')
+                .set('Authorization', `Bearer ${tokenUser}`)
+                .send({
+                    firstname: 'Sarah',
+                    lastname: 'Updated',
+                    mobile: '0612345678',
+                    streetAddress: '45 rue de Rivoli',
+                    city: 'Paris',
+                    postalCode: '75001',
+                    country: 'France'
+                });
+    
+            expect(response.statusCode).toBe(200);
+        });
+    });
+    
+    describe('PUT /persons/user/password', () => {
+        beforeEach(async () => {
+            await Person.create({
+                firstname: 'Sarah',
+                lastname: 'Otmane',
+                email: 'test@gmail.com',
+                password: await argon2.hash('test'),
+                mobile: '0603285298',
+                role: 'user',
+                subscribeNewsletter: false,
+                id_address: null,
+                id_artisan: null
+            });
+    
+            const responseToken = await supertest(app).post('/persons/login').send({
+                email: 'test@gmail.com',
+                password: 'test',
+            });
+            tokenUser = responseToken.body.token;
+        });
+
+        it('should return 201 when the password is updated successfully', async () => {
+            const response = await supertest(app)
+                .put('/persons/user/password')
+                .set('Authorization', `Bearer ${tokenUser}`)
+                .send({
+                    oldPassword: 'test',
+                    password: 'newpassword'
+                });
+    
+            expect(response.statusCode).toBe(201);
+        });
+
+        it('should return 400 when the old password is incorrect', async () => {
+            const response = await supertest(app)
+                .put('/persons/user/password')
+                .set('Authorization', `Bearer ${tokenUser}`)
+                .send({
+                    oldPassword: 'wrongpassword',
+                    password: 'newpassword'
+                });
+    
+            expect(response.statusCode).toBe(400);
+        });
+
+        it('should return 404 when the user is not found', async () => {
+            await Person.destroy({ where: { email: 'test@gmail.com' } });
+    
+            const response = await supertest(app)
+                .put('/persons/user/password')
+                .set('Authorization', `Bearer ${tokenUser}`)
+                .send({
+                    oldPassword: 'test',
+                    password: 'newpassword'
+                });
+    
+            expect(response.statusCode).toBe(404);
         });
     });
     
