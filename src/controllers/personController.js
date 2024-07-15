@@ -303,12 +303,18 @@ class PersonController{
             let person;
             if(req.user === undefined) person = req.artisan;
             else person = req.user;
-
+    
             person = await Person.findOne({ where: { email: person.email } });
-            
+    
             const { firstname, lastname, mobile, streetAddress, postalCode, country, city, id_address } = req.body;
+    
+            // Check for missing fields
+            if (!firstname || !lastname || !mobile) {
+                return res.status(400).json({ message: 'Tous les champs sont requis.' });
+            }
+    
             let newIdAdress = id_address;
-            if(streetAddress!==undefined && postalCode!==undefined && country!==undefined && city!==undefined){
+            if(streetAddress !== undefined && postalCode !== undefined && country !== undefined && city !== undefined){
                 const existingAddress = await Address.findOne({
                     where: { 
                         streetAddress : streetAddress, 
@@ -317,7 +323,7 @@ class PersonController{
                         country : country 
                     }
                 });
-
+    
                 if (existingAddress) {
                     newIdAdress = existingAddress.id;
                 } else {
@@ -325,20 +331,20 @@ class PersonController{
                     newIdAdress = newAddress.id;
                 }
             }
-
+    
             await person.update({
                 lastname, firstname,
                 mobile, id_address : newIdAdress
             });
-
+    
             res.status(200).json(person);
-
+    
         } catch (error) {
-            res.status(500).json({message: "Erreur lors du traitement des données."});
+            res.status(500).json({ message: "Erreur lors du traitement des données." });
         }
-    };
+    }
 
-
+    
 
     /**********************************************************************
                 MÉTHODE POUR MODIFIER LES INFORMATIONS D'UN USER
