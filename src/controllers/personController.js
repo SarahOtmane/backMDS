@@ -227,11 +227,7 @@ class PersonController{
     static async getAUser(req, res){
         try {
             const user = await Person.findOne({ where: { email: req.user.email } });
-
-            if (!user) {
-                return res.status(404).json({ message: 'Utilisateur non trouvé.' });
-            }
-
+            
             let userResponse = user.toJSON(); 
 
             if(user.id_address !== null){
