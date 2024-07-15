@@ -191,7 +191,7 @@ class ProductController{
                 return res.status(404).json({ message: 'Artisan non trouvé.' });
             }
             const products = await Product.findAll({where: {id_artisan: artisan.id}});
-            if(!products){
+            if(products.length === 0){
                 return res.status(404).json({ message: 'Auncun product trouvé.' });
             }
             res.status(201).json(products);
