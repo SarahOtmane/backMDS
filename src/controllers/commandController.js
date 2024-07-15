@@ -126,32 +126,32 @@ class CommandController{
             - Vérifier que les commandes existent
 
     */
-    // static async getCommandOfArtisan(req, res){
-    //     try {
-    //         const person = await Person.findOne({where: {email: req.artisan.email}});
+    static async getCommandOfArtisan(req, res){
+        try {
+            const person = await Person.findOne({where: {email: req.artisan.email}});
             
-    //         const artisan = await Artisan.findOne({where: {id: person.id_artisan}});
-    //         if(!artisan) res.status(404).json({message: "Artisan non trouvé"});
+            const artisan = await Artisan.findOne({where: {id: person.id_artisan}});
+            if(!artisan) res.status(404).json({message: "Artisan non trouvé"});
 
-    //         const products = await Product.findAll({ where: { id_artisan: artisan.id } });
-    //         if (!products.length) {
-    //             return res.status(404).json({ message: 'Aucun produit pour cet artisan.' });
-    //         }
+            const products = await Product.findAll({ where: { id_artisan: artisan.id } });
+            if (!products.length) {
+                return res.status(404).json({ message: 'Aucun produit pour cet artisan.' });
+            }
 
-    //         let commands = [];
+            let commands = [];
 
-    //         for (let product of products) {
-    //             const productCommands = await Command.findAll({ where: { id_product: product.id } });
-    //             if (productCommands.length) {
-    //                 commands = commands.concat(productCommands);
-    //             }
-    //         }
+            for (let product of products) {
+                const productCommands = await Command.findAll({ where: { id_product: product.id } });
+                if (productCommands.length) {
+                    commands = commands.concat(productCommands);
+                }
+            }
 
-    //         res.status(200).json(commands);
-    //     } catch (error) {
-    //         res.status(500).json({ message: "Erreur lors du traitement des données." });
-    //     }
-    // };
+            res.status(200).json(commands);
+        } catch (error) {
+            res.status(500).json({ message: "Erreur lors du traitement des données." });
+        }
+    };
 }
 
 module.exports = CommandController;
