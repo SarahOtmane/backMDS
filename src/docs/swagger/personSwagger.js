@@ -47,7 +47,7 @@
 
 /**
  * @swagger
- * /user/register:
+ * /persons/user/register:
  *   post:
  *     summary: Register a new user
  *     tags: [Person]
@@ -70,7 +70,7 @@
 
 /**
  * @swagger
- * /artisan/register:
+ * /persons/artisan/register:
  *   post:
  *     summary: Register a new artisan
  *     tags: [Person]
@@ -95,7 +95,7 @@
 
 /**
  * @swagger
- * /login:
+ * /persons/login:
  *   post:
  *     summary: Login a person
  *     tags: [Person]
@@ -126,7 +126,7 @@
 
 /**
  * @swagger
- * /user:
+ * /persons/user:
  *   get:
  *     summary: Retrieve the logged-in user details
  *     tags: [Person]
@@ -147,7 +147,7 @@
 
 /**
  * @swagger
- * /user:
+ * /persons/user:
  *   put:
  *     summary: Update the logged-in user details
  *     tags: [Person]
@@ -170,7 +170,7 @@
 
 /**
  * @swagger
- * /user/password:
+ * /persons/user/password:
  *   put:
  *     summary: Update the logged-in user password
  *     tags: [Person]
@@ -203,7 +203,7 @@
 
 /**
  * @swagger
- * /artisan:
+ * /persons/artisan:
  *   get:
  *     summary: Retrieve the logged-in artisan details
  *     tags: [Person]
@@ -224,7 +224,7 @@
 
 /**
  * @swagger
- * /artisan:
+ * /persons/artisan:
  *   put:
  *     summary: Update the logged-in artisan details
  *     tags: [Person]
@@ -247,7 +247,7 @@
 
 /**
  * @swagger
- * /artisan/password:
+ * /persons/artisan/password:
  *   put:
  *     summary: Update the logged-in artisan password
  *     tags: [Person]
