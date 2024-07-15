@@ -1,3 +1,4 @@
+require('dotenv').config();
 const Server = require('./services/serveur');
 const Database = require('./services/connectBdd');
 const TablesManager = require('./services/tablesBdd');

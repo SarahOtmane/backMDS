@@ -7,6 +7,11 @@ const app = new Server().app;
 let token;
 
 describe('Job controller', () => {
+    beforeAll(async () => {
+        await require('../services/connectBdd').connect();
+        await require('../services/tablesBdd').createTablesInOrder();
+    });
+    
     beforeAll(async() =>{
         const response = await supertest(app)
             .post(`/persons/login`)

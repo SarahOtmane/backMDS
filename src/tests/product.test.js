@@ -29,6 +29,9 @@ let token;
 
 describe('Product controller', () => {
     beforeAll(async () => {
+        await require('../services/connectBdd').connect();
+        await require('../services/tablesBdd').createTablesInOrder();
+
         dataPerson = {
             firstname: 'Sarah',
             lastname: 'Otmane',

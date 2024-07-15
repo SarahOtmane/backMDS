@@ -6,6 +6,11 @@ const app = new Server().app;
 
 
 describe('Info controller', () => {
+    beforeAll(async () => {
+        await require('../services/connectBdd').connect();
+        await require('../services/tablesBdd').createTablesInOrder();
+    });
+    
     beforeAll(async() =>{
         const response = await supertest(app)
             .post(`/persons/login`)

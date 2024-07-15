@@ -9,6 +9,11 @@ const app = new Server().app;
 
 
 describe('Artisan controller', () => {
+    beforeAll(async () => {
+        await require('../services/connectBdd').connect();
+        await require('../services/tablesBdd').createTablesInOrder();
+    });
+    
     beforeEach(async() =>{
         await Job.create({name: 'Test'});
     })

@@ -48,6 +48,10 @@ let dataAddress = {
 let tokenUser;
 
 describe('Person controller', () => {
+    beforeAll(async () => {
+        await require('../services/connectBdd').connect();
+        await require('../services/tablesBdd').createTablesInOrder();
+    });
 
     beforeEach(async () => {
         await Job.create({ name: 'testt' });
