@@ -2,9 +2,8 @@
  * @swagger
  * tags:
  *   name: Product
- *   description: CRUD pour la gestion des produits
+ *   description: CRUD operations for managing products
  */
-
 
 /**
  * @swagger
@@ -13,74 +12,72 @@
  *     Product:
  *       type: object
  *       required:
- *         - id
  *         - price
  *         - id_artisan
  *         - id_prestation
  *       properties:
  *         id:
  *           type: integer
- *           description: ID du produit
+ *           description: The unique identifier of the product
  *         price:
  *           type: integer
- *           description: Prix du produit
+ *           description: The price of the product
  *         id_artisan:
  *           type: integer
- *           description: ID de l'artisan associé
+ *           description: The ID of the associated artisan
  *         id_prestation:
  *           type: integer
- *           description: ID de la prestation associée
+ *           description: The ID of the associated prestation
  */
-
-
-/**
- * @swagger
- * /products:
- *   post:
- *     summary: Créer un nouveau produit (Artisan seulement)
- *     tags: [Product]
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               price:
- *                 type: integer
- *               reparationType:
- *                 type: string
- *             required:
- *               - price
- *               - reparationType
- *     responses:
- *       201:
- *         description: Produit créé avec succès
- *       404:
- *         description: Artisan ou prestation non trouvée
- *       500:
- *         description: Erreur interne du serveur
- */
-
 
 /**
  * @swagger
  * /products/artisan/{id_artisan}:
- *   get:
- *     summary: Récupérer tous les produits d'un artisan
+ *   post:
+ *     summary: Create a new product for an artisan
  *     tags: [Product]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id_artisan
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID de l'artisan
+ *         description: The ID of the artisan to create the product for
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Product'
  *     responses:
- *       200:
- *         description: Produits récupérés avec succès
+ *       201:
+ *         description: Product created successfully
+ *       404:
+ *         description: Artisan or prestation not found
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * /products/artisan/{id_artisan}:
+ *   get:
+ *     summary: Retrieve all products of an artisan
+ *     tags: [Product]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id_artisan
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the artisan to retrieve products for
+ *     responses:
+ *       201:
+ *         description: Products retrieved successfully
  *         content:
  *           application/json:
  *             schema:
@@ -88,17 +85,16 @@
  *               items:
  *                 $ref: '#/components/schemas/Product'
  *       404:
- *         description: Artisan ou produits non trouvés
+ *         description: Artisan not found or no products found
  *       500:
- *         description: Erreur interne du serveur
+ *         description: Internal server error
  */
-
 
 /**
  * @swagger
  * /products/{id_product}:
  *   get:
- *     summary: Récupérer un produit par ID
+ *     summary: Retrieve a product by ID
  *     tags: [Product]
  *     parameters:
  *       - in: path
@@ -106,26 +102,25 @@
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID du produit à récupérer
+ *         description: The ID of the product to retrieve
  *     responses:
- *       200:
- *         description: Produit récupéré avec succès
+ *       201:
+ *         description: Product retrieved successfully
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Product'
  *       404:
- *         description: Produit non trouvé
+ *         description: Product not found
  *       500:
- *         description: Erreur interne du serveur
+ *         description: Internal server error
  */
-
 
 /**
  * @swagger
  * /products/{id_product}:
  *   put:
- *     summary: Modifier un produit (Artisan seulement)
+ *     summary: Update a product by ID
  *     tags: [Product]
  *     security:
  *       - bearerAuth: []
@@ -135,30 +130,27 @@
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID du produit à modifier
+ *         description: The ID of the product to update
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               price:
- *                 type: integer
- *               id_prestation:
- *                 type: integer
- *             required:
- *               - price
- *               - id_prestation
+ *             $ref: '#/components/schemas/Product'
  *     responses:
  *       201:
- *         description: Produit mis à jour avec succès
+ *         description: Product updated successfully
  *       404:
- *         description: Produit, artisan ou prestation non trouvée
+ *         description: Product, artisan, or prestation not found
  *       500:
- *         description: Erreur interne du serveur
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * /products/{id_product}:
  *   delete:
- *     summary: Supprimer un produit (Artisan seulement)
+ *     summary: Delete a product by ID
  *     tags: [Product]
  *     security:
  *       - bearerAuth: []
@@ -168,22 +160,21 @@
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID du produit à supprimer
+ *         description: The ID of the product to delete
  *     responses:
  *       201:
- *         description: Produit supprimé avec succès
+ *         description: Product deleted successfully
  *       404:
- *         description: Produit non trouvé
+ *         description: Product not found
  *       500:
- *         description: Erreur interne du serveur
+ *         description: Internal server error
  */
-
 
 /**
  * @swagger
  * /products/{id_artisan}/{id_prestation}:
  *   get:
- *     summary: Récupérer un produit lié à une prestation et un artisan
+ *     summary: Retrieve a product linked to a specific artisan and prestation
  *     tags: [Product]
  *     parameters:
  *       - in: path
@@ -191,22 +182,22 @@
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID de l'artisan
+ *         description: The ID of the artisan
  *       - in: path
  *         name: id_prestation
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID de la prestation
+ *         description: The ID of the prestation
  *     responses:
- *       200:
- *         description: Produit récupéré avec succès
+ *       201:
+ *         description: Product retrieved successfully
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Product'
  *       404:
- *         description: Produit, artisan ou prestation non trouvée
+ *         description: Artisan or prestation not found
  *       500:
- *         description: Erreur interne du serveur
+ *         description: Internal server error
  */
