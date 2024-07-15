@@ -2,9 +2,8 @@
  * @swagger
  * tags:
  *   name: Cloth
- *   description: Gestion des vêtements
+ *   description: CRUD operations for managing clothes
  */
-
 
 /**
  * @swagger
@@ -14,108 +13,28 @@
  *       type: object
  *       required:
  *         - id
- *         - categorie
+ *         - category
  *         - clothType
- *         - id_job
  *       properties:
  *         id:
  *           type: integer
- *           description: ID du vêtement
- *         categorie:
+ *           description: The unique identifier of the cloth
+ *         category:
  *           type: string
- *           description: Catégorie du vêtement
+ *           description: The category of the cloth
  *         clothType:
  *           type: string
- *           description: Type du vêtement
- *         id_job:
- *           type: integer
- *           description: ID du job associé
+ *           description: The type of the cloth
+ *         name_job:
+ *           type: string
+ *           description: The job associated with the cloth
  */
-
-
-/**
- * @swagger
- * /clothes:
- *   get:
- *     summary: Récupérer tous les vêtements en BDD
- *     tags: [Cloth]
- *     responses:
- *       200:
- *         description: Vêtements récupérés avec succès
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Cloth'
- *       404:
- *         description: Aucun vêtement trouvé
- *       500:
- *         description: Erreur interne du serveur
- */
-
-
-/**
- * @swagger
- * /clothes/{id_cloth}:
- *   get:
- *     summary: Récupérer un vêtement par ID
- *     tags: [Cloth]
- *     parameters:
- *       - in: path
- *         name: id_cloth
- *         required: true
- *         schema:
- *           type: integer
- *         description: ID du vêtement à récupérer
- *     responses:
- *       200:
- *         description: Vêtement récupéré avec succès
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Cloth'
- *       404:
- *         description: Aucun vêtement trouvé
- *       500:
- *         description: Erreur interne du serveur
- */
-
-
-/**
- * @swagger
- * /clothes/job/{id_job}:
- *   get:
- *     summary: Récupérer tous les vêtements d'un job
- *     tags: [Cloth]
- *     parameters:
- *       - in: path
- *         name: id_job
- *         required: true
- *         schema:
- *           type: integer
- *         description: ID du job pour lequel récupérer les vêtements
- *     responses:
- *       200:
- *         description: Vêtements récupérés avec succès
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Cloth'
- *       404:
- *         description: Aucun vêtement trouvé pour ce job
- *       500:
- *         description: Erreur interne du serveur
- */
-
 
 /**
  * @swagger
  * /clothes:
  *   post:
- *     summary: Enregistrer un vêtement en BDD (Admin seulement)
+ *     summary: Create a new cloth
  *     tags: [Cloth]
  *     security:
  *       - bearerAuth: []
@@ -124,35 +43,98 @@
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               categorie:
- *                 type: string
- *               clothType:
- *                 type: string
- *               id_job:
- *                 type: integer
- *             required:
- *               - categorie
- *               - clothType
- *               - id_job
+ *             $ref: '#/components/schemas/Cloth'
  *     responses:
  *       201:
- *         description: Vêtement créé avec succès
- *       401:
- *         description: Vêtement existe déjà en BDD
- *       403:
- *         description: Token manquant ou invalide
+ *         description: Cloth created successfully
+ *       400:
+ *         description: Job not found
+ *       409:
+ *         description: Cloth already exists
  *       500:
- *         description: Erreur interne du serveur
+ *         description: Internal server error
  */
 
+/**
+ * @swagger
+ * /clothes:
+ *   get:
+ *     summary: Retrieve all clothes
+ *     tags: [Cloth]
+ *     responses:
+ *       200:
+ *         description: Clothes retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Cloth'
+ *       404:
+ *         description: No clothes found
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * /clothes/{id_cloth}:
+ *   get:
+ *     summary: Get a cloth by ID
+ *     tags: [Cloth]
+ *     parameters:
+ *       - in: path
+ *         name: id_cloth
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the cloth to retrieve
+ *     responses:
+ *       200:
+ *         description: Cloth retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Cloth'
+ *       404:
+ *         description: Cloth not found
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * /clothes/job/{name_job}:
+ *   get:
+ *     summary: Retrieve all clothes filtered by job
+ *     tags: [Cloth]
+ *     parameters:
+ *       - in: path
+ *         name: name_job
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The name of the job
+ *     responses:
+ *       200:
+ *         description: Clothes retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Cloth'
+ *       404:
+ *         description: Job not found
+ *       500:
+ *         description: Internal server error
+ */
 
 /**
  * @swagger
  * /clothes/{id_cloth}:
  *   put:
- *     summary: Modifier un vêtement par l'admin
+ *     summary: Update an existing cloth
  *     tags: [Cloth]
  *     security:
  *       - bearerAuth: []
@@ -162,35 +144,29 @@
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID du vêtement à modifier
+ *         description: The ID of the cloth to update
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               categorie:
- *                 type: string
- *               clothType:
- *                 type: string
- *               id_job:
- *                 type: integer
- *             required:
- *               - categorie
- *               - clothType
- *               - id_job
+ *             $ref: '#/components/schemas/Cloth'
  *     responses:
  *       200:
- *         description: Vêtement mis à jour avec succès
- *       403:
- *         description: Token manquant ou invalide
+ *         description: Cloth updated successfully
+ *       400:
+ *         description: Job not found
  *       404:
- *         description: Aucun vêtement trouvé
+ *         description: Cloth not found
  *       500:
- *         description: Erreur interne du serveur
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * /clothes/{id_cloth}:
  *   delete:
- *     summary: Supprimer un vêtement par l'admin
+ *     summary: Delete a cloth
  *     tags: [Cloth]
  *     security:
  *       - bearerAuth: []
@@ -200,14 +176,12 @@
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID du vêtement à supprimer
+ *         description: The ID of the cloth to delete
  *     responses:
  *       200:
- *         description: Vêtement supprimé avec succès
- *       403:
- *         description: Token manquant ou invalide
+ *         description: Cloth deleted successfully
  *       404:
- *         description: Aucun vêtement trouvé
+ *         description: Cloth not found
  *       500:
- *         description: Erreur interne du serveur
+ *         description: Internal server error
  */
