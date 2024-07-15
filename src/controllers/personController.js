@@ -67,7 +67,7 @@ class PersonController{
     catch (error) {
         res.status(500).json({ message: 'Erreur lors de la création de l\'utilisateur.' });
     }
-};
+    };
 
 
 
@@ -84,51 +84,52 @@ class PersonController{
             - Vérifier que le role != admin
 
     */
-    static async registerAnArtisan (req, res){
+    static async registerAnArtisan(req, res){
         try {
-            const { 
-                email, role, streetAddress, city, postalCode, 
-                country, password, firstname, lastname, mobile, 
-                siret, tva, job, prestations
-            } = req.body;
-
+            const { email, role, streetAddress, city, postalCode, country, password, firstname, lastname, mobile, siret, tva, job, prestations } = req.body;
+    
+            // Check for missing fields
+            if (!email || !password || !firstname || !lastname || !mobile || !streetAddress || !city || !postalCode || !country || !siret || !tva || !job || !prestations) {
+                return res.status(400).json({ message: 'Tous les champs sont requis.' });
+            }
+    
             // Vérification de l'existence de l'email
             const existingEmail = await Person.findOne({ where: { email } });
             if (existingEmail) {
                 return res.status(409).json({ message: 'Cet email existe déjà.' });
             }
-
+    
             // Vérification du rôle
             if (role !== undefined && (role === 'admin' || role === 'user')) {
                 return res.status(401).json({ message: `Vous ne pouvez pas créer un artisan avec le rôle ${role}.` });
             }
-
+    
             // Vérification de l'existence du métier
             const existingJob = await Job.findOne({ where: { name: job } });
             if (!existingJob) {
                 return res.status(401).json({ message: 'Ce métier n\'existe pas' });
             }
-
+    
             if (!prestations || prestations.length === 0) {
                 return res.status(404).json({ message: 'Aucune prestation enregistrée' });
             }
-
+    
             // Vérification de l'adresse existante
             let id_address = null;
             const existingAddress = await Address.findOne({
                 where: { streetAddress, city, postalCode, country }
             });
-
+    
             if (existingAddress) {
                 id_address = existingAddress.id;
             } else {
                 const newAddress = await Address.create({ streetAddress, city, postalCode, country });
                 id_address = newAddress.id;
             }
-
+    
             // Hachage du mot de passe
             const hashedPassword = await argon2.hash(password);
-
+    
             // Création des détails de l'artisan
             const newArtisanDetails = await Artisan.create({
                 acceptNewOrder: true,
@@ -138,7 +139,7 @@ class PersonController{
                 description : '',
                 picture : ''
             });
-
+    
             // Création de l'utilisateur artisan
             const newArtisan = await Person.create({
                 firstname,
@@ -151,12 +152,12 @@ class PersonController{
                 id_address,
                 id_artisan: newArtisanDetails.id
             });
-
+    
             // Création des produits associés aux prestations
             let products = [];
             for (let index = 0; index < prestations.length; index++) {
                 const prestaType = prestations[index];
-
+    
                 const existingPresta = await Prestation.findOne({ where: { reparationType: prestaType } });
                 if (existingPresta) {
                     let newProduct = await Product.create({
@@ -164,25 +165,22 @@ class PersonController{
                         id_prestation: existingPresta.id,
                         id_artisan: newArtisanDetails.id
                     });
-                    products.push(newProduct);
-                } else {
-                    return res.status(404).json({ message: `La prestation ${prestaType} n'existe pas` });
-                }
-            }
+                products.push(newProduct);
 
+                } else {
+                    return res.status(404).json({ message: 'La prestation ${prestaType} nexiste pas' });
+                }
+            }    
             res.status(201).json({ message: `Artisan créé avec succès.` });
         } 
         catch (error) {
             console.error('Erreur lors de la création de l\'artisan:', error);
             res.status(500).json({ message: 'Erreur lors de la création de l\'artisan.' });
         }
-    };
+    }
 
 
-
-
-
-
+    
     /**********************************************************
                 MÉTHODE POUR CONNECTER UNE PERSONNE
     **********************************************************/
