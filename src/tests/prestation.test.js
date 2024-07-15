@@ -7,7 +7,7 @@ const app = new Server().app;
 
 let dataPrestation = {
     reparationType: 'testNettoyer',
-    priceSuggested: 20,
+    priceSuggested: 100,
     name_job: 'Test'
 };
 
@@ -26,7 +26,7 @@ describe('Prestation controller', () => {
     });
 
     afterEach(async()=>{
-        await Prestation.destroy({where : {name_job: 'Test'}});
+        await Prestation.destroy({where : {priceSuggested: 100}});
         await Job.destroy({where: {name : 'Test'}});
     })
     
@@ -140,8 +140,8 @@ describe('Prestation controller', () => {
             const { statusCode } = await supertest(app)
                 .put(`/prestations/${presta.id}`)
                 .send({
-                    reparationType: 'testNettoyer',
-                    priceSuggested: 20,
+                    reparationType: 'Test6',
+                    priceSuggested: 100,
                     name_job: 'Test'
                 })
                 .set('Authorization', `Bearer ${token}`);

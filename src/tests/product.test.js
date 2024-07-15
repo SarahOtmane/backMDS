@@ -55,6 +55,7 @@ describe('Product controller', () => {
         await Product.destroy({ where: { price: 20 } });
         await Artisan.destroy({ where: { siret: '123456789' } });
         await Prestation.destroy({ where: { name_job: 'Test' } });
+        await Prestation.destroy({where: {reparationType: 'testNettoyer3'}})
         await Job.destroy({ where: { name: 'Test' } });
         await Person.destroy({ where: { email: 'test@artisan.com' } });
     });

@@ -6,7 +6,6 @@ const Address = require('../models/adressModel');
 const Job = require('../models/jobModel');
 const Artisan = require('../models/artisanModel');
 const Prestation = require('../models/prestationModel');
-const Product = require('../models/productModel');
 
 const app = new Server().app;
 
@@ -23,18 +22,18 @@ let dataPerson = {
     siret: '123456789',
     tva: '123456789',
     job: 'testt',
-    prestations: ['Reparation', 'Confection']
+    prestations: ['Test10', 'Test11']
 }
 
 let dataPresta = {
-    reparationType: 'Reparation',
-    priceSuggested: '20',
+    reparationType: 'Test10',
+    priceSuggested: 100,
     name_job: 'testt'
 }
 
 let dataPresta1 = {
-    reparationType: 'Confection',
-    priceSuggested: '20',
+    reparationType: 'Test11',
+    priceSuggested: 100,
     name_job: 'testt'
 }
 
@@ -58,7 +57,7 @@ describe('Person controller', () => {
         await Address.destroy({ where: { postalCode: '92100' } });
         await Address.destroy({where: {streetAddress: '45 Rue de Rivoli'}});
         await Artisan.destroy({ where: { siret: '123456789', tva: '123456789' } });
-        await Product.destroy({where: {price: 20}});
+        await Prestation.destroy({where: { priceSuggested: 100}});
         await Job.destroy({ where: { name: 'testt' } });
     });
 
@@ -232,7 +231,7 @@ describe('Person controller', () => {
                     siret: '123456789',
                     tva: '123456789',
                     job: 'testt',
-                    prestations: ['Reparation', 'Confection']
+                    prestations: ['Test10', 'Test11']
                 });
 
             expect(response.statusCode).toBe(201);
@@ -266,7 +265,7 @@ describe('Person controller', () => {
                     siret: '123456789',
                     tva: '123456789',
                     job: 'testt',
-                    prestations: ['Reparation', 'Confection']
+                    prestations: ['Test10', 'Test11']
                 });
 
             expect(response.statusCode).toBe(409);
@@ -289,7 +288,7 @@ describe('Person controller', () => {
                     siret: '123456789',
                     tva: '123456789',
                     job: 'testt',
-                    prestations: ['Reparation', 'Confection']
+                    prestations: ['Test10', 'Test11']
                 });
 
             expect(response.statusCode).toBe(401);
@@ -312,7 +311,7 @@ describe('Person controller', () => {
                     siret: '123456789',
                     tva: '123456789',
                     job: 'testt',
-                    prestations: ['Reparation', 'Confection']
+                    prestations: ['Test10', 'Test11']
                 });
 
             expect(response.statusCode).toBe(401);
@@ -345,7 +344,7 @@ describe('Person controller', () => {
                     siret: '123456789',
                     tva: '123456789',
                     job: 'nonexistentjob',
-                    prestations: ['Reparation']
+                    prestations: ['Test10']
                 });
 
             expect(response.statusCode).toBe(401);

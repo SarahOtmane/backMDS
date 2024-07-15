@@ -20,13 +20,13 @@ let dataArtisan = {
     name_job: 'Test'
 };
 let dataCloth = {
-    category: 'Haut',
+    category: 'Test',
     clothType: 'T-shirt',
     name_job: 'Test'
 };
 let dataPrestation = {
-    reparationType: 'testNettoyer',
-    priceSuggested: 20,
+    reparationType: 'Test4',
+    priceSuggested: 100,
     name_job: 'Test'
 };
 
@@ -53,8 +53,8 @@ describe('Command controller', () => {
 
     afterEach(async () => {
         await Artisan.destroy({ where: { siret: '123456789' } });
-        await Cloth.destroy({ where: { name_job: 'Test' } });
-        await Prestation.destroy({ where: { name_job: 'Test' } });
+        await Cloth.destroy({ where: { category: 'Test' } });
+        await Prestation.destroy({ where: { priceSuggested: 100 } });
         await Product.destroy({ where: { price: 100 } });
         await Command.destroy({ where: { picture: 'sarah' } });
         await Job.destroy({ where: { name: 'Test' } });
@@ -152,10 +152,10 @@ describe('Command controller', () => {
                 name: '123456',
                 picture: 'sarah',
                 dateFinished: null,
-                category : 'Haut',
+                category : 'Test',
                 clothType : 'T-shirt',
                 name_job : job.name,
-                reparationType: 'testNettoyer'
+                reparationType: 'Test4'
             })
             .set('Authorization', `Bearer ${tokenUser}`);
 
@@ -169,10 +169,10 @@ describe('Command controller', () => {
                     name: '123456',
                     picture: 'sarah',
                     dateFinished: null,
-                    category : 'Haut',
+                    category : 'Test',
                     clothType : 'T-shirt',
                     name_job : 'Test',
-                    reparationType: 'testNettoyer'
+                    reparationType: 'Test4'
 
                 })
                 .set('Authorization', `Bearer ${tokenUser}`);
@@ -190,10 +190,10 @@ describe('Command controller', () => {
                     name: '123456',
                     picture: 'sarah',
                     dateFinished: null,
-                    category : 'Haut',
+                    category : 'Test',
                     clothType : 'T-shirt',
                     name_job : 'Test',
-                    reparationType: 'testNettoyer'
+                    reparationType: 'Test4'
 
                 })
                 .set('Authorization', `Bearer ${tokenUser}`);
@@ -212,10 +212,10 @@ describe('Command controller', () => {
                     name: '123456',
                     picture: 'sarah',
                     dateFinished: null,
-                    category : 'Haut',
+                    category : 'Test',
                     clothType : 'T-shirt',
                     name_job : 'Test',
-                    reparationType: 'testNettoyer'
+                    reparationType: 'Test4'
 
                 })
                 .set('Authorization', `Bearer ${tokenUser}`);
@@ -235,10 +235,10 @@ describe('Command controller', () => {
                     name: '123456',
                     picture: 'sarah',
                     dateFinished: null,
-                    category : 'Haut',
+                    category : 'Test',
                     clothType : 'T-shirt',
                     name_job : 'Test',
-                    reparationType: 'testNettoyer'
+                    reparationType: 'Test4'
 
                 })
                 .set('Authorization', `Bearer ${tokenUser}`);
