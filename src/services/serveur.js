@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('../docs/swagger/config.js');
+const helmet = require('helmet');
 
 const adressRoute = require('../routes/adressRoute.js');
 const personRoute = require('../routes/personRoute.js'); 
@@ -34,6 +35,15 @@ class Server {
 
         // Configuration de Swagger
         this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+        this.app.use(helmet());
+        this.app.use(helmet.contentSecurityPolicy({
+            directives: {
+                defaultSrc: ["'self'"], //sources du contenu chargé 
+                scriptSrc: ["'self'"], //scripts chargé 
+                objectSrc: ["'none'"], //désactiver les objects intégré 
+            },
+        }));
     }
 
     routes() {
