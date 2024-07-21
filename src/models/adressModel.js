@@ -1,9 +1,5 @@
-const { Sequelize, DataTypes } = require('sequelize');
-
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
-    host: "db",
-    dialect: "mysql"
-});
+const { DataTypes } = require('sequelize');
+const sequelize = require('../services/connectBdd').db;
 
 const Address = sequelize.define('Address', {
     id: {
@@ -32,6 +28,5 @@ const Address = sequelize.define('Address', {
     timestamps: true,
     underscored: true
 });
-
 
 module.exports = Address;

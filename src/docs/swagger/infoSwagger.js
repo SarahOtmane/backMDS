@@ -2,9 +2,8 @@
  * @swagger
  * tags:
  *   name: Info
- *   description: CRUD pour la gestion des informations
+ *   description: CRUD operations for managing info entries
  */
-
 
 /**
  * @swagger
@@ -13,31 +12,49 @@
  *     Info:
  *       type: object
  *       required:
- *         - id
  *         - name
  *         - content
  *       properties:
- *         id:
- *           type: integer
- *           description: ID de l'information
  *         name:
  *           type: string
- *           description: Nom de l'information
+ *           description: The unique name of the info entry
  *         content:
  *           type: string
- *           description: Contenu de l'information
+ *           description: The content of the info entry
  */
 
+/**
+ * @swagger
+ * /infos:
+ *   post:
+ *     summary: Create a new info entry
+ *     tags: [Info]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Info'
+ *     responses:
+ *       201:
+ *         description: Info entry created successfully
+ *       401:
+ *         description: Info entry already exists
+ *       500:
+ *         description: Internal server error
+ */
 
 /**
  * @swagger
  * /infos:
  *   get:
- *     summary: Récupérer toutes les informations en BDD
+ *     summary: Retrieve all info entries
  *     tags: [Info]
  *     responses:
  *       200:
- *         description: Informations récupérées avec succès
+ *         description: Info entries retrieved successfully
  *         content:
  *           application/json:
  *             schema:
@@ -45,130 +62,87 @@
  *               items:
  *                 $ref: '#/components/schemas/Info'
  *       404:
- *         description: Aucune information trouvée
+ *         description: No info entries found
  *       500:
- *         description: Erreur interne du serveur
+ *         description: Internal server error
  */
-
 
 /**
  * @swagger
- * /infos/{id_info}:
+ * /infos/{name_info}:
  *   get:
- *     summary: Récupérer une information par ID
+ *     summary: Get an info entry by name
  *     tags: [Info]
  *     parameters:
  *       - in: path
- *         name: id_info
+ *         name: name_info
  *         required: true
  *         schema:
- *           type: integer
- *         description: ID de l'information à récupérer
+ *           type: string
+ *         description: The name of the info entry to retrieve
  *     responses:
  *       200:
- *         description: Information récupérée avec succès
+ *         description: Info entry retrieved successfully
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Info'
  *       404:
- *         description: Aucune information trouvée
+ *         description: Info entry not found
  *       500:
- *         description: Erreur interne du serveur
+ *         description: Internal server error
  */
-
 
 /**
  * @swagger
- * /infos:
- *   post:
- *     summary: Enregistrer une information en BDD (Admin seulement)
- *     tags: [Info]
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *               content:
- *                 type: string
- *             required:
- *               - name
- *               - content
- *     responses:
- *       201:
- *         description: Information créée avec succès
- *       401:
- *         description: Information existe déjà en BDD
- *       403:
- *         description: Token manquant ou invalide
- *       500:
- *         description: Erreur interne du serveur
- */
-
-
-/**
- * @swagger
- * /infos/{id_info}:
+ * /infos/{name_info}:
  *   put:
- *     summary: Modifier une information par l'admin
+ *     summary: Update an existing info entry
  *     tags: [Info]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id_info
+ *         name: name_info
  *         required: true
  *         schema:
- *           type: integer
- *         description: ID de l'information à modifier
+ *           type: string
+ *         description: The name of the info entry to update
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *               content:
- *                 type: string
- *             required:
- *               - name
- *               - content
+ *             $ref: '#/components/schemas/Info'
  *     responses:
  *       200:
- *         description: Information mise à jour avec succès
- *       403:
- *         description: Token manquant ou invalide
+ *         description: Info entry updated successfully
  *       404:
- *         description: Aucune information trouvée
+ *         description: Info entry not found
  *       500:
- *         description: Erreur interne du serveur
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * /infos/{name_info}:
  *   delete:
- *     summary: Supprimer une information par l'admin
+ *     summary: Delete an info entry
  *     tags: [Info]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id_info
+ *         name: name_info
  *         required: true
  *         schema:
- *           type: integer
- *         description: ID de l'information à supprimer
+ *           type: string
+ *         description: The name of the info entry to delete
  *     responses:
  *       200:
- *         description: Information supprimée avec succès
- *       403:
- *         description: Token manquant ou invalide
+ *         description: Info entry deleted successfully
  *       404:
- *         description: Aucune information trouvée
+ *         description: Info entry not found
  *       500:
- *         description: Erreur interne du serveur
+ *         description: Internal server error
  */

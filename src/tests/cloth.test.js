@@ -1,14 +1,31 @@
-const createServeur = require('../services/serveur');
+const Server = require('../services/serveur');
 const Job = require('../models/jobModel');
 const Cloth = require('../models/clothModel');
 const supertest = require('supertest');
 
-const app = createServeur();
+const app = new Server().app;
+
+let token;
 
 describe('Cloth controller', () => {
+    beforeAll(async () => {
+        await require('../services/connectBdd').connect();
+        await require('../services/tablesBdd').createTablesInOrder();
+    });
+    
+    beforeAll(async() =>{
+        const response = await supertest(app)
+            .post(`/persons/login`)
+            .send({
+                email: 'sarahotmane02@gmail.com',
+                password: 'S@rah2024'
+            });
+        
+            token = response.body.token;
+    });
 
     afterEach(async () => {
-        await Cloth.destroy({where: {name_job: 'testt'}});
+        await Cloth.destroy({where: {category: 'Test'}});
         await Job.destroy({where: {name: 'testt'}});
     });
 
@@ -22,7 +39,9 @@ describe('Cloth controller', () => {
                     category: 'Test1',
                     clothType: 'T-shirt',
                     name_job: 'testt',
-                });
+                })
+                .set('Authorization', `Bearer ${token}`);
+
             expect(statusCode).toBe(201);
         });
 
@@ -36,7 +55,9 @@ describe('Cloth controller', () => {
                     category: 'Test1',
                     clothType: 'T-shirt',
                     name_job: 'testt',
-                });
+                })
+                .set('Authorization', `Bearer ${token}`);
+
             expect(statusCode).toBe(409);
         });
 
@@ -44,10 +65,12 @@ describe('Cloth controller', () => {
             const { statusCode } = await supertest(app)
                 .post('/clothes')
                 .send({
-                    category: 'Haut',
+                    category: 'Test',
                     clothType: 'T-shirt',
                     name_job: 'nonexistent',
-                });
+                })
+                .set('Authorization', `Bearer ${token}`);
+
             expect(statusCode).toBe(400);
         });
     });
@@ -55,15 +78,17 @@ describe('Cloth controller', () => {
     describe('PUT /clothes/:id_cloth', () => {
         it('should return 200 when updating a cloth', async () => {
             await Job.create({name: 'testt'});
-            const cloth = await Cloth.create({category: 'Haut', clothType: 'T-shirt', name_job: 'testt'});
+            const cloth = await Cloth.create({category: 'Test', clothType: 'T-shirt', name_job: 'testt'});
 
             const { statusCode } = await supertest(app)
                 .put(`/clothes/${cloth.id}`)
                 .send({
-                    category: 'Haut',
+                    category: 'Test',
                     clothType: 'Doudoune',
                     name_job: 'testt',
-                });
+                })
+                .set('Authorization', `Bearer ${token}`);
+
             expect(statusCode).toBe(200);
         });
 
@@ -71,24 +96,28 @@ describe('Cloth controller', () => {
             const { statusCode } = await supertest(app)
                 .put('/clothes/9999')
                 .send({
-                    category: 'Haut',
+                    category: 'Test',
                     clothType: 'Vestes',
                     name_job: 'testt',
-                });
+                })
+                .set('Authorization', `Bearer ${token}`);
+                
             expect(statusCode).toBe(404);
         });
 
         it('should return 400 when the job is not found', async () => {
             await Job.create({name: 'testt'});
-            const cloth = await Cloth.create({category: 'Haut', clothType: 'T-shirt', name_job: 'testt'});
+            const cloth = await Cloth.create({category: 'Test', clothType: 'T-shirt', name_job: 'testt'});
     
             const { statusCode } = await supertest(app)
                 .put(`/clothes/${cloth.id}`)
                 .send({
-                    category: 'Haut',
+                    category: 'Test',
                     clothType: 'T-shirt',
                     name_job: 'nonexistent',
-                });
+                })
+                .set('Authorization', `Bearer ${token}`);
+
             expect(statusCode).toBe(400);
         });
     });
@@ -96,7 +125,7 @@ describe('Cloth controller', () => {
     describe('GET /clothes', () => {
         it('should return 200 when getting all clothes', async () => {
             await Job.create({name: 'testt'});
-            await Cloth.create({category: 'Haut', clothType: 'T-shirt', name_job: 'testt'});
+            await Cloth.create({category: 'Test', clothType: 'T-shirt', name_job: 'testt'});
 
             const { statusCode, body } = await supertest(app)
                 .get('/clothes');
@@ -116,7 +145,7 @@ describe('Cloth controller', () => {
     describe('GET /clothes/job/:name_job', () => {
         it('should return 200 when getting all clothes of a job', async () => {
             await Job.create({name: 'testt'});
-            await Cloth.create({category: 'Haut', clothType: 'T-shirt', name_job: 'testt'});
+            await Cloth.create({category: 'Test', clothType: 'T-shirt', name_job: 'testt'});
 
             const { statusCode, body } = await supertest(app)
                 .get('/clothes/job/testt');
@@ -142,7 +171,7 @@ describe('Cloth controller', () => {
     describe('GET /clothes/:id_cloth', () => {
         it('should return 200 when getting the details of a cloth', async () => {
             await Job.create({name: 'testt'});
-            const cloth = await Cloth.create({category: 'Haut', clothType: 'T-shirt', name_job: 'testt'});
+            const cloth = await Cloth.create({category: 'Test', clothType: 'T-shirt', name_job: 'testt'});
 
             const { statusCode } = await supertest(app)
                 .get(`/clothes/${cloth.id}`)
@@ -159,17 +188,19 @@ describe('Cloth controller', () => {
     describe('DELETE /clothes/:id_cloth', () => {
         it('should return 200 when deleting the cloth', async () => {
             await Job.create({name: 'testt'});
-            const cloth = await Cloth.create({category: 'Haut', clothType: 'T-shirt', name_job: 'testt'});
+            const cloth = await Cloth.create({category: 'Test', clothType: 'T-shirt', name_job: 'testt'});
 
             const { statusCode } = await supertest(app)
                 .delete(`/clothes/${cloth.id}`)
+                .set('Authorization', `Bearer ${token}`);
 
             expect(statusCode).toBe(200);
         });
 
         it('should return 404 when the cloth is not found', async () => {
             const { statusCode, body } = await supertest(app)
-                .delete('/clothes/9999');
+                .delete('/clothes/9999')
+                .set('Authorization', `Bearer ${token}`);
 
             expect(statusCode).toBe(404);
         });

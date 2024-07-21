@@ -68,10 +68,6 @@ class ProductController{
             }
 
             const person = await Person.findOne({where: {email: req.artisan.email}});
-            if(!person){
-                return res.status(404).json({ message: 'Personne non trouvée.' });
-            }
-
             const artisan = await Artisan.findOne({ where: { id: person.id_artisan} });
             if(!artisan){
                 return res.status(404).json({ message: 'Artisan non trouvé.' });
@@ -191,7 +187,7 @@ class ProductController{
                 return res.status(404).json({ message: 'Artisan non trouvé.' });
             }
             const products = await Product.findAll({where: {id_artisan: artisan.id}});
-            if(!products){
+            if(products.length === 0){
                 return res.status(404).json({ message: 'Auncun product trouvé.' });
             }
             res.status(201).json(products);

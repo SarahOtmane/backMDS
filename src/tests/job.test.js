@@ -1,10 +1,28 @@
-const createServeur = require('../services/serveur');
+const Server = require('../services/serveur');
 const Job = require('../models/jobModel');
 const supertest = require('supertest');
 
-const app = createServeur();
+const app = new Server().app;
+
+let token;
 
 describe('Job controller', () => {
+    beforeAll(async () => {
+        await require('../services/connectBdd').connect();
+        await require('../services/tablesBdd').createTablesInOrder();
+    });
+    
+    beforeAll(async() =>{
+        const response = await supertest(app)
+            .post(`/persons/login`)
+            .send({
+                email: 'sarahotmane02@gmail.com',
+                password: 'S@rah2024'
+            });
+        
+            token = response.body.token;
+    });
+
     afterEach(async() => {
         await Job.destroy({where: {name: 'Test1'}});
         await Job.destroy({where: {name: 'Test2'}});
@@ -16,18 +34,23 @@ describe('Job controller', () => {
                 .post('/jobs')
                 .send({
                     name: 'Test1'
-                });
+                })
+                .set('Authorization', `Bearer ${token}`);
+
             expect(statusCode).toBe(201);
             expect(body.message).toBe('Job créé avec succès.');
         });
 
         it('should return 401 when a job already exists', async () => {
             await Job.create({name: 'Test1'});
+
             const { statusCode, body } = await supertest(app)
                 .post('/jobs')
                 .send({
                     name: 'Test1'
-                });
+                })
+                .set('Authorization', `Bearer ${token}`);
+
             expect(statusCode).toBe(401);
             expect(body.message).toBe('Ce job existe déjà.');
         });
@@ -60,6 +83,7 @@ describe('Job controller', () => {
 
             const { statusCode, body } = await supertest(app)
                 .delete('/jobs/Test1')
+                .set('Authorization', `Bearer ${token}`);
 
             expect(statusCode).toBe(201);
             expect(body.message).toBe('Job supprimé avec succès.');
@@ -68,6 +92,7 @@ describe('Job controller', () => {
         it('should return 404 when the job is not found', async () => {
             const { statusCode, body } = await supertest(app)
                 .delete('/jobs/test')
+                .set('Authorization', `Bearer ${token}`);
 
             expect(statusCode).toBe(404);
             expect(body.message).toBe('Job non trouvé.');

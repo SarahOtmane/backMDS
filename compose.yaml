@@ -37,7 +37,31 @@ services:
       MYSQL_RANDOM_ROOT_PASSWORD: yes
     volumes:
       - ./db:/var/lib/mysql
-      #- ./data:/docker-entrypoint-initdb.d/init.sql 
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  db_test:
+    image: mariadb:lts
+    restart: always
+    healthcheck:
+      interval: 30s
+      retries: 3
+      test:
+        [
+          "CMD",
+          "healthcheck.sh",
+          "--su-mysql",
+          "--connect",
+          "--innodb_initialized"
+        ]
+      timeout: 30s
+    environment:
+      MYSQL_DATABASE: ${TEST_DB_NAME}
+      MYSQL_USER: ${TEST_DB_USER}
+      MYSQL_PASSWORD: ${TEST_DB_PASSWORD}
+      MYSQL_RANDOM_ROOT_PASSWORD: yes
+    volumes:
+      - ./db_test:/var/lib/mysql
+      - ./test.sql:/docker-entrypoint-initdb.d/init.sql
 
   pma:
     image: phpmyadmin/phpmyadmin
@@ -50,4 +74,17 @@ services:
       PMA_HOST: db
       PMA_USER: ${DB_USER}
       PMA_PASSWORD: ${DB_PASSWORD}
+      PMA_ARBITRARY: 1
+
+  pmaTest:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - '8082:80'
+    restart: always
+    depends_on:
+      - db_test
+    environment:
+      PMA_HOST: db_test
+      PMA_USER: ${TEST_DB_USER}
+      PMA_PASSWORD: ${TEST_DB_PASSWORD}
       PMA_ARBITRARY: 1

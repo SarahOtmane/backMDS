@@ -1,10 +1,40 @@
 /**
  * @swagger
  * tags:
- *   name: Artisan
- *   description: CRUD pour la gestion des artisans
+ *   name: Address
+ *   description: CRUD operations for managing addresses
  */
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Address:
+ *       type: object
+ *       required:
+ *         - id
+ *         - streetAddress
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: The unique identifier of the address
+ *         streetAddress:
+ *           type: string
+ *           description: The street address
+ *         city:
+ *           type: string
+ *           description: The city of the address
+ *         postalCode:
+ *           type: string
+ *           description: The postal code
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Artisan
+ *   description: CRUD operations for managing artisans
+ */
 
 /**
  * @swagger
@@ -14,221 +44,88 @@
  *       type: object
  *       required:
  *         - id
- *         - firstname
- *         - lastname
- *         - email
- *         - password
- *         - mobile
  *         - acceptNewOrder
- *         - streetAdress
- *         - city
- *         - country
- *         - postalCode
- *         - id_job
+ *         - siret
+ *         - tva
  *       properties:
  *         id:
  *           type: integer
- *           description: ID de l'artisan
- *         firstname:
- *           type: string
- *           description: Prénom de l'artisan
- *         lastname:
- *           type: string
- *           description: Nom de l'artisan
- *         email:
- *           type: string
- *           description: Adresse email de l'artisan
- *         mobile:
- *           type: string
- *           description: Numéro de téléphone de l'artisan
- *         password:
- *           type: string
- *           description: Mot de passe de l'artisan
+ *           description: The unique identifier of the artisan
  *         acceptNewOrder:
  *           type: boolean
- *           description: L'artisan accepte-t-il de nouvelles commandes
- *         streetAdress:
+ *           description: Whether the artisan accepts new orders
+ *         siret:
  *           type: string
- *           description: Adresse de l'artisan
- *         city:
+ *           description: The SIRET number of the artisan
+ *         tva:
  *           type: string
- *           description: Ville de l'artisan
- *         country:
+ *           description: The TVA number of the artisan
+ *         description:
  *           type: string
- *           description: Pays de l'artisan
- *         postalCode:
- *           type: integer
- *           description: Code postal
- *         id_job:
- *           type: integer
- *           description: ID du job associé
+ *           description: The description of the artisan
+ *         picture:
+ *           type: string
+ *           description: The picture of the artisan
  */
-
 
 /**
  * @swagger
- * /artisans/register:
- *   post:
- *     summary: Enregistrer un nouvel artisan
- *     tags: [Artisan]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Artisan'
- *     responses:
- *       201:
- *         description: Artisan enregistré avec succès
- *       401:
- *         description: L'artisan avec cet email existe déjà / mauvais format de numéro ou email
- *       500:
- *         description: Erreur interne du serveur
- */
-
-
-/**
- * @swagger
- * /artisans/login:
- *   post:
- *     summary: Se connecter à un compte artisan
- *     tags: [Artisan]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               email:
- *                 type: string
- *               password:
- *                 type: string
- *             required:
- *               - email
- *               - password
- *     responses:
- *       201:
- *         description: Artisan connecté avec succès
- *       401:
- *         description: Email ou mot de passe incorrect
- *       404:
- *         description: Artisan non trouvé
- *       500:
- *         description: Erreur interne du serveur
- */
-
-
-/**
- * @swagger
- * /artisans:
+ * /artisans/{name_job}/{postalcode}:
  *   get:
- *     summary: Récupérer les informations de l'artisan connecté
- *     tags: [Artisan]
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       201:
- *         description: Informations de l'artisan récupérées avec succès
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Artisan'
- *       403:
- *         description: Token manquant ou invalide
- *       404:
- *         description: Artisan non trouvé
- *       500:
- *         description: Erreur interne du serveur
- *   put:
- *     summary: Mettre à jour les informations de l'artisan connecté
- *     tags: [Artisan]
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Artisan'
- *     responses:
- *       201:
- *         description: Informations de l'artisan mises à jour avec succès
- *       403:
- *         description: Token manquant ou invalide
- *       404:
- *         description: Artisan non trouvé
- *       500:
- *         description: Erreur interne du serveur
- *   delete:
- *     summary: Supprimer le compte de l'artisan connecté
- *     tags: [Artisan]
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       201:
- *         description: Compte artisan supprimé avec succès
- *       403:
- *         description: Token manquant ou invalide
- *       404:
- *         description: Artisan non trouvé
- *       500:
- *         description: Erreur interne du serveur
- */
-
-
-/**
- * @swagger
- * /artisans/allArtisan:
- *   get:
- *     summary: Lister tous les artisans
- *     tags: [Artisan]
- *     responses:
- *       201:
- *         description: Artisans récupérés avec succès
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Artisan'
- *       404:
- *         description: Aucun artisan trouvé
- *       500:
- *         description: Erreur interne du serveur
- */
-
-
-/**
- * @swagger
- * /artisans/{id_job}/{postalcode}:
- *   get:
- *     summary: Récupérer tous les artisans filtrés par job et code postal
+ *     summary: Retrieve all artisans filtered by job and postal code
  *     tags: [Artisan]
  *     parameters:
  *       - in: path
- *         name: id_job
+ *         name: name_job
  *         required: true
  *         schema:
- *           type: integer
- *         description: ID du job
+ *           type: string
+ *         description: The job name
  *       - in: path
  *         name: postalcode
  *         required: true
  *         schema:
- *           type: integer
- *         description: Code postal
+ *           type: string
+ *         description: The postal code
  *     responses:
- *       201:
- *         description: Artisans récupérés avec succès
+ *       200:
+ *         description: Artisans retrieved successfully
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Artisan'
+ *       400:
+ *         description: Job name not provided
  *       404:
- *         description: Aucun artisan trouvé
+ *         description: No artisans found
  *       500:
- *         description: Erreur interne du serveur
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * /artisans/{id_artisan}:
+ *   get:
+ *     summary: Retrieve the details of an artisan by ID
+ *     tags: [Artisan]
+ *     parameters:
+ *       - in: path
+ *         name: id_artisan
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the artisan to retrieve
+ *     responses:
+ *       200:
+ *         description: Artisan retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Artisan'
+ *       404:
+ *         description: No artisan found
+ *       500:
+ *         description: Internal server error
  */

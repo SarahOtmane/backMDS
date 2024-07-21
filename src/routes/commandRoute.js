@@ -10,6 +10,10 @@ router
     .all(jwtMiddleware.verifyTokenUser)
     .get(commandController.getCommandOfUser)
 
+router
+    .route('/artisans')
+    .all(jwtMiddleware.verifyTokenArtisan)
+    .get(commandController.getCommandOfArtisan)
 
 router
     .route('/:id_artisan')
@@ -21,6 +25,7 @@ router
 **********************************************************/  
 router
     .route('/')
+    .all(jwtMiddleware.isAdmin)
     .get(commandController.getAllCommand)
 
 

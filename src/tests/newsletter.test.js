@@ -1,11 +1,28 @@
-const createServeur = require('../services/serveur');
+const Server = require('../services/serveur');
 const Newsletter = require('../models/newsletterModel');
 const Person = require('../models/personModel');
 const supertest = require('supertest');
 
-const app = createServeur();
+const app = new Server().app;
+
+let token;
 
 describe('Newsletter controller', () => {
+    beforeAll(async () => {
+        await require('../services/connectBdd').connect();
+        await require('../services/tablesBdd').createTablesInOrder();
+    });
+    beforeAll(async() =>{
+        const response = await supertest(app)
+            .post(`/persons/login`)
+            .send({
+                email: 'sarahotmane02@gmail.com',
+                password: 'S@rah2024'
+            });
+        
+            token = response.body.token;
+    });
+
     afterEach(async () => {
         await Newsletter.destroy({ where: {email: 'test@gmail.com'} });
         await Person.destroy({ where: {email: 'test@gmail.com'} });
@@ -58,14 +75,16 @@ describe('Newsletter controller', () => {
             await Newsletter.create({email: 'test@gmail.com'});
 
             const { statusCode } = await supertest(app)
-                .get(`/newsletters`);
+                .get(`/newsletters`)
+                .set('Authorization', `Bearer ${token}`);
 
             expect(statusCode).toBe(201);
         });
 
         it('should return 404 when no newsletter is found', async () => {
             const { statusCode } = await supertest(app)
-                .get(`/newsletters`);
+                .get(`/newsletters`)
+                .set('Authorization', `Bearer ${token}`);
 
             expect(statusCode).toBe(404);
         });

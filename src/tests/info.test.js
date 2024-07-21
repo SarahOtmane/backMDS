@@ -1,11 +1,27 @@
-const createServeur = require('../services/serveur');
+const Server = require('../services/serveur');
 const Info = require('../models/infoModel');
 const supertest = require('supertest');
 
-const app = createServeur();
+const app = new Server().app;
 
 
 describe('Info controller', () => {
+    beforeAll(async () => {
+        await require('../services/connectBdd').connect();
+        await require('../services/tablesBdd').createTablesInOrder();
+    });
+    
+    beforeAll(async() =>{
+        const response = await supertest(app)
+            .post(`/persons/login`)
+            .send({
+                email: 'sarahotmane02@gmail.com',
+                password: 'S@rah2024'
+            });
+        
+            token = response.body.token;
+    });
+
     afterEach(async() =>{
         await Info.destroy({where: {name: 'Test1'}});
     })
@@ -17,7 +33,9 @@ describe('Info controller', () => {
                 .send({
                     name: 'Test1',
                     content: 'Content1'
-                });
+                })
+                .set('Authorization', `Bearer ${token}`);
+
             expect(statusCode).toBe(201);
         });
 
@@ -29,7 +47,9 @@ describe('Info controller', () => {
                 .send({
                     name: 'Test1',
                     content: 'Content1'
-                });
+                })
+                .set('Authorization', `Bearer ${token}`);
+
             expect(statusCode).toBe(401);
         });
     });
@@ -80,6 +100,7 @@ describe('Info controller', () => {
                     name: 'Test1', 
                     content: 'Content3'
                 })
+                .set('Authorization', `Bearer ${token}`);
 
             expect(statusCode).toBe(201);
         });
@@ -91,6 +112,7 @@ describe('Info controller', () => {
                     name: 'Test1', 
                     content: 'Content3'
                 })
+                .set('Authorization', `Bearer ${token}`);
 
             expect(statusCode).toBe(404);
         });
@@ -101,7 +123,8 @@ describe('Info controller', () => {
             const info = await Info.create({name: 'Test1', content: 'Content1' });
 
             const { statusCode, body } = await supertest(app)
-                .delete(`/infos/${info.name}`);
+                .delete(`/infos/${info.name}`)
+                .set('Authorization', `Bearer ${token}`);
 
             expect(statusCode).toBe(201);
         });
@@ -109,6 +132,7 @@ describe('Info controller', () => {
         it('should return 404 when the info is found', async () => {
             const { statusCode, body } = await supertest(app)
                 .delete('/info/teeeeest')
+                .set('Authorization', `Bearer ${token}`);
 
             expect(statusCode).toBe(404);
         });
