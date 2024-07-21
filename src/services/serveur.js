@@ -30,7 +30,12 @@ class Server {
             credentials: true,
         }));
 
+        //middleware intégré à Express qui analyse les données encodées en URL 
+            //comme les données de formulaire soumises via POST) et les expose dans req.body
         this.app.use(express.urlencoded({ extended: true }));
+
+        //middleware intégré à Express qui analyse les données JSON des requêtes entrantes 
+            //et les expose dans req.body
         this.app.use(express.json());
 
         // Configuration de Swagger
