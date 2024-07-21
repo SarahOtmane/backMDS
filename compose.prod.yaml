@@ -15,7 +15,7 @@ services:
       db:
         condition: service_healthy
     networks:
-      - routing_routing
+      - routing_routing t
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.renowear.rule=Host(`api.renowear.fr`)"
