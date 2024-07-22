@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-class JwtMiddlare {
+class JwtMiddleware {
     constructor() {
         this.token = undefined;
         this.verifyTokenUser = this.verifyTokenUser.bind(this);
@@ -21,7 +21,6 @@ class JwtMiddlare {
         });
     }
 
-    // Fonction pour vérifier le token d'un utilisateur
     async verifyTokenUser(req, res, next) {
         try {
             this.token = req.headers['authorization'];
@@ -30,7 +29,6 @@ class JwtMiddlare {
                 const payload = await this.verifyToken();
                 req.user = payload;
 
-                // Vérification du rôle user
                 if (payload && payload.role === 'user') {
                     next();
                 } else {
@@ -45,17 +43,14 @@ class JwtMiddlare {
         }
     }
 
-    // Fonction pour vérifier le token d'un artisan
     async verifyTokenArtisan(req, res, next) {
         try {
             this.token = req.headers['authorization'];
             if (this.token !== undefined) {
                 this.token = this.token.replace(/^Bearer\s+/, '');
                 const payload = await this.verifyToken();
-
                 req.artisan = payload;
 
-                // Vérification du rôle artisan
                 if (payload && payload.role === 'artisan') {
                     next();
                 } else {
@@ -70,16 +65,14 @@ class JwtMiddlare {
         }
     }
 
-    // Fonction pour vérifier si l'utilisateur est admin
     async isAdmin(req, res, next) {
         try {
             this.token = req.headers['authorization'];
             if (this.token !== undefined) {
                 this.token = this.token.replace(/^Bearer\s+/, '');
                 const payload = await this.verifyToken();
-
                 req.user = payload;
-                // Vérification du rôle admin
+
                 if (payload && payload.role === 'admin') {
                     next();
                 } else {
@@ -95,4 +88,4 @@ class JwtMiddlare {
     }
 }
 
-module.exports = JwtMiddlare;
+module.exports = JwtMiddleware;
