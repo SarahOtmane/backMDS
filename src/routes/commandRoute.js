@@ -15,6 +15,11 @@ router
     .all(jwtMiddleware.verifyTokenArtisan)
     .get(commandController.getCommandOfArtisan)
 
+router 
+    .route('/artisan/:id_command')
+    .all(jwtMiddleware.verifyTokenArtisan)
+    .put(commandController.updateDateFinishedCommand)
+
 router
     .route('/:id_artisan')
     .all(jwtMiddleware.verifyTokenUser)

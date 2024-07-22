@@ -152,6 +152,39 @@ class CommandController{
             res.status(500).json({ message: "Erreur lors du traitement des données." });
         }
     };
+
+
+
+    /*********************************************************************************
+                MÉTHODE POUR AJOUTER UNE DATE LORSQUE LA COMMANDE EST TERMINÉE
+    *********************************************************************************/
+    /*
+        Fonction qui permet de modifier la date lorqu'une commande est terminée
+
+        Les vérifications : 
+            - Vérifier que la commande existe
+
+    */
+    static async updateDateFinishedCommand(req, res){
+        try {
+            const person = await Person.findOne({where: {email: req.artisan.email}});
+            
+            const artisan = await Artisan.findOne({where: {id: person.id_artisan}});
+            if(!artisan) res.status(404).json({message: "Artisan non trouvé"});
+
+            const command = await Command.findOne({id: req.params.id_command});
+            await command.update({ 
+                dateFinished: req.body.dateFinished
+            });
+    
+            
+            res.status(201).json({ message: 'Information mise à jour avec succès.' });
+
+        } catch (error) {
+            res.status(500).json({ message: "Erreur lors du traitement des données." });
+        }
+    }
+
 }
 
 module.exports = CommandController;

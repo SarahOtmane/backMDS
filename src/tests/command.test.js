@@ -250,5 +250,7 @@ describe('Command controller', () => {
             expect(statusCode).toBe(404);
         });
     });
+
+    //manque le updateDateFinishedCommand et getCommandOfArtisan
     
 });
