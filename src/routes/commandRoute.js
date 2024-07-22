@@ -19,6 +19,11 @@ router
     .route('/:id_artisan')
     .all(jwtMiddleware.verifyTokenUser)
     .post(commandController.createACommand)
+
+router 
+    .route('/:id_command')
+    .all(jwtMiddleware.verifyTokenArtisan)
+    .put(commandController.updateDateFinishedCommand)
     
 /**********************************************************
             ROUTES UNIQUEMENT POUR LES ADMINS
