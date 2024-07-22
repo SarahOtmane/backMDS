@@ -172,7 +172,7 @@ class CommandController{
             const artisan = await Artisan.findOne({where: {id: person.id_artisan}});
             if(!artisan) res.status(404).json({message: "Artisan non trouvé"});
 
-            const command = await Command.findOne({id: req.params.id});
+            const command = await Command.findOne({id: req.params.id_command});
             await command.update({ 
                 dateFinished: req.body.dateFinished
             });
