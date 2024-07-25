@@ -25,7 +25,7 @@ class Server {
 
     config() {
         this.app.use(cors({
-            origin: ['http://localhost:3000', 'https://renowear.fr'],
+            origin: ['http://localhost:3000', 'https://www.renowear.fr'],
             methods: 'GET,PUT,POST,DELETE',
             credentials: true,
         }));
